@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>some clouds</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#fff;color:#202020;font-family:Georgia,"Times New Roman",serif;overflow:hidden}body{cursor:none}
+.sky{position:relative;width:100%;height:100dvh;min-height:620px;background:#fff}
+h1{position:absolute;top:34px;left:50%;transform:translateX(-50%);margin:0;font-size:clamp(20px,2.1vw,30px);font-weight:400;letter-spacing:.07em}
+.sub{position:absolute;top:74px;left:50%;transform:translateX(-50%);font-family:Arial,sans-serif;font-size:10px;letter-spacing:.22em;color:#888;text-transform:uppercase}
+.about{position:absolute;top:34px;right:38px;color:#202020;text-decoration:none;font-size:13px;letter-spacing:.06em}
+.cloud-link{--f:10px;position:absolute;display:flex;flex-direction:column;align-items:center;gap:7px;color:#202020;text-decoration:none;transform:translate(-50%,-50%);animation:float 6s ease-in-out infinite}
+.cloud{width:clamp(112px,12vw,170px);filter:drop-shadow(0 5px 7px rgba(0,0,0,.035));transition:.28s}
+.cloud path{fill:#fff;stroke:#2c2c2c;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.label{font-size:clamp(13px,1.45vw,19px);letter-spacing:.04em;white-space:nowrap}.jp{font-family:Arial,sans-serif;font-size:10px;color:#8d8d8d;letter-spacing:.12em}
+.cloud-link:hover .cloud{transform:scale(1.08) rotate(-1deg)}
+.math{left:25%;top:30%;animation-delay:-3.1s}.english{left:73%;top:30%;animation-delay:-1.3s}.museum{left:25%;top:70%}.notes{left:73%;top:70%;animation-delay:-2s}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 calc(var(--f)*-1)}}
+.footer{position:absolute;left:50%;bottom:23px;transform:translateX(-50%);text-align:center;white-space:nowrap}
+.footer .name{display:block;font-size:12px;letter-spacing:.08em}.footer .project{display:block;margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
+.cursor{position:fixed;width:20px;height:20px;left:0;top:0;pointer-events:none;z-index:99;transform:translate(-3px,-3px)}.cursor svg{width:100%;height:100%}.cursor path{fill:#fff;stroke:#242424;stroke-width:1.4;stroke-linejoin:round}
+@media(max-width:700px){body{cursor:auto}.cursor{display:none}h1{top:27px}.sub{top:63px}.about{top:27px;right:22px}.cloud{width:clamp(104px,29vw,138px)}.math{left:25%;top:31%}.english{left:73%;top:38%}.museum{left:25%;top:70%}.notes{left:73%;top:75%}.label{font-size:15px}.footer{bottom:18px}}
+</style></head>
+<body>
+<main class="sky">
+<h1>some clouds</h1><div class="sub">tap a cloud</div><a class="about" href="./about/">About</a>
+<a class="cloud-link math" href="https://sakurak02.github.io/math-study-log/"><svg class="cloud" viewBox="0 0 180 105"><path d="M31 77 C16 72,15 56,26 48 C33 43,40 43,47 46 C53 27,72 18,88 26 C100 11,124 14,131 32 C148 32,159 44,158 57 C170 63,165 79,151 84 C138 88,47 87,31 77Z"/></svg><span class="label">Mathematics</span><span class="jp">数学学習記録</span></a>
+<a class="cloud-link english" href="https://sakurak02.github.io/english-literature/"><svg class="cloud" viewBox="0 0 180 105"><path d="M28 74 C15 66,18 50,31 46 C35 32,49 24,63 29 C70 13,93 10,106 24 C122 16,142 25,146 43 C163 47,166 66,154 75 C144 83,44 83,28 74Z"/></svg><span class="label">English Literature</span><span class="jp">英語で文学</span></a>
+<a class="cloud-link museum" href="https://sakurak02.github.io/quiet-museum/"><svg class="cloud" viewBox="0 0 180 105"><path d="M35 76 C19 76,14 62,22 52 C27 46,35 44,43 46 C47 28,61 17,78 21 C91 8,116 14,121 33 C139 30,153 41,153 55 C168 58,171 77,157 84 C148 89,52 87,35 76Z"/></svg><span class="label">quiet-museum</span><span class="jp">静かな美術館</span></a>
+<a class="cloud-link notes" href="./notes/"><svg class="cloud" viewBox="0 0 180 105"><path d="M34 78 C17 74,14 60,24 50 C31 43,40 43,48 47 C52 30,67 19,82 23 C94 12,114 14,123 29 C143 25,158 38,157 54 C171 58,172 74,159 82 C147 89,53 87,34 78Z"/></svg><span class="label">Notes</span><span class="jp">そのほか</span></a>
+<footer class="footer"><span class="name">sakurak02</span><span class="project">a project by K企画</span></footer>
+</main>
+<div class="cursor"><svg viewBox="0 0 24 24"><path d="M3 2.5 L18 13 L11.4 14.2 L8.5 21 L3 2.5 Z"/></svg></div>
+<script>
+const c=document.querySelector('.cursor');window.addEventListener('mousemove',e=>{c.style.left=e.clientX+'px';c.style.top=e.clientY+'px'});
+</script>
+</body></html>

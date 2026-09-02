@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Notes — some clouds</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap");
+
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:#fff;
+  color:#1f1f1f;
+}
+body{
+  font-family:"Noto Sans JP","Yu Gothic",sans-serif;
+}
+.page{
+  min-height:100dvh;
+  padding:40px 52px 34px;
+  display:flex;
+  flex-direction:column;
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.brand{
+  color:#1f1f1f;
+  text-decoration:none;
+  font-size:17px;
+  letter-spacing:.06em;
+}
+.nav{
+  font-size:12px;
+  letter-spacing:.04em;
+}
+.center{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.content{
+  text-align:center;
+  transform:translateY(-18px);
+}
+.cloud{
+  width:118px;
+  margin:0 auto 30px;
+}
+.cloud path{
+  fill:#fff;
+  stroke:#2c2c2c;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+h1{
+  margin:0 0 12px;
+  font-size:32px;
+  font-weight:400;
+  letter-spacing:.03em;
+}
+.note{
+  margin:0;
+  font-size:13px;
+  line-height:1.9;
+  color:#666;
+}
+.back{
+  display:inline-block;
+  margin-top:26px;
+  color:#1f1f1f;
+  text-decoration:none;
+  font-size:11px;
+  letter-spacing:.04em;
+  border-bottom:1px solid #1f1f1f;
+  padding-bottom:2px;
+}
+.footer{
+  text-align:center;
+  font-size:10px;
+  letter-spacing:.05em;
+}
+@media(max-width:700px){
+  .page{padding:30px 24px 24px}
+  .cloud{width:105px}
+  h1{font-size:28px}
+  .note{font-size:12px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="top">
+  <a class="brand" href="../">some clouds</a>
+  <span class="nav">Notes</span>
+</header>
+
+<main class="center">
+  <div class="content">
+    <svg class="cloud" viewBox="0 0 180 105" aria-hidden="true">
+      <path d="M34 78
+        C17 74,14 60,24 50
+        C31 43,40 43,48 47
+        C52 30,67 19,82 23
+        C94 12,114 14,123 29
+        C143 25,158 38,157 54
+        C171 58,172 74,159 82
+        C147 89,53 87,34 78Z"/>
+    </svg>
+
+    <h1>Notes</h1>
+
+    <p class="note">
+      ただいま準備中です。<br>
+      少しずつ、ここに記録を置いていきます。
+    </p>
+
+    <a class="back" href="../">← some clouds</a>
+  </div>
+</main>
+
+<footer class="footer">
+  sakurak02 · a project by K企画
+</footer>
+
+</div>
+</body>
+</html>
