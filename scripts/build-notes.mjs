@@ -9,6 +9,15 @@ const postsDirectory = path.join(projectRoot, "notes", "posts");
 const notesIndexFile = path.join(projectRoot, "notes", "index.html");
 const entryFilePattern = /^(\d{8})-(\d{3})\.md$/;
 const allowedTags = new Set(["雑記", "学習", "メモ", "考えごと"]);
+const googleTag = `<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SSXKPMSF5X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SSXKPMSF5X');
+</script>`;
 
 function escapeHtml(value) {
   return String(value)
@@ -198,6 +207,7 @@ function renderPost(entry) {
   return `<!doctype html>
 <html lang="ja">
 <head>
+${googleTag}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="${excerpt}">
@@ -332,6 +342,7 @@ function renderNotesIndex(entries) {
   return `<!doctype html>
 <html lang="ja">
 <head>
+${googleTag}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Notes — some clouds</title>

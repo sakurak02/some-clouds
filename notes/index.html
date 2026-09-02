@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="ja">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SSXKPMSF5X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SSXKPMSF5X');
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Notes — some clouds</title>
@@ -109,6 +118,27 @@ body{font-family:"Noto Sans JP","Yu Gothic",sans-serif}
   </div>
 
   <div class="cloud-list">
+    <a class="cloud-card" data-tag="メモ" href="./posts/20260902-002/">
+      <svg class="cloud-shape" viewBox="0 0 760 190" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M118 164
+          C59 161,38 139,48 111
+          C56 87,81 78,108 84
+          C121 52,158 31,202 39
+          C239 16,301 21,327 58
+          C370 47,418 53,448 76
+          C499 61,557 75,578 108
+          C628 109,663 130,677 153
+          C687 169,620 177,542 176
+          C452 175,231 179,118 164Z"/>
+      </svg>
+      <div class="cloud-content">
+        <div class="meta"><span>September 2, 2026</span><span class="entry-tag">メモ</span></div>
+        <h2>作ったよ</h2>
+        <p class="excerpt">サイトのトップページ作った。</p>
+        <div class="read-more">tap to read →</div>
+      </div>
+    </a>
+
     <a class="cloud-card" data-tag="雑記" href="./posts/20260902-001/">
       <svg class="cloud-shape" viewBox="0 0 760 190" preserveAspectRatio="none" aria-hidden="true">
         <path d="M118 164
@@ -136,7 +166,7 @@ body{font-family:"Noto Sans JP","Yu Gothic",sans-serif}
 </div>
 
 <script>
-const calendarData={"initialYear":2026,"initialMonth":8,"articlesByDate":{"2026-09-02":[{"title":"今日は秋晴れだった","href":"./posts/20260902-001/"}]}};
+const calendarData={"initialYear":2026,"initialMonth":8,"articlesByDate":{"2026-09-02":[{"title":"作ったよ","href":"./posts/20260902-002/"},{"title":"今日は秋晴れだった","href":"./posts/20260902-001/"}]}};
 const calendarButton=document.querySelector('.calendar-btn');
 const calendarPanel=document.querySelector('.calendar-panel');
 const calendarMonth=document.querySelector('.calendar-month');
