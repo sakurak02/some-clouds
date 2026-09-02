@@ -7,6 +7,8 @@ const projectRoot = path.resolve(path.dirname(scriptFile), "..");
 const entriesDirectory = path.join(projectRoot, "notes", "entries");
 const postsDirectory = path.join(projectRoot, "notes", "posts");
 const notesIndexFile = path.join(projectRoot, "notes", "index.html");
+const sitemapFile = path.join(projectRoot, "sitemap.xml");
+const siteUrl = "https://sakurak02.github.io/some-clouds/";
 const entryFilePattern = /^(\d{8})-(\d{3})\.md$/;
 const allowedTags = new Set(["雑記", "学習", "メモ", "考えごと"]);
 const googleTag = `<!-- Google tag (gtag.js) -->
@@ -275,6 +277,25 @@ function sortEntries(entries) {
       second.dateObject.getTime() - first.dateObject.getTime() ||
       second.sequence - first.sequence,
   );
+}
+
+function renderSitemap(entries) {
+  const urls = [
+    siteUrl,
+    `${siteUrl}about/`,
+    `${siteUrl}notes/`,
+    ...sortEntries(entries).map((entry) => `${siteUrl}notes/posts/${entry.slug}/`),
+  ];
+
+  const urlEntries = urls
+    .map((url) => `  <url>\n    <loc>${escapeHtml(url)}</loc>\n  </url>`)
+    .join("\n");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urlEntries}
+</urlset>
+`;
 }
 
 function buildCalendarData(entries) {
@@ -627,10 +648,13 @@ async function buildNotes() {
   await writeFile(notesIndexFile, renderNotesIndex(sortedEntries), "utf8");
   console.log("Generated notes/index.html");
 
+  await writeFile(sitemapFile, renderSitemap(sortedEntries), "utf8");
+  console.log("Generated sitemap.xml");
+
   console.log(`Built ${markdownFiles.length} note${markdownFiles.length === 1 ? "" : "s"}.`);
 }
 
-export { buildCalendarData, buildNotes, parseEntry, renderMarkdown, renderNotesIndex, renderPost, sortEntries };
+export { buildCalendarData, buildNotes, parseEntry, renderMarkdown, renderNotesIndex, renderPost, renderSitemap, sortEntries };
 
 if (process.argv[1] && path.resolve(process.argv[1]) === scriptFile) {
   buildNotes().catch((error) => {

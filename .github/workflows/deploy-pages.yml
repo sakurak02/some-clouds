@@ -40,6 +40,7 @@ jobs:
           test -f index.html
           test -f about/index.html
           test -f notes/index.html
+          test -f sitemap.xml
           find notes/posts -mindepth 2 -maxdepth 2 -name index.html -print -quit | grep -q .
 
       - name: Upload GitHub Pages artifact
