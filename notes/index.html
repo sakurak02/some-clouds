@@ -8,91 +8,60 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap");
 
 *{box-sizing:border-box}
-html,body{
-  margin:0;
-  width:100%;
-  min-height:100%;
-  background:#fff;
-  color:#1f1f1f;
-}
-body{
-  font-family:"Noto Sans JP","Yu Gothic",sans-serif;
-}
-.page{
-  min-height:100dvh;
-  padding:40px 52px 34px;
-  display:flex;
-  flex-direction:column;
-}
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.brand{
-  color:#1f1f1f;
-  text-decoration:none;
-  font-size:17px;
-  letter-spacing:.06em;
-}
-.nav{
-  font-size:12px;
-  letter-spacing:.04em;
-}
-.center{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.content{
-  text-align:center;
-  transform:translateY(-18px);
-}
-.cloud{
-  width:118px;
-  margin:0 auto 30px;
-}
-.cloud path{
-  fill:#fff;
-  stroke:#2c2c2c;
-  stroke-width:2.2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  vector-effect:non-scaling-stroke;
-}
-h1{
-  margin:0 0 12px;
-  font-size:32px;
-  font-weight:400;
-  letter-spacing:.03em;
-}
-.note{
-  margin:0;
-  font-size:13px;
-  line-height:1.9;
-  color:#666;
-}
-.back{
-  display:inline-block;
-  margin-top:26px;
-  color:#1f1f1f;
-  text-decoration:none;
-  font-size:11px;
-  letter-spacing:.04em;
-  border-bottom:1px solid #1f1f1f;
-  padding-bottom:2px;
-}
-.footer{
-  text-align:center;
-  font-size:10px;
-  letter-spacing:.05em;
-}
+html,body{margin:0;min-height:100%;background:#fff;color:#1f1f1f}
+body{font-family:"Noto Sans JP","Yu Gothic",sans-serif}
+.page{min-height:100dvh;padding:40px 52px 34px;display:flex;flex-direction:column}
+.top{display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:17px;font-weight:400;letter-spacing:.06em;color:#1f1f1f;text-decoration:none}
+.top-right{display:flex;align-items:center;gap:24px;font-size:12px;letter-spacing:.04em}
+.calendar-wrap{position:relative}
+.calendar-btn{border:0;background:transparent;padding:0;font:inherit;color:#1f1f1f;cursor:pointer}
+.calendar-panel{position:absolute;right:0;top:26px;width:260px;max-width:calc(100vw - 48px);padding:18px;border:1px solid #1f1f1f;background:#fff;display:none;z-index:10}
+.calendar-panel.open{display:block}
+.calendar-title{display:grid;grid-template-columns:28px 1fr 28px;align-items:center;gap:8px;margin-bottom:12px;text-align:center;font-size:12px}
+.month-nav{width:28px;height:28px;border:0;background:transparent;padding:0;font:inherit;font-size:18px;color:#1f1f1f;cursor:pointer}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;text-align:center;font-size:11px}
+.calendar-weekdays{margin-bottom:2px}
+.dow{font-size:9px;color:#999;padding:3px 0}
+.day{height:26px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;padding:4px 0;font:inherit;font-size:11px;color:#1f1f1f;text-decoration:none}
+.day.empty{visibility:hidden}
+.day.marked{border-bottom:1px solid #1f1f1f;cursor:pointer}
+.day-entries{margin-top:14px;padding-top:12px;border-top:1px solid #d8d8d8}
+.day-entries-title{margin:0 0 7px;font-size:10px;color:#666}
+.day-entries-list{display:flex;flex-direction:column;gap:6px}
+.day-entries-list a{color:#1f1f1f;text-decoration:none;font-size:11px;line-height:1.5}
+.content{width:min(760px,100%);margin:84px auto 70px}
+.page-title{margin:0 0 16px;font-size:clamp(36px,5vw,56px);font-weight:400}
+.intro{margin:0 0 28px;max-width:640px;font-size:14px;line-height:2;color:#555}
+.tag-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:44px}
+.tag-filter button{background:#fff;border:1px solid #bdbdbd;padding:5px 10px 6px;font:inherit;font-size:11px;cursor:pointer}
+.tag-filter button.active,.tag-filter button:hover{border-color:#1f1f1f}
+.cloud-list{display:flex;flex-direction:column;gap:18px}
+.cloud-card{position:relative;min-height:178px;width:100%;text-decoration:none;color:#1f1f1f;transition:transform .22s ease;display:block}
+.cloud-card:hover{transform:translateY(-3px)}
+.cloud-shape{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cloud-shape path{fill:#fff;stroke:#d1d1d1;stroke-width:1.5;vector-effect:non-scaling-stroke}
+.cloud-content{position:relative;z-index:1;padding:40px 74px 34px}
+.meta{display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:10px;color:#666}
+.entry-tag{border:1px solid #bbb;padding:2px 6px}
+.cloud-card h2{margin:0 0 10px;font-size:19px;line-height:1.5;font-weight:500}
+.excerpt{margin:0;font-size:13px;line-height:1.8;color:#444}
+.read-more{margin-top:10px;font-size:10px;color:#777;letter-spacing:.03em}
+.hidden{display:none}
+.footer{margin-top:auto;text-align:center;font-size:10px;letter-spacing:.05em}
+
 @media(max-width:700px){
   .page{padding:30px 24px 24px}
-  .cloud{width:105px}
-  h1{font-size:28px}
-  .note{font-size:12px}
+  .top-right{gap:14px}
+  .calendar-panel{width:240px}
+  .calendar-title{grid-template-columns:36px 1fr 36px}
+  .month-nav{width:36px;height:36px}
+  .content{margin:62px auto 54px}
+  .intro{font-size:13px;line-height:1.9}
+  .cloud-card{min-height:190px}
+  .cloud-content{padding:44px 34px 34px}
+  .cloud-card h2{font-size:17px}
+  .excerpt{font-size:12px;line-height:1.75}
 }
 </style>
 </head>
@@ -101,37 +70,197 @@ h1{
 
 <header class="top">
   <a class="brand" href="../">some clouds</a>
-  <span class="nav">Notes</span>
+  <div class="top-right">
+    <span>Notes</span>
+    <div class="calendar-wrap">
+      <button class="calendar-btn" type="button" aria-expanded="false" aria-controls="notes-calendar">Calendar ▾</button>
+      <div class="calendar-panel" id="notes-calendar">
+        <div class="calendar-title">
+          <button class="month-nav previous-month" type="button" aria-label="前月">‹</button>
+          <span class="calendar-month" aria-live="polite"></span>
+          <button class="month-nav next-month" type="button" aria-label="次月">›</button>
+        </div>
+        <div class="cal-grid calendar-weekdays" aria-hidden="true">
+          <span class="dow">M</span><span class="dow">T</span><span class="dow">W</span><span class="dow">T</span><span class="dow">F</span><span class="dow">S</span><span class="dow">S</span>
+        </div>
+        <div class="cal-grid calendar-days"></div>
+        <div class="day-entries hidden">
+          <p class="day-entries-title"></p>
+          <div class="day-entries-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 
-<main class="center">
-  <div class="content">
-    <svg class="cloud" viewBox="0 0 180 105" aria-hidden="true">
-      <path d="M34 78
-        C17 74,14 60,24 50
-        C31 43,40 43,48 47
-        C52 30,67 19,82 23
-        C94 12,114 14,123 29
-        C143 25,158 38,157 54
-        C171 58,172 74,159 82
-        C147 89,53 87,34 78Z"/>
-    </svg>
+<main class="content">
+  <h1 class="page-title">Notes</h1>
+  <p class="intro">
+    学習記録、日々の雑記、あとで残しておきたいこと。<br>
+    そのとき書いておきたいものを、ここに置いていきます。
+  </p>
 
-    <h1>Notes</h1>
+  <div class="tag-filter" aria-label="記事のタグ絞り込み">
+    <button class="active" type="button" data-filter="all" aria-pressed="true">すべて</button>
+    <button type="button" data-filter="雑記" aria-pressed="false">雑記</button>
+    <button type="button" data-filter="学習" aria-pressed="false">学習</button>
+    <button type="button" data-filter="メモ" aria-pressed="false">メモ</button>
+    <button type="button" data-filter="考えごと" aria-pressed="false">考えごと</button>
+  </div>
 
-    <p class="note">
-      ただいま準備中です。<br>
-      少しずつ、ここに記録を置いていきます。
-    </p>
-
-    <a class="back" href="../">← some clouds</a>
+  <div class="cloud-list">
+    <a class="cloud-card" data-tag="雑記" href="./posts/20260902-001/">
+      <svg class="cloud-shape" viewBox="0 0 760 190" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M118 164
+          C59 161,38 139,48 111
+          C56 87,81 78,108 84
+          C121 52,158 31,202 39
+          C239 16,301 21,327 58
+          C370 47,418 53,448 76
+          C499 61,557 75,578 108
+          C628 109,663 130,677 153
+          C687 169,620 177,542 176
+          C452 175,231 179,118 164Z"/>
+      </svg>
+      <div class="cloud-content">
+        <div class="meta"><span>September 2, 2026</span><span class="entry-tag">雑記</span></div>
+        <h2>今日は秋晴れだった</h2>
+        <p class="excerpt">朝、窓を開けたら空が高かった。まだ暑いけれど、少しだけ秋の匂いがした。</p>
+        <div class="read-more">tap to read →</div>
+      </div>
+    </a>
   </div>
 </main>
 
-<footer class="footer">
-  sakurak02 · a project by K企画
-</footer>
-
+<footer class="footer">sakurak02 · a project by K企画</footer>
 </div>
+
+<script>
+const calendarData={"initialYear":2026,"initialMonth":8,"articlesByDate":{"2026-09-02":[{"title":"今日は秋晴れだった","href":"./posts/20260902-001/"}]}};
+const calendarButton=document.querySelector('.calendar-btn');
+const calendarPanel=document.querySelector('.calendar-panel');
+const calendarMonth=document.querySelector('.calendar-month');
+const calendarDays=document.querySelector('.calendar-days');
+const previousMonthButton=document.querySelector('.previous-month');
+const nextMonthButton=document.querySelector('.next-month');
+const dayEntries=document.querySelector('.day-entries');
+const dayEntriesTitle=document.querySelector('.day-entries-title');
+const dayEntriesList=document.querySelector('.day-entries-list');
+const monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+let displayedYear=calendarData.initialYear;
+let displayedMonth=calendarData.initialMonth;
+let selectedDate='';
+
+function dateKey(year,month,day){
+  return year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+}
+
+function closeDayEntries(){
+  selectedDate='';
+  dayEntries.classList.add('hidden');
+  dayEntriesTitle.textContent='';
+  dayEntriesList.replaceChildren();
+  calendarDays.querySelectorAll('button.day').forEach(day=>day.setAttribute('aria-expanded','false'));
+}
+
+function showDayEntries(key,day,articles,button){
+  if(selectedDate===key){
+    closeDayEntries();
+    return;
+  }
+
+  closeDayEntries();
+  selectedDate=key;
+  button.setAttribute('aria-expanded','true');
+  dayEntriesTitle.textContent=monthNames[displayedMonth]+' '+day;
+  articles.forEach(article=>{
+    const link=document.createElement('a');
+    link.href=article.href;
+    link.textContent=article.title;
+    dayEntriesList.append(link);
+  });
+  dayEntries.classList.remove('hidden');
+}
+
+function renderCalendar(){
+  closeDayEntries();
+  calendarMonth.textContent=monthNames[displayedMonth]+' '+displayedYear;
+  calendarDays.replaceChildren();
+
+  const firstWeekday=(new Date(Date.UTC(displayedYear,displayedMonth,1)).getUTCDay()+6)%7;
+  const daysInMonth=new Date(Date.UTC(displayedYear,displayedMonth+1,0)).getUTCDate();
+
+  for(let index=0;index<firstWeekday;index+=1){
+    const empty=document.createElement('span');
+    empty.className='day empty';
+    calendarDays.append(empty);
+  }
+
+  for(let day=1;day<=daysInMonth;day+=1){
+    const key=dateKey(displayedYear,displayedMonth,day);
+    const articles=calendarData.articlesByDate[key]||[];
+    let dayElement;
+
+    if(articles.length===1){
+      dayElement=document.createElement('a');
+      dayElement.href=articles[0].href;
+      dayElement.className='day marked';
+      dayElement.setAttribute('aria-label',monthNames[displayedMonth]+' '+day+', '+displayedYear+': '+articles[0].title);
+    }else if(articles.length>1){
+      dayElement=document.createElement('button');
+      dayElement.type='button';
+      dayElement.className='day marked';
+      dayElement.setAttribute('aria-label',monthNames[displayedMonth]+' '+day+', '+displayedYear+': '+articles.length+'件の記事');
+      dayElement.setAttribute('aria-expanded','false');
+      dayElement.addEventListener('click',()=>showDayEntries(key,day,articles,dayElement));
+    }else{
+      dayElement=document.createElement('span');
+      dayElement.className='day';
+      dayElement.setAttribute('aria-hidden','true');
+    }
+
+    dayElement.textContent=day;
+    calendarDays.append(dayElement);
+  }
+}
+
+calendarButton.addEventListener('click',()=>{
+  const open=calendarPanel.classList.toggle('open');
+  calendarButton.textContent=open?'Calendar ▴':'Calendar ▾';
+  calendarButton.setAttribute('aria-expanded',String(open));
+});
+
+previousMonthButton.addEventListener('click',()=>{
+  displayedMonth-=1;
+  if(displayedMonth<0){displayedMonth=11;displayedYear-=1;}
+  renderCalendar();
+});
+
+nextMonthButton.addEventListener('click',()=>{
+  displayedMonth+=1;
+  if(displayedMonth>11){displayedMonth=0;displayedYear+=1;}
+  renderCalendar();
+});
+
+renderCalendar();
+
+const buttons=document.querySelectorAll('.tag-filter button');
+const cards=document.querySelectorAll('.cloud-card');
+
+buttons.forEach(button=>{
+  button.addEventListener('click',()=>{
+    buttons.forEach(item=>{
+      item.classList.remove('active');
+      item.setAttribute('aria-pressed','false');
+    });
+    button.classList.add('active');
+    button.setAttribute('aria-pressed','true');
+    const filter=button.dataset.filter;
+    cards.forEach(card=>{
+      card.classList.toggle('hidden',filter!=='all'&&card.dataset.tag!==filter);
+    });
+  });
+});
+</script>
 </body>
 </html>

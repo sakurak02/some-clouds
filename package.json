@@ -1,0 +1,7 @@
+{
+  "name": "some-clouds",
+  "private": true,
+  "scripts": {
+    "build:notes": "node scripts/build-notes.mjs"
+  }
+}
