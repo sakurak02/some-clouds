@@ -24,15 +24,21 @@ h1{position:absolute;top:34px;left:50%;transform:translateX(-50%);margin:0;font-
 .label{font-size:clamp(13px,1.45vw,19px);letter-spacing:.04em;white-space:nowrap}.jp{font-family:Arial,sans-serif;font-size:10px;color:#8d8d8d;letter-spacing:.12em}
 .cloud-link:hover .cloud{transform:scale(1.08) rotate(-1deg)}
 .math{left:25%;top:30%;animation-delay:-3.1s}.english{left:73%;top:30%;animation-delay:-1.3s}.physics{left:50%;top:50%;animation-delay:-4.2s}.museum{left:25%;top:70%}.notes{left:73%;top:70%;animation-delay:-2s}
+.kuumo{position:absolute;display:block;object-fit:contain;pointer-events:none;user-select:none}.kuumo-c2{left:12%;top:49%;width:104px;transform:translate(-50%,-50%) rotate(-3deg)}.kuumo-c3{left:87%;top:51%;width:110px;transform:translate(-50%,-50%) rotate(2deg)}.kuumo-c5{left:63%;top:13%;width:124px;transform:translate(-50%,-50%) rotate(3deg)}.kuumo-c4{left:52%;top:80%;width:128px;transform:translate(-50%,-50%) rotate(-2deg)}
 @keyframes float{0%,100%{translate:0 0}50%{translate:0 calc(var(--f)*-1)}}
 .footer{position:absolute;left:50%;bottom:23px;transform:translateX(-50%);text-align:center;white-space:nowrap}
 .footer .name{display:block;font-size:12px;letter-spacing:.08em}.footer .project{display:block;margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
 .cursor{position:fixed;width:20px;height:20px;left:0;top:0;pointer-events:none;z-index:99;transform:translate(-3px,-3px)}.cursor svg{width:100%;height:100%}.cursor path{fill:#fff;stroke:#242424;stroke-width:1.4;stroke-linejoin:round}
-@media(max-width:700px){body{cursor:auto}.cursor{display:none}h1{top:27px}.sub{top:63px}.about{top:27px;right:22px}.cloud{width:clamp(104px,29vw,138px)}.math{left:25%;top:31%}.english{left:73%;top:38%}.physics{left:50%;top:54%}.museum{left:25%;top:70%}.notes{left:73%;top:75%}.label{font-size:15px}.footer{bottom:18px}}
+@media(max-width:700px){body{cursor:auto}.cursor{display:none}h1{top:27px}.sub{top:63px}.about{top:27px;right:22px}.cloud{width:clamp(104px,29vw,138px)}.math{left:25%;top:31%}.english{left:73%;top:38%}.physics{left:50%;top:54%}.museum{left:25%;top:70%}.notes{left:73%;top:75%}.kuumo-c2{left:8%;top:47%;width:54px}.kuumo-c3{left:92%;top:49%;width:58px}.kuumo-c5{left:74%;top:14%;width:68px}.kuumo-c4{left:47%;top:87%;width:70px}.label{font-size:15px}.footer{bottom:18px}}
+@media(max-width:700px) and (max-height:720px){.kuumo-c4{display:none}}
 </style></head>
 <body>
 <main class="sky">
 <h1>some clouds</h1><div class="sub">tap a cloud</div><a class="about" href="./about/">About</a>
+<img class="kuumo kuumo-c2" src="./assets/kuumo/c2.png" alt="" aria-hidden="true" draggable="false">
+<img class="kuumo kuumo-c3" src="./assets/kuumo/c3.png" alt="" aria-hidden="true" draggable="false">
+<img class="kuumo kuumo-c5" src="./assets/kuumo/c5.png" alt="" aria-hidden="true" draggable="false">
+<img class="kuumo kuumo-c4" src="./assets/kuumo/c4.png" alt="" aria-hidden="true" draggable="false">
 <a class="cloud-link math" href="https://sakurak02.github.io/math-study-log/"><svg class="cloud" viewBox="0 0 180 105"><path d="M31 77 C16 72,15 56,26 48 C33 43,40 43,47 46 C53 27,72 18,88 26 C100 11,124 14,131 32 C148 32,159 44,158 57 C170 63,165 79,151 84 C138 88,47 87,31 77Z"/></svg><span class="label">Mathematics</span><span class="jp">数学学習記録</span></a>
 <a class="cloud-link english" href="https://sakurak02.github.io/literature-in-brief/"><svg class="cloud" viewBox="0 0 180 105"><path d="M28 74 C15 66,18 50,31 46 C35 32,49 24,63 29 C70 13,93 10,106 24 C122 16,142 25,146 43 C163 47,166 66,154 75 C144 83,44 83,28 74Z"/></svg><span class="label">Literature in Brief</span><span class="jp">短く読む文学</span></a>
 <a class="cloud-link physics" href="https://sakurak02.github.io/physics-study-log/"><svg class="cloud" viewBox="0 0 180 105"><path d="M30 76 C16 70,16 55,27 48 C33 43,41 42,48 46 C53 29,68 19,84 24 C96 11,118 14,127 31 C145 29,158 41,157 56 C170 61,168 77,154 83 C142 88,47 87,30 76Z"/></svg><span class="label">Physics</span><span class="jp">物理学習ログ</span></a>
