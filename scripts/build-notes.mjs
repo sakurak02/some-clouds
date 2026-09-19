@@ -214,6 +214,7 @@ ${googleTag}
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="${excerpt}">
 <title>${title} — Notes</title>
+<link rel="icon" href="../../../assets/cloud.svg" type="image/svg+xml">
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap");
 *{box-sizing:border-box}
@@ -367,6 +368,7 @@ ${googleTag}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Notes — some clouds</title>
+<link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap");
 
