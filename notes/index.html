@@ -54,6 +54,8 @@ details>summary::-webkit-details-marker{display:none}
 .fragments-link{position:relative;display:inline-flex;align-items:center;min-width:30px;min-height:30px;justify-content:center;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.08em;color:#555}
 .fragments-link::after{content:"fragments";position:absolute;right:34px;top:50%;transform:translateY(-50%);font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.08em;color:#999;opacity:0;transition:opacity .2s;pointer-events:none}
 .fragments-link:hover::after,.fragments-link:focus-visible::after{opacity:1}
+.content{position:relative}
+.timeline-kuumo{position:absolute;top:-10px;right:clamp(14px,4vw,58px);display:block;width:230px;height:auto;pointer-events:none;user-select:none}
 .day-content{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);gap:34px;padding:26px 14px 34px}
 .entry-side{min-width:0;font-size:13px;line-height:1.95;letter-spacing:.02em;overflow-wrap:anywhere}
 .entry-side h3{margin:0 0 16px;font-size:10px;font-weight:500;letter-spacing:.16em;color:#777}
@@ -65,6 +67,7 @@ details>summary::-webkit-details-marker{display:none}
 .axis i{position:relative;width:5px;height:5px;margin-top:11px;border:1px solid #aaa;border-radius:50%;background:#fff;z-index:1}
 @media(max-width:700px){
   .fragments-link::after{display:none}
+  .timeline-kuumo{top:10px;right:0;width:150px}
   .day-content{display:flex;flex-direction:column;gap:29px;padding:20px 4px 28px 12px}
   .entry-side{font-size:13px;line-height:1.9}
   .entry-side h3{margin-bottom:12px}
@@ -82,6 +85,7 @@ details>summary::-webkit-details-marker{display:none}
     <h1>Notes</h1>
     <p class="section-name">Timeline</p>
     <p class="tagline">世界と、自分の記録。</p>
+    <img class="timeline-kuumo" src="../assets/kuumo/Timeline.png" alt="" aria-hidden="true" draggable="false">
     <div class="archive">
       <details class="year">
   <summary>2026</summary>
@@ -89,9 +93,9 @@ details>summary::-webkit-details-marker{display:none}
     <details class="day">
   <summary><time datetime="2026-09-20">09.20</time></summary>
   <div class="day-content">
-    <section class="entry-side news"><h3>NEWS</h3><ul><li>気になったニュース</li><li>目に入った出来事</li></ul></section>
+    <section class="entry-side news"><h3>NEWS</h3><ul><li>近い将来、AIが人類を滅ぼすらしい</li><li>林氏は高市内閣を抜けた→未来の総理大臣のための準備？</li></ul></section>
     <div class="axis" aria-hidden="true"><span>09.20</span><i></i></div>
-    <section class="entry-side personal"><h3>PERSONAL</h3><ul><li>その日の学習</li><li>制作</li><li>自分に起きたこと</li></ul></section>
+    <section class="entry-side personal"><h3>PERSONAL</h3><ul><li>Notesを年表形式にした</li><li>雲サイトを物理と数学とNotesだけにした</li></ul></section>
   </div>
 </details>
   </div>

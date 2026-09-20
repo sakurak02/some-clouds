@@ -307,6 +307,8 @@ ${sharedStyles}
 .fragments-link{position:relative;display:inline-flex;align-items:center;min-width:30px;min-height:30px;justify-content:center;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.08em;color:#555}
 .fragments-link::after{content:"fragments";position:absolute;right:34px;top:50%;transform:translateY(-50%);font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.08em;color:#999;opacity:0;transition:opacity .2s;pointer-events:none}
 .fragments-link:hover::after,.fragments-link:focus-visible::after{opacity:1}
+.content{position:relative}
+.timeline-kuumo{position:absolute;top:-10px;right:clamp(14px,4vw,58px);display:block;width:230px;height:auto;pointer-events:none;user-select:none}
 .day-content{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);gap:34px;padding:26px 14px 34px}
 .entry-side{min-width:0;font-size:13px;line-height:1.95;letter-spacing:.02em;overflow-wrap:anywhere}
 .entry-side h3{margin:0 0 16px;font-size:10px;font-weight:500;letter-spacing:.16em;color:#777}
@@ -318,6 +320,7 @@ ${sharedStyles}
 .axis i{position:relative;width:5px;height:5px;margin-top:11px;border:1px solid #aaa;border-radius:50%;background:#fff;z-index:1}
 @media(max-width:700px){
   .fragments-link::after{display:none}
+  .timeline-kuumo{top:10px;right:0;width:150px}
   .day-content{display:flex;flex-direction:column;gap:29px;padding:20px 4px 28px 12px}
   .entry-side{font-size:13px;line-height:1.9}
   .entry-side h3{margin-bottom:12px}
@@ -335,6 +338,7 @@ ${sharedStyles}
     <h1>Notes</h1>
     <p class="section-name">Timeline</p>
     <p class="tagline">世界と、自分の記録。</p>
+    <img class="timeline-kuumo" src="../assets/kuumo/Timeline.png" alt="" aria-hidden="true" draggable="false">
     <div class="archive">
       ${years}
     </div>
@@ -369,14 +373,16 @@ ${googleTag}
 <style>
 ${sharedStyles}
 .back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666}
-.content{width:min(720px,100%)}
+.content{position:relative;width:min(720px,100%)}
 .content h1{font-size:clamp(30px,3vw,40px)}
 .section-name{color:#777}
+.fragments-kuumo{position:absolute;top:-18px;right:clamp(4px,3vw,28px);display:block;width:210px;height:auto;pointer-events:none;user-select:none}
 .fragment-body{padding:20px 16px 34px;font-size:14px;line-height:2;letter-spacing:.025em;overflow-wrap:anywhere}
 .fragment-body p{margin:0;max-width:620px}
 .fragment-body hr{width:36px;height:1px;margin:27px 0;border:0;background:#d3d3d3}
 .fragment-body a{text-underline-offset:3px}
 @media(max-width:700px){
+  .fragments-kuumo{top:5px;right:0;width:135px}
   .fragment-body{padding:18px 4px 28px 12px;font-size:13px;line-height:1.95}
   .fragment-body hr{margin:23px 0}
 }
@@ -391,6 +397,7 @@ ${sharedStyles}
   <main class="content">
     <h1>Fragments</h1>
     <p class="section-name">短い言葉の断片。</p>
+    <img class="fragments-kuumo" src="../../assets/kuumo/Fragments.png" alt="" aria-hidden="true" draggable="false">
     <div class="archive">
       ${years}
     </div>
