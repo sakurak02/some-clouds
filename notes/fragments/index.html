@@ -12,9 +12,9 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="世界と、自分の記録。">
-<title>Notes — some clouds</title>
-<link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
+<meta name="description" content="短い言葉の断片。">
+<title>Fragments — some clouds</title>
+<link rel="icon" href="../../assets/cloud.svg" type="image/svg+xml">
 <style>
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap");
@@ -51,47 +51,41 @@ details>summary::-webkit-details-marker{display:none}
   .archive{margin-top:48px}
   .days{padding-left:14px}
 }
-.fragments-link{position:relative;display:inline-flex;align-items:center;min-width:30px;min-height:30px;justify-content:center;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.08em;color:#555}
-.fragments-link::after{content:"fragments";position:absolute;right:34px;top:50%;transform:translateY(-50%);font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.08em;color:#999;opacity:0;transition:opacity .2s;pointer-events:none}
-.fragments-link:hover::after,.fragments-link:focus-visible::after{opacity:1}
-.day-content{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);gap:34px;padding:26px 14px 34px}
-.entry-side{min-width:0;font-size:13px;line-height:1.95;letter-spacing:.02em;overflow-wrap:anywhere}
-.entry-side h3{margin:0 0 16px;font-size:10px;font-weight:500;letter-spacing:.16em;color:#777}
-.entry-side p{margin:0 0 14px}.entry-side p:last-child{margin-bottom:0}
-.entry-side ul{margin:0;padding-left:1.25em}.entry-side li+li{margin-top:7px}
-.news{grid-column:1}.personal{grid-column:3}
-.axis{position:relative;grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:center;align-self:stretch;min-height:92px;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em;color:#999}
-.axis::before{content:"";position:absolute;top:25px;bottom:0;left:50%;width:1px;background:#dedede}
-.axis i{position:relative;width:5px;height:5px;margin-top:11px;border:1px solid #aaa;border-radius:50%;background:#fff;z-index:1}
+.back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666}
+.content{width:min(720px,100%)}
+.content h1{font-size:clamp(30px,3vw,40px)}
+.section-name{color:#777}
+.fragment-body{padding:20px 16px 34px;font-size:14px;line-height:2;letter-spacing:.025em;overflow-wrap:anywhere}
+.fragment-body p{margin:0;max-width:620px}
+.fragment-body hr{width:36px;height:1px;margin:27px 0;border:0;background:#d3d3d3}
+.fragment-body a{text-underline-offset:3px}
 @media(max-width:700px){
-  .fragments-link::after{display:none}
-  .day-content{display:flex;flex-direction:column;gap:29px;padding:20px 4px 28px 12px}
-  .entry-side{font-size:13px;line-height:1.9}
-  .entry-side h3{margin-bottom:12px}
-  .axis{display:none}
+  .fragment-body{padding:18px 4px 28px 12px;font-size:13px;line-height:1.95}
+  .fragment-body hr{margin:23px 0}
 }
 </style>
 </head>
 <body>
 <div class="page">
   <header class="top">
-    <a class="brand" href="../">some clouds</a>
-    <a class="fragments-link" href="./fragments/" aria-label="Fragments" title="Fragments">…</a>
+    <a class="brand" href="../../">some clouds</a>
+    <a class="back" href="../">← Timeline</a>
   </header>
   <main class="content">
-    <h1>Notes</h1>
-    <p class="section-name">Timeline</p>
-    <p class="tagline">世界と、自分の記録。</p>
+    <h1>Fragments</h1>
+    <p class="section-name">短い言葉の断片。</p>
     <div class="archive">
       <details class="year">
   <summary>2026</summary>
   <div class="days">
     <details class="day">
   <summary><time datetime="2026-09-20">09.20</time></summary>
-  <div class="day-content">
-    <section class="entry-side news"><h3>NEWS</h3><ul><li>気になったニュース</li><li>目に入った出来事</li></ul></section>
-    <div class="axis" aria-hidden="true"><span>09.20</span><i></i></div>
-    <section class="entry-side personal"><h3>PERSONAL</h3><ul><li>その日の学習</li><li>制作</li><li>自分に起きたこと</li></ul></section>
+  <div class="fragment-body">
+    <p>サイトは増やすより、<br>減らしたときのほうが自分らしくなることがある。</p>
+<hr>
+<p>数学は、わかった瞬間より、<br>わからないまま粘っている時間のほうが長い。</p>
+<hr>
+<p>クーモはやっぱりサイトの顔になりそう。</p>
   </div>
 </details>
   </div>

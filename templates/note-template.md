@@ -1,6 +1,0 @@
----
-date:
-tag:
-title:
-excerpt:
----
