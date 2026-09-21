@@ -13,6 +13,7 @@ const sitemapFile = path.join(projectRoot, "sitemap.xml");
 const siteUrl = "https://sakurak02.github.io/some-clouds/";
 const timelineFilePattern = /^t(\d{4})(\d{2})(\d{2})\.md$/;
 const fragmentFilePattern = /^f(\d{4})(\d{2})(\d{2})\.md$/;
+const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
 const googleTag = `<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSXKPMSF5X"></script>
@@ -109,6 +110,36 @@ function renderMarkdown(markdown) {
   return blocks.join("\n");
 }
 
+function extractDateMetadata(normalized, fileName) {
+  const frontMatter = normalized.match(yamlFrontMatterPattern);
+  if (frontMatter) {
+    const dateField = frontMatter[1].match(
+      /^date:\s*["']?(\d{4}-\d{2}-\d{2})["']?\s*$/im,
+    );
+    if (dateField) {
+      return {
+        date: dateField[1],
+        bodySource: normalized.slice(frontMatter[0].length),
+      };
+    }
+  }
+
+  // Compatibility for entries created before YAML front matter was adopted.
+  const heading = normalized.match(dateHeadingPattern);
+  if (heading) {
+    return {
+      date: heading[1],
+      bodySource: normalized
+        .replace(/^---[ \t]*\n/, "")
+        .replace(dateHeadingPattern, ""),
+    };
+  }
+
+  throw new Error(
+    `${fileName}: add YAML front matter with date: YYYY-MM-DD`,
+  );
+}
+
 function parseDate(source, fileName, yearName, filePattern, expectedFileName) {
   const normalized = normalize(source);
   const fileMatch = fileName.match(filePattern);
@@ -116,12 +147,8 @@ function parseDate(source, fileName, yearName, filePattern, expectedFileName) {
     throw new Error(`${fileName}: filename must use ${expectedFileName}`);
   }
 
-  const heading = normalized.match(dateHeadingPattern);
-  if (!heading) {
-    throw new Error(`${fileName}: add a date heading such as ## date: 2026-09-20`);
-  }
-
-  const [year, month, day] = heading[1].split("-").map(Number);
+  const metadata = extractDateMetadata(normalized, fileName);
+  const [year, month, day] = metadata.date.split("-").map(Number);
   const dateObject = new Date(Date.UTC(year, month - 1, day));
   if (
     dateObject.getUTCFullYear() !== year ||
@@ -131,7 +158,7 @@ function parseDate(source, fileName, yearName, filePattern, expectedFileName) {
     throw new Error(`${fileName}: date is not valid`);
   }
 
-  const compactDate = heading[1].replaceAll("-", "");
+  const compactDate = metadata.date.replaceAll("-", "");
   const fileDate = fileMatch.slice(1).join("");
   if (compactDate !== fileDate) {
     throw new Error(`${fileName}: filename and date heading do not match`);
@@ -142,7 +169,8 @@ function parseDate(source, fileName, yearName, filePattern, expectedFileName) {
 
   return {
     normalized,
-    date: heading[1],
+    bodySource: metadata.bodySource,
+    date: metadata.date,
     dateObject,
     year: String(year),
     displayDate: `${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}`,
@@ -188,10 +216,7 @@ function parseFragments(source, fileName, yearName) {
     fragmentFilePattern,
     "fYYYYMMDD.md",
   );
-  const body = dateData.normalized
-    .replace(/^\s*---\s*\n/, "")
-    .replace(dateHeadingPattern, "")
-    .trim();
+  const body = dateData.bodySource.trim();
   if (!body) {
     throw new Error(`${fileName}: add at least one fragment`);
   }
