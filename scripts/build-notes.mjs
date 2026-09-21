@@ -11,7 +11,8 @@ const notesIndexFile = path.join(notesDirectory, "index.html");
 const fragmentsIndexFile = path.join(fragmentsDirectory, "index.html");
 const sitemapFile = path.join(projectRoot, "sitemap.xml");
 const siteUrl = "https://sakurak02.github.io/some-clouds/";
-const filePattern = /^(\d{4})(\d{2})(\d{2})\.md$/;
+const timelineFilePattern = /^t(\d{4})(\d{2})(\d{2})\.md$/;
+const fragmentFilePattern = /^f(\d{4})(\d{2})(\d{2})\.md$/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
 const googleTag = `<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSXKPMSF5X"></script>
@@ -108,11 +109,11 @@ function renderMarkdown(markdown) {
   return blocks.join("\n");
 }
 
-function parseDate(source, fileName, yearName) {
+function parseDate(source, fileName, yearName, filePattern, expectedFileName) {
   const normalized = normalize(source);
   const fileMatch = fileName.match(filePattern);
   if (!fileMatch) {
-    throw new Error(`${fileName}: filename must use YYYYMMDD.md`);
+    throw new Error(`${fileName}: filename must use ${expectedFileName}`);
   }
 
   const heading = normalized.match(dateHeadingPattern);
@@ -131,7 +132,8 @@ function parseDate(source, fileName, yearName) {
   }
 
   const compactDate = heading[1].replaceAll("-", "");
-  if (compactDate !== fileName.slice(0, 8)) {
+  const fileDate = fileMatch.slice(1).join("");
+  if (compactDate !== fileDate) {
     throw new Error(`${fileName}: filename and date heading do not match`);
   }
   if (String(year) !== yearName) {
@@ -163,7 +165,13 @@ function extractSection(source, sectionName) {
 }
 
 function parseTimeline(source, fileName, yearName) {
-  const dateData = parseDate(source, fileName, yearName);
+  const dateData = parseDate(
+    source,
+    fileName,
+    yearName,
+    timelineFilePattern,
+    "tYYYYMMDD.md",
+  );
   const news = extractSection(dateData.normalized, "NEWS");
   const personal = extractSection(dateData.normalized, "PERSONAL");
   if (!news && !personal) {
@@ -173,7 +181,13 @@ function parseTimeline(source, fileName, yearName) {
 }
 
 function parseFragments(source, fileName, yearName) {
-  const dateData = parseDate(source, fileName, yearName);
+  const dateData = parseDate(
+    source,
+    fileName,
+    yearName,
+    fragmentFilePattern,
+    "fYYYYMMDD.md",
+  );
   const body = dateData.normalized
     .replace(/^\s*---\s*\n/, "")
     .replace(dateHeadingPattern, "")

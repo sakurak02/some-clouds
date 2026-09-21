@@ -10,11 +10,11 @@ HTML、年一覧、日付一覧は手動で編集しません。
 ## Timelineを追加する
 
 1. ObsidianでMarkdownを書く
-2. ファイル名を `YYYYMMDD.md` にする
+2. ファイル名を `tYYYYMMDD.md` にする
 3. `notes/timeline/YYYY/` にコピーする
 4. commit & pushする
 
-例: `notes/timeline/2026/20260920.md`
+例: `notes/timeline/2026/t20260920.md`
 
 ```markdown
 ---
@@ -37,11 +37,11 @@ NEWSまたはPERSONALの片方だけでも構いません。使わない見出�
 ## Fragmentsを追加する
 
 1. ObsidianでMarkdownを書く
-2. ファイル名を `YYYYMMDD.md` にする
+2. ファイル名を `fYYYYMMDD.md` にする
 3. `notes/fragments/YYYY/` にコピーする
 4. commit & pushする
 
-例: `notes/fragments/2026/20260920.md`
+例: `notes/fragments/2026/f20260920.md`
 
 ```markdown
 ---
