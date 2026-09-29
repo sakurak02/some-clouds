@@ -1,4 +1,4 @@
-# Notes 更新手順
+obi# Notes 更新手順
 
 このObsidian保管庫では、Timeline、Fragments、DevelopmentのMarkdownから公開ページを自動生成します。
 
@@ -11,10 +11,10 @@ HTML、年一覧、日付一覧は手動で編集しません。
 
 1. この保管庫のObsidianでMarkdownを作成する
 2. ファイル名を `tYYYYMMDD.md` にする
-3. `notes/timeline/YYYY/` に直接保存する
+3. `notes/timeline/YYYY/MM/` に直接保存する
 4. commit & pushする
 
-例: `notes/timeline/2026/t20260920.md`
+例: `notes/timeline/2026/09/t20260920.md`
 
 ```markdown
 ---
@@ -38,10 +38,10 @@ NEWSまたはPERSONALの片方だけでも構いません。使わない見出�
 
 1. この保管庫のObsidianでMarkdownを作成する
 2. ファイル名を `fYYYYMMDD.md` にする
-3. `notes/fragments/YYYY/` に直接保存する
+3. `notes/fragments/YYYY/MM/` に直接保存する
 4. commit & pushする
 
-例: `notes/fragments/2026/f20260920.md`
+例: `notes/fragments/2026/09/f20260920.md`
 
 ```markdown
 ---
@@ -61,12 +61,12 @@ date: 2026-09-20
 
 ## Development記事を追加する
 
-1. テンプレートをコピーし、`development/YYYY/dYYYYMMDD.md` として保存する
+1. テンプレートをコピーし、`development/YYYY/MM/dYYYYMMDD.md` として保存する
 2. ChatGPTで編集した完成記事を本文へ貼り付ける
-3. 必要な画像は同じ年フォルダの `images/` に置く
+3. 必要な画像は同じ月フォルダの `images/` に置く
 4. commit & pushする
 
-例: `development/2026/d20261015.md`
+例: `development/2026/10/d20261015.md`
 
 ```markdown
 ---
@@ -85,21 +85,21 @@ title: Xcodeを開いた
 ![画像の説明](./images/screen.png)
 ```
 
-画像ファイルは `development/2026/images/d20261015-01.webp` のように管理できます。画像がない記事では `images/` は不要です。
+画像ファイルは `development/2026/10/images/d20261015-01.webp` のように管理できます。画像がない記事では `images/` は不要です。
 
 テンプレートは `templates/development.md` にあります。Developmentの一覧と記事ページは日付の新しい順で自動生成されます。日々の生メモはこのリポジトリへ置かず、公開用の完成Markdownだけを保存します。
 
-## 年が変わったとき
+## 年・月が変わったとき
 
-年フォルダを追加します。
+年フォルダの中に2桁の月フォルダを追加します。
 
 ```text
-notes/timeline/2027/
-notes/fragments/2027/
-development/2027/
+notes/timeline/2027/01/
+notes/fragments/2027/01/
+development/2027/01/
 ```
 
-生成スクリプトが年フォルダと日付を自動的に新しい順で並べます。
+生成スクリプトが年・月フォルダを読み取り、front matterの `date` を基準に自動的に新しい順で並べます。
 
 ## 自動生成
 
@@ -119,4 +119,4 @@ npm run build
 
 ローカルで確認したい場合も、同じコマンドを実行してください。
 
-Timeline / Fragments / Developmentではファイル名・front matterの日付・年フォルダが一致しない場合、誤った日付で公開されないようビルドがエラーになります。
+Timeline / Fragments / Developmentではファイル名・front matterの日付・年フォルダ・月フォルダが一致しない場合、誤った日付で公開されないようビルドがエラーになります。Developmentの保存場所は月フォルダですが、公開URLは従来どおり `development/YYYY/dYYYYMMDD.html` です。

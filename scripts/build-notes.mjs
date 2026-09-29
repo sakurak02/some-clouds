@@ -113,7 +113,7 @@ function renderMarkdown(markdown) {
   return blocks.join("\n");
 }
 
-function renderArticleMarkdown(markdown) {
+function renderArticleMarkdown(markdown, assetMonth = "") {
   const lines = normalize(markdown).split("\n");
   const blocks = [];
   let index = 0;
@@ -141,7 +141,10 @@ function renderArticleMarkdown(markdown) {
 
     const image = line.match(/^!\[([^\]]*)\]\(([^)\s]+)\)\s*$/);
     if (image) {
-      blocks.push(`<figure class="article-image"><img src="${safeLinkUrl(image[2])}" alt="${escapeHtml(image[1])}" loading="lazy"></figure>`);
+      const imageUrl = assetMonth && image[2].startsWith("./images/")
+        ? `./${assetMonth}/images/${image[2].slice("./images/".length)}`
+        : image[2];
+      blocks.push(`<figure class="article-image"><img src="${safeLinkUrl(imageUrl)}" alt="${escapeHtml(image[1])}" loading="lazy"></figure>`);
       index += 1;
       continue;
     }
@@ -207,7 +210,7 @@ function extractDateMetadata(normalized, fileName) {
   );
 }
 
-function parseDate(source, fileName, yearName, filePattern, expectedFileName) {
+function parseDate(source, fileName, yearName, monthName, filePattern, expectedFileName) {
   const normalized = normalize(source);
   const fileMatch = fileName.match(filePattern);
   if (!fileMatch) {
@@ -232,6 +235,10 @@ function parseDate(source, fileName, yearName, filePattern, expectedFileName) {
   }
   if (String(year) !== yearName) {
     throw new Error(`${fileName}: move this file into the ${year} folder`);
+  }
+  const expectedMonth = String(month).padStart(2, "0");
+  if (expectedMonth !== monthName) {
+    throw new Error(`${fileName}: move this file into the ${expectedMonth} month folder`);
   }
 
   return {
@@ -259,11 +266,12 @@ function extractSection(source, sectionName) {
   return lines.slice(start + 1, end).join("\n").trim();
 }
 
-function parseTimeline(source, fileName, yearName) {
+function parseTimeline(source, fileName, yearName, monthName) {
   const dateData = parseDate(
     source,
     fileName,
     yearName,
+    monthName,
     timelineFilePattern,
     "tYYYYMMDD.md",
   );
@@ -275,11 +283,12 @@ function parseTimeline(source, fileName, yearName) {
   return { ...dateData, news, personal };
 }
 
-function parseFragments(source, fileName, yearName) {
+function parseFragments(source, fileName, yearName, monthName) {
   const dateData = parseDate(
     source,
     fileName,
     yearName,
+    monthName,
     fragmentFilePattern,
     "fYYYYMMDD.md",
   );
@@ -290,7 +299,7 @@ function parseFragments(source, fileName, yearName) {
   return { ...dateData, body };
 }
 
-function parseDevelopmentArticle(source, fileName, yearName) {
+function parseDevelopmentArticle(source, fileName, yearName, monthName) {
   const fileMatch = fileName.match(developmentFilePattern);
   if (!fileMatch) {
     throw new Error(`${fileName}: Development article filename must use dYYYYMMDD.md`);
@@ -325,6 +334,10 @@ function parseDevelopmentArticle(source, fileName, yearName) {
   if (String(year) !== yearName) {
     throw new Error(`${fileName}: move this article into the ${year} folder`);
   }
+  const expectedMonth = String(month).padStart(2, "0");
+  if (expectedMonth !== monthName) {
+    throw new Error(`${fileName}: move this article into the ${expectedMonth} month folder`);
+  }
 
   let title = titleField[1].trim();
   if ((title.startsWith('"') && title.endsWith('"')) || (title.startsWith("'") && title.endsWith("'"))) {
@@ -347,6 +360,7 @@ function parseDevelopmentArticle(source, fileName, yearName) {
     date,
     dateObject,
     year: String(year),
+    month: expectedMonth,
     compactDate,
     slug: fileName.slice(0, -3),
     displayDate: `${year}.${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}`,
@@ -365,15 +379,22 @@ async function loadCollection(directory, parser) {
 
   for (const yearEntry of yearDirectories) {
     const yearDirectory = path.join(directory, yearEntry.name);
-    const files = (await readdir(yearDirectory, { withFileTypes: true }))
-      .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
-      .map((entry) => entry.name)
-      .sort()
-      .reverse();
+    const monthDirectories = (await readdir(yearDirectory, { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory() && /^(0[1-9]|1[0-2])$/.test(entry.name))
+      .sort((a, b) => b.name.localeCompare(a.name));
 
-    for (const fileName of files) {
-      const source = await readFile(path.join(yearDirectory, fileName), "utf8");
-      entries.push(parser(source, fileName, yearEntry.name));
+    for (const monthEntry of monthDirectories) {
+      const monthDirectory = path.join(yearDirectory, monthEntry.name);
+      const files = (await readdir(monthDirectory, { withFileTypes: true }))
+        .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
+        .map((entry) => entry.name)
+        .sort()
+        .reverse();
+
+      for (const fileName of files) {
+        const source = await readFile(path.join(monthDirectory, fileName), "utf8");
+        entries.push(parser(source, fileName, yearEntry.name, monthEntry.name));
+      }
     }
   }
 
@@ -390,14 +411,21 @@ async function loadDevelopmentArticles() {
 
   for (const yearEntry of yearDirectories) {
     const yearDirectory = path.join(developmentDirectory, yearEntry.name);
-    const articleFiles = (await readdir(yearDirectory, { withFileTypes: true }))
-      .filter((entry) => entry.isFile() && developmentFilePattern.test(entry.name))
-      .map((entry) => entry.name)
-      .sort((a, b) => b.localeCompare(a));
+    const monthDirectories = (await readdir(yearDirectory, { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory() && /^(0[1-9]|1[0-2])$/.test(entry.name))
+      .sort((a, b) => b.name.localeCompare(a.name));
 
-    for (const fileName of articleFiles) {
-      const source = await readFile(path.join(yearDirectory, fileName), "utf8");
-      entries.push(parseDevelopmentArticle(source, fileName, yearEntry.name));
+    for (const monthEntry of monthDirectories) {
+      const monthDirectory = path.join(yearDirectory, monthEntry.name);
+      const articleFiles = (await readdir(monthDirectory, { withFileTypes: true }))
+        .filter((entry) => entry.isFile() && developmentFilePattern.test(entry.name))
+        .map((entry) => entry.name)
+        .sort((a, b) => b.localeCompare(a));
+
+      for (const fileName of articleFiles) {
+        const source = await readFile(path.join(monthDirectory, fileName), "utf8");
+        entries.push(parseDevelopmentArticle(source, fileName, yearEntry.name, monthEntry.name));
+      }
     }
   }
 
@@ -737,7 +765,7 @@ h1{margin:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif
         <time class="date" datetime="${entry.date}">${entry.displayDate}</time>
       </header>
       <div class="article-body">
-        ${renderArticleMarkdown(entry.body)}
+        ${renderArticleMarkdown(entry.body, entry.month)}
       </div>
     </article>
   </main>
