@@ -347,7 +347,11 @@ ${sharedStyles}
 .fragments-link::after{content:"fragments";position:absolute;right:34px;top:50%;transform:translateY(-50%);font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.08em;color:#999;opacity:0;transition:opacity .2s;pointer-events:none}
 .fragments-link:hover::after,.fragments-link:focus-visible::after{opacity:1}
 .content{position:relative}
-.timeline-kuumo{position:absolute;top:-10px;right:clamp(14px,4vw,58px);display:block;width:230px;height:auto;pointer-events:none;user-select:none}
+.timeline-kuumo-group{position:absolute;top:-10px;right:clamp(14px,4vw,58px);display:flex;align-items:center;gap:8px}
+.timeline-kuumo-copy{width:clamp(190px,23vw,270px)}
+.timeline-kuumo-name{margin:0 0 8px;font-size:13px;font-weight:500;letter-spacing:.06em}
+.timeline-kuumo-description{margin:0;color:#777;font-size:10px;line-height:1.8;letter-spacing:.04em}
+.timeline-kuumo{display:block;flex:0 0 auto;width:230px;height:auto;pointer-events:none;user-select:none}
 .day-content{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);gap:34px;padding:26px 14px 34px}
 .entry-side{min-width:0;font-size:13px;line-height:1.95;letter-spacing:.02em;overflow-wrap:anywhere}
 .entry-side h3{margin:0 0 16px;font-size:10px;font-weight:500;letter-spacing:.16em;color:#777}
@@ -359,7 +363,11 @@ ${sharedStyles}
 .axis i{position:relative;width:5px;height:5px;margin-top:11px;border:1px solid #aaa;border-radius:50%;background:#fff;z-index:1}
 @media(max-width:700px){
   .fragments-link::after{display:none}
-  .timeline-kuumo{top:10px;right:0;width:150px}
+  .timeline-kuumo-group{position:static;display:grid;grid-template-columns:minmax(0,1fr) 130px;gap:4px;width:100%;margin:14px 0 -22px}
+  .timeline-kuumo-copy{width:auto;min-width:0}
+  .timeline-kuumo-name{margin-bottom:6px;font-size:12px}
+  .timeline-kuumo-description{font-size:9.5px;line-height:1.75}
+  .timeline-kuumo{width:130px}
   .day-content{display:flex;flex-direction:column;gap:29px;padding:20px 4px 28px 12px}
   .entry-side{font-size:13px;line-height:1.9}
   .entry-side h3{margin-bottom:12px}
@@ -377,7 +385,13 @@ ${sharedStyles}
     <h1>Notes</h1>
     <p class="section-name">Timeline</p>
     <p class="tagline">世界と、自分の記録。</p>
-    <img class="timeline-kuumo" src="../assets/kuumo/Timeline.png" alt="" aria-hidden="true" draggable="false">
+    <div class="timeline-kuumo-group">
+      <div class="timeline-kuumo-copy">
+        <p class="timeline-kuumo-name">くもも</p>
+        <p class="timeline-kuumo-description">some clouds からちぎれて生まれた、クーモの仲間。<br>Notesで、日々の記録や言葉の断片のそばにいます。</p>
+      </div>
+      <img class="timeline-kuumo" src="../assets/kuumo/Timeline.png" alt="" aria-hidden="true" draggable="false">
+    </div>
     <div class="archive">
       ${years}
     </div>
