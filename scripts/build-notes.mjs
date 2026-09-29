@@ -684,48 +684,68 @@ ${sharedStyles}
 }
 
 function renderDevelopmentIndexPage(entries) {
-  const entryList = entries.length > 0
-    ? `<ol class="entries">
-      ${entries.map((entry) => `<li class="entry"><a href="./${entry.year}/${entry.slug}.html"><time datetime="${entry.date}">${entry.displayDate}</time><span>${escapeHtml(entry.title)}</span></a></li>`).join("\n      ")}
-    </ol>`
+  const archive = entries.length > 0
+    ? groupByYear(entries)
+      .map(([year, yearEntries]) => {
+        const months = new Map();
+        for (const entry of yearEntries) {
+          if (!months.has(entry.month)) months.set(entry.month, []);
+          months.get(entry.month).push(entry);
+        }
+        const monthGroups = [...months.entries()]
+          .sort(([a], [b]) => b.localeCompare(a))
+          .map(([month, monthEntries]) => `<details class="month">
+  <summary>${month}</summary>
+  <ol class="entries">
+    ${monthEntries
+      .sort((a, b) => b.dateObject - a.dateObject)
+      .map((entry) => `<li class="entry"><a href="./${entry.year}/${entry.slug}.html"><time datetime="${entry.date}">${entry.displayDate.slice(5)}</time><span>${escapeHtml(entry.title)}</span></a></li>`)
+      .join("\n    ")}
+  </ol>
+</details>`)
+          .join("\n");
+        return `<details class="year">
+  <summary>${year}</summary>
+  <div class="months">
+    ${monthGroups}
+  </div>
+</details>`;
+      })
+      .join("\n")
     : '<p class="status">開発日記は、もうすぐ始まります。</p>';
 
   return `<!doctype html>
 <html lang="ja">
 <head>
+${googleTag}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="some clouds の開発日記。">
+<meta name="description" content="つくっている途中の記録。">
 <title>Development — some clouds</title>
 <link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#fff;color:#202020}
-body{font-family:Georgia,"Times New Roman",serif}
-.page{min-height:100dvh;padding:38px 50px 30px;display:flex;flex-direction:column}
-.top{display:flex;align-items:center;justify-content:space-between}
-.brand{color:#202020;font-size:18px;letter-spacing:.07em;text-decoration:none}
-.back{color:#666;font-size:12px;letter-spacing:.05em;text-decoration:none}
-.content{width:min(720px,100%);margin:82px auto 100px}
-.intro{text-align:center}
-.cloud{display:block;width:76px;margin:0 auto 24px}
-.cloud path{fill:#fff;stroke:#2c2c2c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-h1{margin:0;font-size:clamp(34px,5vw,48px);font-weight:400;letter-spacing:.04em}
-.lead{margin:13px 0 0;color:#777;font-size:13px;font-style:italic;letter-spacing:.05em}
-.description,.status{margin:28px 0 0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:13px;letter-spacing:.04em}
-.entries{margin:62px 0 0;padding:0;border-top:1px solid #dadada;list-style:none;text-align:left}
-.entry{border-bottom:1px solid #ededed}
-.entry a{display:grid;grid-template-columns:112px minmax(0,1fr);gap:24px;align-items:baseline;padding:18px 2px;color:#202020;text-decoration:none}
-.entry time{color:#777;font-size:12px;letter-spacing:.06em}
-.entry span{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:14px;line-height:1.7}
+${sharedStyles}
+.back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666}
+.content{position:relative;width:min(720px,100%)}
+.content h1{font-size:clamp(30px,3vw,40px)}
+.section-name{color:#777}
+.development-kuumo{position:absolute;top:-32px;right:clamp(0px,2vw,22px);display:block;width:194px;height:auto;pointer-events:none;user-select:none}
+.months{padding:0 0 18px 28px}
+.month{border-top:1px solid #ededed}
+.month>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-family:Georgia,"Times New Roman",serif;font-size:14px;letter-spacing:.07em}
+.month>summary::after{content:"＋";font-size:11px;font-weight:400;color:#777}
+.month[open]>summary::after{content:"−"}
+.entries{margin:0;padding:0 0 12px 18px;list-style:none}
+.entry{border-top:1px solid #f0f0f0}
+.entry a{display:grid;grid-template-columns:74px minmax(0,1fr);gap:20px;align-items:baseline;padding:14px 2px;color:#222;text-decoration:none}
+.entry time{color:#777;font-family:Georgia,"Times New Roman",serif;font-size:11px;letter-spacing:.07em}
+.entry span{font-size:13px;line-height:1.75}
 .entry a:hover span{text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:4px}
-.footer{margin-top:auto;text-align:center;font-size:10px;letter-spacing:.06em;color:#666}
+.status{margin:0;color:#888;font-size:12px}
 @media(max-width:700px){
-  .page{padding:28px 22px 22px}
-  .brand{font-size:16px}
-  .content{margin:58px auto 72px}
-  .cloud{width:68px;margin-bottom:20px}
-  .entries{margin-top:48px}
+  .development-kuumo{top:2px;right:-2px;width:112px}
+  .months{padding-left:14px}
+  .entries{padding-left:10px}
   .entry a{display:block;padding:16px 2px}
   .entry time{display:block;margin-bottom:7px;font-size:11px}
   .entry span{font-size:13px}
@@ -734,14 +754,17 @@ h1{margin:0;font-size:clamp(34px,5vw,48px);font-weight:400;letter-spacing:.04em}
 </head>
 <body>
 <div class="page">
-  <header class="top"><a class="brand" href="../">some clouds</a><a class="back" href="../">← Home</a></header>
+  <header class="top">
+    <a class="brand" href="../">some clouds</a>
+    <a class="back" href="../">← Home</a>
+  </header>
   <main class="content">
-    <section class="intro" aria-labelledby="page-title">
-      <svg class="cloud" viewBox="0 0 180 105" aria-hidden="true"><path d="M31 77 C16 72,15 56,26 48 C33 43,40 43,47 46 C53 27,72 18,88 26 C100 11,124 14,131 32 C148 32,159 44,158 57 C170 63,165 79,151 84 C138 88,47 87,31 77Z"/></svg>
-      <h1 id="page-title">Development</h1>
-      <p class="lead">building, breaking, trying again.</p>${entries.length > 0 ? '\n      <p class="description">開発の記録。</p>' : ""}
-    </section>
-    ${entryList}
+    <h1>Development</h1>
+    <p class="section-name">つくっている途中の記録。</p>
+    <img class="development-kuumo" src="../assets/kuumo/kumomo-development.svg" alt="ノートPCの前で考えながら作業するくもも" draggable="false">
+    <div class="archive">
+      ${archive}
+    </div>
   </main>
   <footer class="footer">sakurak02 · a project by 桂園</footer>
 </div>
