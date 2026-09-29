@@ -1,23 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 190" role="img" aria-labelledby="title description">
-  <title id="title">つくっているくもも</title>
-  <desc id="description">白い雲のキャラクターが、小さなノートPCの前で穏やかに作業しています。</desc>
-  <g stroke="#202020" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-    <path fill="#fff" d="M44 116c-18-1-30-13-30-29 0-13 9-24 22-27-1-3-1-6-1-9 0-17 14-31 31-31 7 0 13 2 18 6 8-13 22-21 38-21 21 0 38 13 44 31 5-3 11-5 17-5 18 0 33 14 34 32 15 2 27 14 27 29 0 16-13 30-30 30H60c-6 0-11-2-16-6Z"/>
-    <path fill="none" stroke="#c9e3fa" stroke-width="7" d="M55 55c4-10 12-17 22-20"/>
-    <path fill="none" stroke="#c9e3fa" stroke-width="7" d="M199 62c7 5 11 13 11 22"/>
-    <ellipse cx="91" cy="87" rx="9" ry="4.5" fill="#dceefa" stroke="none"/>
-    <ellipse cx="155" cy="86" rx="9" ry="4.5" fill="#dceefa" stroke="none"/>
-    <ellipse cx="103" cy="73" rx="3.2" ry="4.6" fill="#202020" stroke="none"/>
-    <ellipse cx="143" cy="72" rx="3.2" ry="4.6" fill="#202020" stroke="none"/>
-    <path fill="none" d="M117 85c5 5 12 5 17 0"/>
-    <path fill="none" d="M95 96c-8 4-13 11-15 21"/>
-    <path fill="none" d="M155 96c8 4 13 11 15 21"/>
-    <path fill="#fff" d="M76 112c-5 3-8 9-7 15 1 7 7 11 13 9l18-8-8-20-16 4Z"/>
-    <path fill="#fff" d="M174 112c5 3 8 9 7 15-1 7-7 11-13 9l-18-8 8-20 16 4Z"/>
-    <path fill="#f8fcff" d="M80 109 172 102l5 56-92 7-5-56Z"/>
-    <path fill="#dceefa" d="m89 117 75-6 4 40-76 6-3-40Z" stroke="none"/>
-    <path fill="none" stroke="#75a9ce" stroke-width="2.5" d="m115 128-7 6 8 5m24-14 8 5-7 7m-17 6 6-19"/>
-    <path fill="#fff" d="m74 166 111-8-7 16-98 7-6-15Z"/>
-    <path fill="none" d="m114 170 28-2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 360" role="img" aria-labelledby="title desc">
+  <title id="title">Development Kumomo</title>
+  <desc id="desc">A calm, cheerful cloud character working on a slightly angled laptop.</desc>
+
+  <!-- cloud -->
+  <g fill="#ffffff" stroke="#222222" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="
+      M150 236
+      C118 236 95 218 95 190
+      C95 164 112 145 138 141
+      C138 112 160 91 190 91
+      C205 91 218 96 228 105
+      C244 75 275 59 307 66
+      C335 72 355 93 360 119
+      C368 116 377 114 387 114
+      C419 114 443 137 443 167
+      C469 172 486 192 486 218
+      C486 248 462 268 429 268
+      L178 268
+      C161 268 150 255 150 236 Z
+    "/>
+  </g>
+
+  <!-- pale blue accents -->
+  <g fill="none" stroke="#b9dcff" stroke-width="8" stroke-linecap="round">
+    <path d="M159 135 C166 119 177 111 191 106"/>
+    <path d="M406 145 C418 153 424 164 425 177"/>
+  </g>
+
+  <!-- face -->
+  <g fill="#222222">
+    <circle cx="252" cy="185" r="4.8"/>
+    <circle cx="302" cy="185" r="4.8"/>
+  </g>
+  <path d="M268 202 C275 210 286 210 294 202" fill="none" stroke="#222222" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- arms -->
+  <g fill="#ffffff" stroke="#222222" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M205 245 C194 248 188 259 192 271 C197 284 214 288 227 281 C236 276 240 267 237 258 C233 247 219 241 205 245 Z"/>
+    <path d="M330 242 C341 242 350 250 353 260 C356 270 351 279 341 283 C329 288 316 281 313 269 C310 257 318 246 330 242 Z"/>
+  </g>
+
+  <!-- laptop -->
+  <g stroke="#222222" stroke-width="5" stroke-linejoin="round">
+    <path d="M263 225 L408 214 L435 294 L285 305 Z" fill="#f6fbff"/>
+    <path d="M281 235 L396 226 L414 281 L296 290 Z" fill="#eef7ff"/>
+    <path d="M280 305 L439 294 L424 314 L267 324 Z" fill="#ffffff"/>
+  </g>
+
+  <!-- code symbol -->
+  <g fill="none" stroke="#8fc2ee" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M321 253 L306 266 L321 279"/>
+    <path d="M372 253 L387 266 L372 279"/>
+    <path d="M351 247 L338 284"/>
+  </g>
+
+  <!-- small cheerful accent -->
+  <g fill="#b9dcff">
+    <circle cx="456" cy="110" r="5"/>
+    <circle cx="474" cy="96" r="3.8"/>
   </g>
 </svg>
