@@ -119,7 +119,7 @@ test("Development index and sitemap use article metadata", () => {
   assert.ok(indexPage.indexOf("<summary>11</summary>") < indexPage.indexOf("<summary>10</summary>"));
   assert.match(indexPage, /<h1>Development<\/h1>/);
   assert.match(indexPage, /つくっている途中の記録。/);
-  assert.match(indexPage, /src="\.\.\/assets\/kuumo\/kumomo-development\.svg"/);
+  assert.match(indexPage, /src="\.\.\/assets\/kuumo\/kumomo-development\.png"/);
   assert.match(indexPage, /<a class="back" href="\.\.\/">← Home<\/a>/);
   assert.match(indexPage, /<details class="year">\s*<summary>2026<\/summary>/);
   assert.match(indexPage, /<details class="month">\s*<summary>10<\/summary>/);
