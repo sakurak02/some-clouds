@@ -48,43 +48,42 @@ title: Xcodeを開いた
 
 本文を書きます。
 
-## その日やったこと
+## なぜ作り始めたのか
 
 ![画面](./images/screen.png)
 `;
 
-test("Development article metadata matches its folder and renders local images", () => {
-  const article = parseDevelopmentArticle(articleSource, "index.md", "20261015", "2026");
+test("Development article metadata matches its filename and renders year-level images", () => {
+  const article = parseDevelopmentArticle(articleSource, "d20261015.md", "2026");
   assert.equal(article.title, "Xcodeを開いた");
   assert.equal(article.displayDate, "2026.10.15");
   assert.doesNotMatch(article.body, /^#\s/);
 
   const page = renderDevelopmentArticlePage(article);
   assert.match(page, /<h1>Xcodeを開いた<\/h1>/);
-  assert.match(page, /<h2>その日やったこと<\/h2>/);
+  assert.match(page, /<h2>なぜ作り始めたのか<\/h2>/);
   assert.match(page, /src="\.\/images\/screen\.png"/);
 });
 
 test("Development index and sitemap use article metadata", () => {
   const older = parseDevelopmentArticle(
     articleSource.replaceAll("2026-10-15", "2026-10-14").replace("Xcodeを開いた", "準備した"),
-    "index.md",
-    "20261014",
+    "d20261014.md",
     "2026",
   );
-  const newer = parseDevelopmentArticle(articleSource, "index.md", "20261015", "2026");
+  const newer = parseDevelopmentArticle(articleSource, "d20261015.md", "2026");
   const entries = [newer, older];
   const indexPage = renderDevelopmentIndexPage(entries);
   assert.ok(indexPage.indexOf("Xcodeを開いた") < indexPage.indexOf("準備した"));
-  assert.match(indexPage, /href="\.\/2026\/20261015\/"/);
+  assert.match(indexPage, /href="\.\/2026\/d20261015\.html"/);
 
   const sitemap = renderSitemap(entries);
-  assert.match(sitemap, /development\/2026\/20261015\//);
+  assert.match(sitemap, /development\/2026\/d20261015\.html/);
 });
 
-test("Development rejects mismatched article folders", () => {
+test("Development rejects mismatched article filenames", () => {
   assert.throws(
-    () => parseDevelopmentArticle(articleSource, "index.md", "20261016", "2026"),
-    /folder name and date do not match/,
+    () => parseDevelopmentArticle(articleSource, "d20261016.md", "2026"),
+    /filename and date do not match/,
   );
 });

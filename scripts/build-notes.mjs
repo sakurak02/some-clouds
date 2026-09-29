@@ -15,6 +15,7 @@ const sitemapFile = path.join(projectRoot, "sitemap.xml");
 const siteUrl = "https://sakurak02.github.io/some-clouds/";
 const timelineFilePattern = /^t(\d{4})(\d{2})(\d{2})\.md$/;
 const fragmentFilePattern = /^f(\d{4})(\d{2})(\d{2})\.md$/;
+const developmentFilePattern = /^d(\d{4})(\d{2})(\d{2})\.md$/;
 const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
 const googleTag = `<!-- Google tag (gtag.js) -->
@@ -289,23 +290,21 @@ function parseFragments(source, fileName, yearName) {
   return { ...dateData, body };
 }
 
-function parseDevelopmentArticle(source, fileName, dateDirectoryName, yearName) {
-  if (fileName !== "index.md") {
-    throw new Error(`${fileName}: Development article filename must be index.md`);
-  }
-  if (!/^\d{8}$/.test(dateDirectoryName)) {
-    throw new Error(`${dateDirectoryName}: Development article folder must use YYYYMMDD`);
+function parseDevelopmentArticle(source, fileName, yearName) {
+  const fileMatch = fileName.match(developmentFilePattern);
+  if (!fileMatch) {
+    throw new Error(`${fileName}: Development article filename must use dYYYYMMDD.md`);
   }
 
   const normalized = normalize(source);
   const frontMatter = normalized.match(yamlFrontMatterPattern);
   if (!frontMatter) {
-    throw new Error(`${dateDirectoryName}/index.md: add YAML front matter`);
+    throw new Error(`${fileName}: add YAML front matter`);
   }
   const dateField = frontMatter[1].match(/^date:\s*["']?(\d{4}-\d{2}-\d{2})["']?\s*$/im);
   const titleField = frontMatter[1].match(/^title:\s*(.+?)\s*$/im);
   if (!dateField || !titleField) {
-    throw new Error(`${dateDirectoryName}/index.md: add date and title to YAML front matter`);
+    throw new Error(`${fileName}: add date and title to YAML front matter`);
   }
 
   const date = dateField[1];
@@ -316,13 +315,15 @@ function parseDevelopmentArticle(source, fileName, dateDirectoryName, yearName) 
     dateObject.getUTCMonth() !== month - 1 ||
     dateObject.getUTCDate() !== day
   ) {
-    throw new Error(`${dateDirectoryName}/index.md: date is not valid`);
+    throw new Error(`${fileName}: date is not valid`);
   }
-  if (date.replaceAll("-", "") !== dateDirectoryName) {
-    throw new Error(`${dateDirectoryName}/index.md: folder name and date do not match`);
+  const compactDate = date.replaceAll("-", "");
+  const fileDate = fileMatch.slice(1).join("");
+  if (compactDate !== fileDate) {
+    throw new Error(`${fileName}: filename and date do not match`);
   }
   if (String(year) !== yearName) {
-    throw new Error(`${dateDirectoryName}/index.md: move this article into the ${year} folder`);
+    throw new Error(`${fileName}: move this article into the ${year} folder`);
   }
 
   let title = titleField[1].trim();
@@ -330,7 +331,7 @@ function parseDevelopmentArticle(source, fileName, dateDirectoryName, yearName) 
     title = title.slice(1, -1).trim();
   }
   if (!title) {
-    throw new Error(`${dateDirectoryName}/index.md: title must not be empty`);
+    throw new Error(`${fileName}: title must not be empty`);
   }
 
   let body = normalized.slice(frontMatter[0].length).trim();
@@ -339,14 +340,15 @@ function parseDevelopmentArticle(source, fileName, dateDirectoryName, yearName) 
     body = body.slice(firstHeading[0].length).trim();
   }
   if (!body) {
-    throw new Error(`${dateDirectoryName}/index.md: add article content`);
+    throw new Error(`${fileName}: add article content`);
   }
 
   return {
     date,
     dateObject,
     year: String(year),
-    compactDate: dateDirectoryName,
+    compactDate,
+    slug: fileName.slice(0, -3),
     displayDate: `${year}.${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}`,
     title,
     body,
@@ -388,22 +390,14 @@ async function loadDevelopmentArticles() {
 
   for (const yearEntry of yearDirectories) {
     const yearDirectory = path.join(developmentDirectory, yearEntry.name);
-    const articleDirectories = (await readdir(yearDirectory, { withFileTypes: true }))
-      .filter((entry) => entry.isDirectory() && /^\d{8}$/.test(entry.name))
-      .sort((a, b) => b.name.localeCompare(a.name));
+    const articleFiles = (await readdir(yearDirectory, { withFileTypes: true }))
+      .filter((entry) => entry.isFile() && developmentFilePattern.test(entry.name))
+      .map((entry) => entry.name)
+      .sort((a, b) => b.localeCompare(a));
 
-    for (const articleDirectory of articleDirectories) {
-      const articleFile = path.join(yearDirectory, articleDirectory.name, "index.md");
-      let source;
-      try {
-        source = await readFile(articleFile, "utf8");
-      } catch (error) {
-        if (error?.code === "ENOENT") {
-          throw new Error(`${yearEntry.name}/${articleDirectory.name}: add index.md`);
-        }
-        throw error;
-      }
-      entries.push(parseDevelopmentArticle(source, "index.md", articleDirectory.name, yearEntry.name));
+    for (const fileName of articleFiles) {
+      const source = await readFile(path.join(yearDirectory, fileName), "utf8");
+      entries.push(parseDevelopmentArticle(source, fileName, yearEntry.name));
     }
   }
 
@@ -627,7 +621,7 @@ ${sharedStyles}
 function renderDevelopmentIndexPage(entries) {
   const entryList = entries.length > 0
     ? `<ol class="entries">
-      ${entries.map((entry) => `<li class="entry"><a href="./${entry.year}/${entry.compactDate}/"><time datetime="${entry.date}">${entry.displayDate}</time><span>${escapeHtml(entry.title)}</span></a></li>`).join("\n      ")}
+      ${entries.map((entry) => `<li class="entry"><a href="./${entry.year}/${entry.slug}.html"><time datetime="${entry.date}">${entry.displayDate}</time><span>${escapeHtml(entry.title)}</span></a></li>`).join("\n      ")}
     </ol>`
     : '<p class="status">開発日記は、もうすぐ始まります。</p>';
 
@@ -680,8 +674,7 @@ h1{margin:0;font-size:clamp(34px,5vw,48px);font-weight:400;letter-spacing:.04em}
     <section class="intro" aria-labelledby="page-title">
       <svg class="cloud" viewBox="0 0 180 105" aria-hidden="true"><path d="M31 77 C16 72,15 56,26 48 C33 43,40 43,47 46 C53 27,72 18,88 26 C100 11,124 14,131 32 C148 32,159 44,158 57 C170 63,165 79,151 84 C138 88,47 87,31 77Z"/></svg>
       <h1 id="page-title">Development</h1>
-      <p class="lead">building, breaking, trying again.</p>
-${entries.length > 0 ? '      <p class="description">開発の記録。</p>' : ""}
+      <p class="lead">building, breaking, trying again.</p>${entries.length > 0 ? '\n      <p class="description">開発の記録。</p>' : ""}
     </section>
     ${entryList}
   </main>
@@ -700,7 +693,7 @@ function renderDevelopmentArticlePage(entry) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="${escapeHtml(entry.title)}">
 <title>${escapeHtml(entry.title)} — Development — some clouds</title>
-<link rel="icon" href="../../../assets/cloud.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/cloud.svg" type="image/svg+xml">
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:#fff;color:#202020}
@@ -736,7 +729,7 @@ h1{margin:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif
 </head>
 <body>
 <div class="page">
-  <header class="top"><a class="brand" href="../../../">some clouds</a><a class="back" href="../../../development/">← Development</a></header>
+  <header class="top"><a class="brand" href="../../">some clouds</a><a class="back" href="../">← Development</a></header>
   <main class="content">
     <article>
       <header class="article-header">
@@ -761,7 +754,7 @@ function renderSitemap(developmentEntries = []) {
     `${siteUrl}about/`,
     `${siteUrl}apps/`,
     `${siteUrl}development/`,
-    ...developmentEntries.map((entry) => `${siteUrl}development/${entry.year}/${entry.compactDate}/`),
+    ...developmentEntries.map((entry) => `${siteUrl}development/${entry.year}/${entry.slug}.html`),
     `${siteUrl}notes/`,
     `${siteUrl}notes/fragments/`,
   ];
@@ -784,8 +777,8 @@ async function buildNotes() {
   await writeFile(fragmentsIndexFile, renderFragmentsPage(fragmentEntries), "utf8");
   await writeFile(developmentIndexFile, renderDevelopmentIndexPage(developmentEntries), "utf8");
   for (const entry of developmentEntries) {
-    const articleIndexFile = path.join(developmentDirectory, entry.year, entry.compactDate, "index.html");
-    await writeFile(articleIndexFile, renderDevelopmentArticlePage(entry), "utf8");
+    const articleHtmlFile = path.join(developmentDirectory, entry.year, `${entry.slug}.html`);
+    await writeFile(articleHtmlFile, renderDevelopmentArticlePage(entry), "utf8");
   }
   await writeFile(sitemapFile, renderSitemap(developmentEntries), "utf8");
 

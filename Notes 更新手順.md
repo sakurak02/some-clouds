@@ -61,12 +61,12 @@ date: 2026-09-20
 
 ## Development記事を追加する
 
-1. `development/YYYY/YYYYMMDD/` フォルダを作る
-2. テンプレートをコピーし、同フォルダへ `index.md` として保存する
-3. 必要な画像は同フォルダの `images/` に置く
+1. テンプレートをコピーし、`development/YYYY/dYYYYMMDD.md` として保存する
+2. ChatGPTで編集した完成記事を本文へ貼り付ける
+3. 必要な画像は同じ年フォルダの `images/` に置く
 4. commit & pushする
 
-例: `development/2026/20261015/index.md`
+例: `development/2026/d20261015.md`
 
 ```markdown
 ---
@@ -79,13 +79,15 @@ title: Xcodeを開いた
 本文を書きます。
 ```
 
-画像はMarkdownから次のように参照できます。
+記事ごとの見出し構成は自由です。画像はMarkdownから次のように参照できます。
 
 ```markdown
 ![画像の説明](./images/screen.png)
 ```
 
-テンプレートは `templates/development.md` にあります。Developmentの一覧と記事ページは日付の新しい順で自動生成されます。
+画像ファイルは `development/2026/images/d20261015-01.webp` のように管理できます。画像がない記事では `images/` は不要です。
+
+テンプレートは `templates/development.md` にあります。Developmentの一覧と記事ページは日付の新しい順で自動生成されます。日々の生メモはこのリポジトリへ置かず、公開用の完成Markdownだけを保存します。
 
 ## 年が変わったとき
 
@@ -112,9 +114,9 @@ npm run build
 - `notes/index.html`: Timeline
 - `notes/fragments/index.html`: Fragments
 - `development/index.html`: Development一覧
-- `development/YYYY/YYYYMMDD/index.html`: Development記事
+- `development/YYYY/dYYYYMMDD.html`: Development記事
 - `sitemap.xml`: 公開ページ一覧
 
 ローカルで確認したい場合も、同じコマンドを実行してください。
 
-Timeline / Fragmentsではファイル名・日付・年フォルダ、Developmentでは日付フォルダ・front matterの日付・年フォルダが一致しない場合、誤った日付で公開されないようビルドがエラーになります。
+Timeline / Fragments / Developmentではファイル名・front matterの日付・年フォルダが一致しない場合、誤った日付で公開されないようビルドがエラーになります。
