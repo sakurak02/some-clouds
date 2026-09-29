@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -7,7 +8,9 @@ import {
   parseTimeline,
   renderDevelopmentArticlePage,
   renderDevelopmentIndexPage,
+  renderFragmentsPage,
   renderSitemap,
+  renderTimelinePage,
 } from "./build-notes.mjs";
 
 test("Timeline Markdown in its year and month folders keeps the existing format", () => {
@@ -39,6 +42,33 @@ date: 2026-09-29
   assert.equal(entry.body, "短い文章。");
 });
 
+test("the existing Fragments Obsidian image renders from its month images folder", () => {
+  const source = readFileSync(
+    new URL("../notes/fragments/2026/09/f20260929.md", import.meta.url),
+    "utf8",
+  );
+  const entry = parseFragments(source, "f20260929.md", "2026", "09");
+  const page = renderFragmentsPage([entry]);
+  assert.doesNotMatch(page, /!\[\[くもも脚あり\.png\|153\]\]/);
+  assert.match(page, /src="\.\/2026\/09\/images\/くもも脚あり\.png"/);
+  assert.match(page, /width="153"/);
+  assert.match(page, /\.content-image img\{display:block;max-width:100%;height:auto\}/);
+});
+
+test("Timeline uses the same Obsidian image handling", () => {
+  const entry = parseTimeline(`---
+date: 2026-09-29
+---
+
+## PERSONAL
+
+![[sample image.png|400]]
+`, "t20260929.md", "2026", "09");
+  const page = renderTimelinePage([entry]);
+  assert.match(page, /src="\.\/timeline\/2026\/09\/images\/sample image\.png"/);
+  assert.match(page, /width="400"/);
+});
+
 const articleSource = `---
 date: 2026-10-15
 title: Xcodeを開いた
@@ -51,6 +81,8 @@ title: Xcodeを開いた
 ## なぜ作り始めたのか
 
 ![画面](./images/screen.png)
+
+![[sample.png]]
 `;
 
 test("Development article metadata matches its filename and renders month-level images", () => {
@@ -62,7 +94,9 @@ test("Development article metadata matches its filename and renders month-level 
   const page = renderDevelopmentArticlePage(article);
   assert.match(page, /<h1>Xcodeを開いた<\/h1>/);
   assert.match(page, /<h2>なぜ作り始めたのか<\/h2>/);
-  assert.match(page, /src="\.\/10\/images\/screen\.png"/);
+  assert.match(page, /<img src="\.\/10\/images\/screen\.png" alt="画面" loading="lazy">/);
+  assert.match(page, /<img src="\.\/10\/images\/sample\.png" alt="sample\.png" loading="lazy">/);
+  assert.doesNotMatch(page, /!\[\[sample\.png\]\]/);
 });
 
 test("Development index and sitemap use article metadata", () => {

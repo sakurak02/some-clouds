@@ -66,7 +66,35 @@ function renderInline(value) {
   return html + renderText(value.slice(cursor));
 }
 
-function renderMarkdown(markdown) {
+function parseImageLine(line, assetBase = "") {
+  const obsidianImage = line.match(/^!\[\[([^|\]]+?)(?:\|([1-9]\d*))?\]\]\s*$/);
+  if (obsidianImage) {
+    const fileName = obsidianImage[1].trim().replaceAll("\\", "/");
+    if (!fileName) return null;
+    const base = assetBase.replace(/\/+$/, "") || ".";
+    return {
+      url: `${base}/images/${fileName}`,
+      alt: fileName.split("/").at(-1),
+      width: obsidianImage[2] || "",
+    };
+  }
+
+  const markdownImage = line.match(/^!\[([^\]]*)\]\((.+?)\)\s*$/);
+  if (!markdownImage) return null;
+  const originalUrl = markdownImage[2].trim();
+  const base = assetBase.replace(/\/+$/, "");
+  const url = base && originalUrl.startsWith("./images/")
+    ? `${base}/images/${originalUrl.slice("./images/".length)}`
+    : originalUrl;
+  return { url, alt: markdownImage[1], width: "" };
+}
+
+function renderImageBlock(image, className) {
+  const width = image.width ? ` width="${image.width}"` : "";
+  return `<figure class="${className}"><img src="${safeLinkUrl(image.url)}" alt="${escapeHtml(image.alt)}" loading="lazy"${width}></figure>`;
+}
+
+function renderMarkdown(markdown, assetBase = "") {
   const lines = normalize(markdown).split("\n");
   const blocks = [];
   let index = 0;
@@ -80,6 +108,13 @@ function renderMarkdown(markdown) {
 
     if (/^\s*---\s*$/.test(line)) {
       blocks.push("<hr>");
+      index += 1;
+      continue;
+    }
+
+    const image = parseImageLine(line, assetBase);
+    if (image) {
+      blocks.push(renderImageBlock(image, "content-image"));
       index += 1;
       continue;
     }
@@ -102,6 +137,7 @@ function renderMarkdown(markdown) {
       index < lines.length &&
       lines[index].trim() &&
       !/^\s*---\s*$/.test(lines[index]) &&
+      !parseImageLine(lines[index], assetBase) &&
       !/^\s*[-+*]\s+/.test(lines[index])
     ) {
       paragraph.push(renderInline(lines[index].trim()));
@@ -139,12 +175,9 @@ function renderArticleMarkdown(markdown, assetMonth = "") {
       continue;
     }
 
-    const image = line.match(/^!\[([^\]]*)\]\(([^)\s]+)\)\s*$/);
+    const image = parseImageLine(line, assetMonth ? `./${assetMonth}` : "");
     if (image) {
-      const imageUrl = assetMonth && image[2].startsWith("./images/")
-        ? `./${assetMonth}/images/${image[2].slice("./images/".length)}`
-        : image[2];
-      blocks.push(`<figure class="article-image"><img src="${safeLinkUrl(imageUrl)}" alt="${escapeHtml(image[1])}" loading="lazy"></figure>`);
+      blocks.push(renderImageBlock(image, "article-image"));
       index += 1;
       continue;
     }
@@ -168,7 +201,7 @@ function renderArticleMarkdown(markdown, assetMonth = "") {
       lines[index].trim() &&
       !/^\s*---\s*$/.test(lines[index]) &&
       !/^(#{1,3})\s+/.test(lines[index]) &&
-      !/^!\[[^\]]*\]\([^)\s]+\)\s*$/.test(lines[index]) &&
+      !parseImageLine(lines[index], assetMonth ? `./${assetMonth}` : "") &&
       !/^\s*[-+*]\s+/.test(lines[index])
     ) {
       paragraph.push(renderInline(lines[index].trim()));
@@ -247,6 +280,7 @@ function parseDate(source, fileName, yearName, monthName, filePattern, expectedF
     date: metadata.date,
     dateObject,
     year: String(year),
+    month: expectedMonth,
     displayDate: `${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}`,
   };
 }
@@ -447,11 +481,12 @@ function groupByYear(entries) {
 }
 
 function renderTimelineDay(entry) {
+  const assetBase = `./timeline/${entry.year}/${entry.month}`;
   const news = entry.news
-    ? `<section class="entry-side news"><h3>NEWS</h3>${renderMarkdown(entry.news)}</section>`
+    ? `<section class="entry-side news"><h3>NEWS</h3>${renderMarkdown(entry.news, assetBase)}</section>`
     : "";
   const personal = entry.personal
-    ? `<section class="entry-side personal"><h3>PERSONAL</h3>${renderMarkdown(entry.personal)}</section>`
+    ? `<section class="entry-side personal"><h3>PERSONAL</h3>${renderMarkdown(entry.personal, assetBase)}</section>`
     : "";
 
   return `<details class="day">
@@ -503,6 +538,8 @@ details>summary::-webkit-details-marker{display:none}
 .day{border-top:1px solid #ededed}
 .day>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-family:Georgia,"Times New Roman",serif;font-size:14px;letter-spacing:.07em}
 .day>summary::after{font-size:11px}
+.content-image{margin:18px 0}
+.content-image img{display:block;max-width:100%;height:auto}
 .empty{margin:0;color:#888;font-size:12px}
 .footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
 @media(max-width:700px){
@@ -591,7 +628,7 @@ function renderFragmentDay(entry) {
   return `<details class="day">
   <summary><time datetime="${entry.date}">${entry.displayDate}</time></summary>
   <div class="fragment-body">
-    ${renderMarkdown(entry.body)}
+    ${renderMarkdown(entry.body, `./${entry.year}/${entry.month}`)}
   </div>
 </details>`;
 }
