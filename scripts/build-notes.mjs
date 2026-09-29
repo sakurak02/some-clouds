@@ -18,6 +18,7 @@ const fragmentFilePattern = /^f(\d{4})(\d{2})(\d{2})\.md$/;
 const developmentFilePattern = /^d(\d{4})(\d{2})(\d{2})\.md$/;
 const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
+const footerCredit = "sakurak02 · a project by K企画";
 const googleTag = `<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSXKPMSF5X"></script>
 <script>
@@ -617,7 +618,7 @@ ${sharedStyles}
       ${years}
     </div>
   </main>
-  <footer class="footer">sakurak02 · a project by 桂園</footer>
+  <footer class="footer">${footerCredit}</footer>
 </div>
 </body>
 </html>
@@ -676,7 +677,7 @@ ${sharedStyles}
       ${years}
     </div>
   </main>
-  <footer class="footer">sakurak02 · a project by 桂園</footer>
+  <footer class="footer">${footerCredit}</footer>
 </div>
 </body>
 </html>
@@ -766,7 +767,7 @@ ${sharedStyles}
       ${archive}
     </div>
   </main>
-  <footer class="footer">sakurak02 · a project by 桂園</footer>
+  <footer class="footer">${footerCredit}</footer>
 </div>
 </body>
 </html>
@@ -829,7 +830,7 @@ h1{margin:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif
       </div>
     </article>
   </main>
-  <footer class="footer">sakurak02 · a project by 桂園</footer>
+  <footer class="footer">${footerCredit}</footer>
 </div>
 </body>
 </html>
