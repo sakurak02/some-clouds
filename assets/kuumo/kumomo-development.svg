@@ -1,25 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 190" role="img" aria-labelledby="title description">
   <title id="title">つくっているくもも</title>
-  <desc id="description">白い雲のキャラクターが、小さなノートPCの前で考えながら作業しています。</desc>
+  <desc id="description">白い雲のキャラクターが、小さなノートPCの前で穏やかに作業しています。</desc>
   <g stroke="#202020" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
     <path fill="#fff" d="M44 116c-18-1-30-13-30-29 0-13 9-24 22-27-1-3-1-6-1-9 0-17 14-31 31-31 7 0 13 2 18 6 8-13 22-21 38-21 21 0 38 13 44 31 5-3 11-5 17-5 18 0 33 14 34 32 15 2 27 14 27 29 0 16-13 30-30 30H60c-6 0-11-2-16-6Z"/>
     <path fill="none" stroke="#c9e3fa" stroke-width="7" d="M55 55c4-10 12-17 22-20"/>
     <path fill="none" stroke="#c9e3fa" stroke-width="7" d="M199 62c7 5 11 13 11 22"/>
-    <ellipse cx="103" cy="73" rx="3.2" ry="5" fill="#202020" stroke="none"/>
-    <ellipse cx="143" cy="72" rx="3.2" ry="5" fill="#202020" stroke="none"/>
-    <path fill="none" d="M119 88c5-4 10-4 15-1"/>
+    <ellipse cx="91" cy="87" rx="9" ry="4.5" fill="#dceefa" stroke="none"/>
+    <ellipse cx="155" cy="86" rx="9" ry="4.5" fill="#dceefa" stroke="none"/>
+    <ellipse cx="103" cy="73" rx="3.2" ry="4.6" fill="#202020" stroke="none"/>
+    <ellipse cx="143" cy="72" rx="3.2" ry="4.6" fill="#202020" stroke="none"/>
+    <path fill="none" d="M117 85c5 5 12 5 17 0"/>
     <path fill="none" d="M95 96c-8 4-13 11-15 21"/>
     <path fill="none" d="M155 96c8 4 13 11 15 21"/>
     <path fill="#fff" d="M76 112c-5 3-8 9-7 15 1 7 7 11 13 9l18-8-8-20-16 4Z"/>
     <path fill="#fff" d="M174 112c5 3 8 9 7 15-1 7-7 11-13 9l-18-8 8-20 16 4Z"/>
-    <rect x="79" y="105" width="92" height="57" rx="6" fill="#f8fcff"/>
-    <path fill="#dceefa" d="M87 113h76v41H87z" stroke="none"/>
-    <path fill="none" stroke="#75a9ce" stroke-width="2.5" d="m112 129-7 6 7 6m25-12 7 6-7 6m-15 3 7-18"/>
-    <path fill="#fff" d="M68 162h114l-8 14H76l-8-14Z"/>
-    <path fill="none" d="M112 168h26"/>
-  </g>
-  <g fill="#c9e3fa" stroke="#202020" stroke-width="2">
-    <circle cx="209" cy="21" r="4"/>
-    <circle cx="225" cy="11" r="2.5"/>
+    <path fill="#f8fcff" d="M80 109 172 102l5 56-92 7-5-56Z"/>
+    <path fill="#dceefa" d="m89 117 75-6 4 40-76 6-3-40Z" stroke="none"/>
+    <path fill="none" stroke="#75a9ce" stroke-width="2.5" d="m115 128-7 6 8 5m24-14 8 5-7 7m-17 6 6-19"/>
+    <path fill="#fff" d="m74 166 111-8-7 16-98 7-6-15Z"/>
+    <path fill="none" d="m114 170 28-2"/>
   </g>
 </svg>

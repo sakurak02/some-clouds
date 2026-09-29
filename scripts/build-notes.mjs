@@ -729,7 +729,7 @@ ${sharedStyles}
 .content{position:relative;width:min(720px,100%)}
 .content h1{font-size:clamp(30px,3vw,40px)}
 .section-name{color:#777}
-.development-kuumo{position:absolute;top:-32px;right:clamp(0px,2vw,22px);display:block;width:194px;height:auto;pointer-events:none;user-select:none}
+.development-kuumo{position:absolute;top:-25px;right:clamp(0px,2vw,22px);display:block;width:172px;height:auto;pointer-events:none;user-select:none}
 .months{padding:0 0 18px 28px}
 .month{border-top:1px solid #ededed}
 .month>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-family:Georgia,"Times New Roman",serif;font-size:14px;letter-spacing:.07em}
@@ -743,7 +743,7 @@ ${sharedStyles}
 .entry a:hover span{text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:4px}
 .status{margin:0;color:#888;font-size:12px}
 @media(max-width:700px){
-  .development-kuumo{top:2px;right:-2px;width:112px}
+  .development-kuumo{top:6px;right:-2px;width:100px}
   .months{padding-left:14px}
   .entries{padding-left:10px}
   .entry a{display:block;padding:16px 2px}
