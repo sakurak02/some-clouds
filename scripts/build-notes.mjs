@@ -7,8 +7,10 @@ const projectRoot = path.resolve(path.dirname(scriptFile), "..");
 const notesDirectory = path.join(projectRoot, "notes");
 const timelineDirectory = path.join(notesDirectory, "timeline");
 const fragmentsDirectory = path.join(notesDirectory, "fragments");
+const developmentDirectory = path.join(projectRoot, "development");
 const notesIndexFile = path.join(notesDirectory, "index.html");
 const fragmentsIndexFile = path.join(fragmentsDirectory, "index.html");
+const developmentIndexFile = path.join(developmentDirectory, "index.html");
 const sitemapFile = path.join(projectRoot, "sitemap.xml");
 const siteUrl = "https://sakurak02.github.io/some-clouds/";
 const timelineFilePattern = /^t(\d{4})(\d{2})(\d{2})\.md$/;
@@ -99,6 +101,70 @@ function renderMarkdown(markdown) {
       index < lines.length &&
       lines[index].trim() &&
       !/^\s*---\s*$/.test(lines[index]) &&
+      !/^\s*[-+*]\s+/.test(lines[index])
+    ) {
+      paragraph.push(renderInline(lines[index].trim()));
+      index += 1;
+    }
+    blocks.push(`<p>${paragraph.join("<br>")}</p>`);
+  }
+
+  return blocks.join("\n");
+}
+
+function renderArticleMarkdown(markdown) {
+  const lines = normalize(markdown).split("\n");
+  const blocks = [];
+  let index = 0;
+
+  while (index < lines.length) {
+    const line = lines[index];
+    if (!line.trim()) {
+      index += 1;
+      continue;
+    }
+
+    if (/^\s*---\s*$/.test(line)) {
+      blocks.push("<hr>");
+      index += 1;
+      continue;
+    }
+
+    const heading = line.match(/^(#{1,3})\s+(.+)$/);
+    if (heading) {
+      const level = Math.max(heading[1].length, 2);
+      blocks.push(`<h${level}>${renderInline(heading[2].trim())}</h${level}>`);
+      index += 1;
+      continue;
+    }
+
+    const image = line.match(/^!\[([^\]]*)\]\(([^)\s]+)\)\s*$/);
+    if (image) {
+      blocks.push(`<figure class="article-image"><img src="${safeLinkUrl(image[2])}" alt="${escapeHtml(image[1])}" loading="lazy"></figure>`);
+      index += 1;
+      continue;
+    }
+
+    const listItem = line.match(/^\s*[-+*]\s+(.+)$/);
+    if (listItem) {
+      const items = [];
+      while (index < lines.length) {
+        const item = lines[index].match(/^\s*[-+*]\s+(.+)$/);
+        if (!item) break;
+        items.push(`<li>${renderInline(item[1].trim())}</li>`);
+        index += 1;
+      }
+      blocks.push(`<ul>${items.join("")}</ul>`);
+      continue;
+    }
+
+    const paragraph = [];
+    while (
+      index < lines.length &&
+      lines[index].trim() &&
+      !/^\s*---\s*$/.test(lines[index]) &&
+      !/^(#{1,3})\s+/.test(lines[index]) &&
+      !/^!\[[^\]]*\]\([^)\s]+\)\s*$/.test(lines[index]) &&
       !/^\s*[-+*]\s+/.test(lines[index])
     ) {
       paragraph.push(renderInline(lines[index].trim()));
@@ -223,6 +289,70 @@ function parseFragments(source, fileName, yearName) {
   return { ...dateData, body };
 }
 
+function parseDevelopmentArticle(source, fileName, dateDirectoryName, yearName) {
+  if (fileName !== "index.md") {
+    throw new Error(`${fileName}: Development article filename must be index.md`);
+  }
+  if (!/^\d{8}$/.test(dateDirectoryName)) {
+    throw new Error(`${dateDirectoryName}: Development article folder must use YYYYMMDD`);
+  }
+
+  const normalized = normalize(source);
+  const frontMatter = normalized.match(yamlFrontMatterPattern);
+  if (!frontMatter) {
+    throw new Error(`${dateDirectoryName}/index.md: add YAML front matter`);
+  }
+  const dateField = frontMatter[1].match(/^date:\s*["']?(\d{4}-\d{2}-\d{2})["']?\s*$/im);
+  const titleField = frontMatter[1].match(/^title:\s*(.+?)\s*$/im);
+  if (!dateField || !titleField) {
+    throw new Error(`${dateDirectoryName}/index.md: add date and title to YAML front matter`);
+  }
+
+  const date = dateField[1];
+  const [year, month, day] = date.split("-").map(Number);
+  const dateObject = new Date(Date.UTC(year, month - 1, day));
+  if (
+    dateObject.getUTCFullYear() !== year ||
+    dateObject.getUTCMonth() !== month - 1 ||
+    dateObject.getUTCDate() !== day
+  ) {
+    throw new Error(`${dateDirectoryName}/index.md: date is not valid`);
+  }
+  if (date.replaceAll("-", "") !== dateDirectoryName) {
+    throw new Error(`${dateDirectoryName}/index.md: folder name and date do not match`);
+  }
+  if (String(year) !== yearName) {
+    throw new Error(`${dateDirectoryName}/index.md: move this article into the ${year} folder`);
+  }
+
+  let title = titleField[1].trim();
+  if ((title.startsWith('"') && title.endsWith('"')) || (title.startsWith("'") && title.endsWith("'"))) {
+    title = title.slice(1, -1).trim();
+  }
+  if (!title) {
+    throw new Error(`${dateDirectoryName}/index.md: title must not be empty`);
+  }
+
+  let body = normalized.slice(frontMatter[0].length).trim();
+  const firstHeading = body.match(/^#\s+(.+?)(?:\n|$)/);
+  if (firstHeading && firstHeading[1].trim() === title) {
+    body = body.slice(firstHeading[0].length).trim();
+  }
+  if (!body) {
+    throw new Error(`${dateDirectoryName}/index.md: add article content`);
+  }
+
+  return {
+    date,
+    dateObject,
+    year: String(year),
+    compactDate: dateDirectoryName,
+    displayDate: `${year}.${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}`,
+    title,
+    body,
+  };
+}
+
 async function loadCollection(directory, parser) {
   await mkdir(directory, { recursive: true });
   const directoryEntries = await readdir(directory, { withFileTypes: true });
@@ -242,6 +372,38 @@ async function loadCollection(directory, parser) {
     for (const fileName of files) {
       const source = await readFile(path.join(yearDirectory, fileName), "utf8");
       entries.push(parser(source, fileName, yearEntry.name));
+    }
+  }
+
+  return entries.sort((a, b) => b.dateObject - a.dateObject);
+}
+
+async function loadDevelopmentArticles() {
+  await mkdir(developmentDirectory, { recursive: true });
+  const directoryEntries = await readdir(developmentDirectory, { withFileTypes: true });
+  const yearDirectories = directoryEntries
+    .filter((entry) => entry.isDirectory() && /^\d{4}$/.test(entry.name))
+    .sort((a, b) => b.name.localeCompare(a.name));
+  const entries = [];
+
+  for (const yearEntry of yearDirectories) {
+    const yearDirectory = path.join(developmentDirectory, yearEntry.name);
+    const articleDirectories = (await readdir(yearDirectory, { withFileTypes: true }))
+      .filter((entry) => entry.isDirectory() && /^\d{8}$/.test(entry.name))
+      .sort((a, b) => b.name.localeCompare(a.name));
+
+    for (const articleDirectory of articleDirectories) {
+      const articleFile = path.join(yearDirectory, articleDirectory.name, "index.md");
+      let source;
+      try {
+        source = await readFile(articleFile, "utf8");
+      } catch (error) {
+        if (error?.code === "ENOENT") {
+          throw new Error(`${yearEntry.name}/${articleDirectory.name}: add index.md`);
+        }
+        throw error;
+      }
+      entries.push(parseDevelopmentArticle(source, "index.md", articleDirectory.name, yearEntry.name));
     }
   }
 
@@ -462,12 +624,144 @@ ${sharedStyles}
 `;
 }
 
-function renderSitemap() {
+function renderDevelopmentIndexPage(entries) {
+  const entryList = entries.length > 0
+    ? `<ol class="entries">
+      ${entries.map((entry) => `<li class="entry"><a href="./${entry.year}/${entry.compactDate}/"><time datetime="${entry.date}">${entry.displayDate}</time><span>${escapeHtml(entry.title)}</span></a></li>`).join("\n      ")}
+    </ol>`
+    : '<p class="status">開発日記は、もうすぐ始まります。</p>';
+
+  return `<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="some clouds の開発日記。">
+<title>Development — some clouds</title>
+<link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#fff;color:#202020}
+body{font-family:Georgia,"Times New Roman",serif}
+.page{min-height:100dvh;padding:38px 50px 30px;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between}
+.brand{color:#202020;font-size:18px;letter-spacing:.07em;text-decoration:none}
+.back{color:#666;font-size:12px;letter-spacing:.05em;text-decoration:none}
+.content{width:min(720px,100%);margin:82px auto 100px}
+.intro{text-align:center}
+.cloud{display:block;width:76px;margin:0 auto 24px}
+.cloud path{fill:#fff;stroke:#2c2c2c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+h1{margin:0;font-size:clamp(34px,5vw,48px);font-weight:400;letter-spacing:.04em}
+.lead{margin:13px 0 0;color:#777;font-size:13px;font-style:italic;letter-spacing:.05em}
+.description,.status{margin:28px 0 0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:13px;letter-spacing:.04em}
+.entries{margin:62px 0 0;padding:0;border-top:1px solid #dadada;list-style:none;text-align:left}
+.entry{border-bottom:1px solid #ededed}
+.entry a{display:grid;grid-template-columns:112px minmax(0,1fr);gap:24px;align-items:baseline;padding:18px 2px;color:#202020;text-decoration:none}
+.entry time{color:#777;font-size:12px;letter-spacing:.06em}
+.entry span{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:14px;line-height:1.7}
+.entry a:hover span{text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:4px}
+.footer{margin-top:auto;text-align:center;font-size:10px;letter-spacing:.06em;color:#666}
+@media(max-width:700px){
+  .page{padding:28px 22px 22px}
+  .brand{font-size:16px}
+  .content{margin:58px auto 72px}
+  .cloud{width:68px;margin-bottom:20px}
+  .entries{margin-top:48px}
+  .entry a{display:block;padding:16px 2px}
+  .entry time{display:block;margin-bottom:7px;font-size:11px}
+  .entry span{font-size:13px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top"><a class="brand" href="../">some clouds</a><a class="back" href="../">← Home</a></header>
+  <main class="content">
+    <section class="intro" aria-labelledby="page-title">
+      <svg class="cloud" viewBox="0 0 180 105" aria-hidden="true"><path d="M31 77 C16 72,15 56,26 48 C33 43,40 43,47 46 C53 27,72 18,88 26 C100 11,124 14,131 32 C148 32,159 44,158 57 C170 63,165 79,151 84 C138 88,47 87,31 77Z"/></svg>
+      <h1 id="page-title">Development</h1>
+      <p class="lead">building, breaking, trying again.</p>
+${entries.length > 0 ? '      <p class="description">開発の記録。</p>' : ""}
+    </section>
+    ${entryList}
+  </main>
+  <footer class="footer">sakurak02 · a project by 桂園</footer>
+</div>
+</body>
+</html>
+`;
+}
+
+function renderDevelopmentArticlePage(entry) {
+  return `<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="${escapeHtml(entry.title)}">
+<title>${escapeHtml(entry.title)} — Development — some clouds</title>
+<link rel="icon" href="../../../assets/cloud.svg" type="image/svg+xml">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#fff;color:#202020}
+body{font-family:Georgia,"Times New Roman",serif}
+.page{min-height:100dvh;padding:38px 50px 30px;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between}
+.brand{color:#202020;font-size:18px;letter-spacing:.07em;text-decoration:none}
+.back{color:#666;font-size:12px;letter-spacing:.05em;text-decoration:none}
+.content{width:min(720px,100%);margin:84px auto 110px}
+.article-header{padding-bottom:28px;border-bottom:1px solid #dadada}
+h1{margin:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:clamp(27px,4vw,38px);font-weight:500;line-height:1.55;letter-spacing:.02em}
+.date{display:block;margin-top:14px;color:#777;font-size:11px;letter-spacing:.08em}
+.article-body{padding-top:34px;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:14px;line-height:2;letter-spacing:.025em;overflow-wrap:anywhere}
+.article-body h2,.article-body h3,.article-body h4{margin:42px 0 16px;font-family:Georgia,"Times New Roman",serif;font-weight:400;line-height:1.6}
+.article-body h2{font-size:22px}.article-body h3{font-size:18px}.article-body h4{font-size:16px}
+.article-body p{margin:0 0 22px}
+.article-body ul{margin:0 0 22px;padding-left:1.4em}
+.article-body li+li{margin-top:6px}
+.article-body hr{width:38px;height:1px;margin:38px 0;border:0;background:#d3d3d3}
+.article-body a{color:inherit;text-underline-offset:3px}
+.article-image{margin:30px 0}
+.article-image img{display:block;max-width:100%;height:auto;margin:auto}
+.footer{margin-top:auto;text-align:center;font-size:10px;letter-spacing:.06em;color:#666}
+@media(max-width:700px){
+  .page{padding:28px 22px 22px}
+  .brand{font-size:16px}
+  .content{margin:58px auto 76px}
+  .article-header{padding-bottom:23px}
+  .article-body{padding-top:27px;font-size:13px;line-height:1.95}
+  .article-body h2,.article-body h3,.article-body h4{margin-top:34px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top"><a class="brand" href="../../../">some clouds</a><a class="back" href="../../../development/">← Development</a></header>
+  <main class="content">
+    <article>
+      <header class="article-header">
+        <h1>${escapeHtml(entry.title)}</h1>
+        <time class="date" datetime="${entry.date}">${entry.displayDate}</time>
+      </header>
+      <div class="article-body">
+        ${renderArticleMarkdown(entry.body)}
+      </div>
+    </article>
+  </main>
+  <footer class="footer">sakurak02 · a project by 桂園</footer>
+</div>
+</body>
+</html>
+`;
+}
+
+function renderSitemap(developmentEntries = []) {
   const urls = [
     siteUrl,
     `${siteUrl}about/`,
     `${siteUrl}apps/`,
     `${siteUrl}development/`,
+    ...developmentEntries.map((entry) => `${siteUrl}development/${entry.year}/${entry.compactDate}/`),
     `${siteUrl}notes/`,
     `${siteUrl}notes/fragments/`,
   ];
@@ -479,26 +773,36 @@ ${urls.map((url) => `  <url><loc>${url}</loc></url>`).join("\n")}
 }
 
 async function buildNotes() {
-  const [timelineEntries, fragmentEntries] = await Promise.all([
+  const [timelineEntries, fragmentEntries, developmentEntries] = await Promise.all([
     loadCollection(timelineDirectory, parseTimeline),
     loadCollection(fragmentsDirectory, parseFragments),
+    loadDevelopmentArticles(),
   ]);
 
   await mkdir(fragmentsDirectory, { recursive: true });
   await writeFile(notesIndexFile, renderTimelinePage(timelineEntries), "utf8");
   await writeFile(fragmentsIndexFile, renderFragmentsPage(fragmentEntries), "utf8");
-  await writeFile(sitemapFile, renderSitemap(), "utf8");
+  await writeFile(developmentIndexFile, renderDevelopmentIndexPage(developmentEntries), "utf8");
+  for (const entry of developmentEntries) {
+    const articleIndexFile = path.join(developmentDirectory, entry.year, entry.compactDate, "index.html");
+    await writeFile(articleIndexFile, renderDevelopmentArticlePage(entry), "utf8");
+  }
+  await writeFile(sitemapFile, renderSitemap(developmentEntries), "utf8");
 
   console.log(`Generated notes/index.html from ${timelineEntries.length} timeline file(s).`);
   console.log(`Generated notes/fragments/index.html from ${fragmentEntries.length} fragment file(s).`);
+  console.log(`Generated development/index.html and ${developmentEntries.length} article page(s).`);
   console.log("Generated sitemap.xml.");
 }
 
 export {
   buildNotes,
   groupByYear,
+  parseDevelopmentArticle,
   parseFragments,
   parseTimeline,
+  renderDevelopmentArticlePage,
+  renderDevelopmentIndexPage,
   renderFragmentsPage,
   renderMarkdown,
   renderSitemap,

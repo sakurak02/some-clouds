@@ -1,6 +1,6 @@
 # Notes 更新手順
 
-Notes は、Timeline と Fragments の2種類のMarkdownから自動生成されます。
+このObsidian保管庫では、Timeline、Fragments、DevelopmentのMarkdownから公開ページを自動生成します。
 
 - Timeline: 世界の出来事と、その日の自分を並べる記録
 - Fragments: その日の短い思いつきや言葉の断片
@@ -9,9 +9,9 @@ HTML、年一覧、日付一覧は手動で編集しません。
 
 ## Timelineを追加する
 
-1. ObsidianでMarkdownを書く
+1. この保管庫のObsidianでMarkdownを作成する
 2. ファイル名を `tYYYYMMDD.md` にする
-3. `notes/timeline/YYYY/` にコピーする
+3. `notes/timeline/YYYY/` に直接保存する
 4. commit & pushする
 
 例: `notes/timeline/2026/t20260920.md`
@@ -36,9 +36,9 @@ NEWSまたはPERSONALの片方だけでも構いません。使わない見出�
 
 ## Fragmentsを追加する
 
-1. ObsidianでMarkdownを書く
+1. この保管庫のObsidianでMarkdownを作成する
 2. ファイル名を `fYYYYMMDD.md` にする
-3. `notes/fragments/YYYY/` にコピーする
+3. `notes/fragments/YYYY/` に直接保存する
 4. commit & pushする
 
 例: `notes/fragments/2026/f20260920.md`
@@ -59,6 +59,34 @@ date: 2026-09-20
 
 テンプレートは `templates/fragment-template.md` にあります。
 
+## Development記事を追加する
+
+1. `development/YYYY/YYYYMMDD/` フォルダを作る
+2. テンプレートをコピーし、同フォルダへ `index.md` として保存する
+3. 必要な画像は同フォルダの `images/` に置く
+4. commit & pushする
+
+例: `development/2026/20261015/index.md`
+
+```markdown
+---
+date: 2026-10-15
+title: Xcodeを開いた
+---
+
+# Xcodeを開いた
+
+本文を書きます。
+```
+
+画像はMarkdownから次のように参照できます。
+
+```markdown
+![画像の説明](./images/screen.png)
+```
+
+テンプレートは `templates/development.md` にあります。Developmentの一覧と記事ページは日付の新しい順で自動生成されます。
+
 ## 年が変わったとき
 
 年フォルダを追加します。
@@ -66,6 +94,7 @@ date: 2026-09-20
 ```text
 notes/timeline/2027/
 notes/fragments/2027/
+development/2027/
 ```
 
 生成スクリプトが年フォルダと日付を自動的に新しい順で並べます。
@@ -75,15 +104,17 @@ notes/fragments/2027/
 mainブランチへpushすると、GitHub Actionsが次のコマンドを実行します。
 
 ```text
-npm run build:notes
+npm run build
 ```
 
 このコマンドは次のファイルを生成します。
 
 - `notes/index.html`: Timeline
 - `notes/fragments/index.html`: Fragments
+- `development/index.html`: Development一覧
+- `development/YYYY/YYYYMMDD/index.html`: Development記事
 - `sitemap.xml`: 公開ページ一覧
 
 ローカルで確認したい場合も、同じコマンドを実行してください。
 
-ファイル名、日付見出し、年フォルダが一致しない場合は、誤った日付で公開されないようビルドがエラーになります。
+Timeline / Fragmentsではファイル名・日付・年フォルダ、Developmentでは日付フォルダ・front matterの日付・年フォルダが一致しない場合、誤った日付で公開されないようビルドがエラーになります。
