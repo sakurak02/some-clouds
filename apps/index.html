@@ -3,39 +3,56 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="some clouds の小さなアプリ。">
+<meta name="description" content="some clouds の小さなブラウザアプリ。">
 <title>Apps — some clouds</title>
 <link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap");
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#fff;color:#202020}
-body{font-family:Georgia,"Times New Roman",serif}
-.page{min-height:100dvh;padding:38px 50px 30px;display:flex;flex-direction:column}
+html,body{margin:0;min-height:100%;background:#fff;color:#222}
+body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif}
+a{color:inherit}
+.page{min-height:100dvh;padding:38px 50px 30px}
 .top{display:flex;align-items:center;justify-content:space-between}
-.brand{color:#202020;font-size:18px;letter-spacing:.07em;text-decoration:none}
-.back{color:#666;font-size:12px;letter-spacing:.05em;text-decoration:none}
-.content{width:min(620px,100%);margin:auto;padding:72px 0 96px;text-align:center}
-.cloud{display:block;width:76px;margin:0 auto 24px}
-.cloud path{fill:#fff;stroke:#2c2c2c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-h1{margin:0;font-size:clamp(34px,5vw,48px);font-weight:400;letter-spacing:.04em}
-.lead{margin:13px 0 0;color:#777;font-size:13px;font-style:italic;letter-spacing:.05em}
-.status{margin:34px 0 0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:13px;letter-spacing:.04em}
-.entries{margin-top:48px}
-.footer{margin-top:auto;text-align:center;font-size:10px;letter-spacing:.06em;color:#666}
-@media(max-width:700px){.page{padding:28px 22px 22px}.brand{font-size:16px}.content{padding:58px 0 76px}.cloud{width:68px;margin-bottom:20px}}
+.brand{font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.07em;text-decoration:none}
+.back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666}
+.content{position:relative;width:min(720px,100%);margin:86px auto 100px}
+h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,3vw,40px);font-weight:400;letter-spacing:.03em}
+.section-name{margin:34px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:15px;letter-spacing:.08em;color:#777}
+.apps-kuumo{position:absolute;top:-32px;right:clamp(4px,3vw,28px);display:block;width:144px;max-width:28vw;height:auto;pointer-events:none;user-select:none}
+.apps-list{margin-top:66px;border-top:1px solid #dadada;border-bottom:1px solid #dadada}
+.app-entry{padding:22px 2px 23px}
+.app-entry h2{margin:0;font-size:14px;font-weight:500;line-height:1.7;letter-spacing:.04em}
+.app-status{margin:7px 0 0;color:#7e9db5;font-family:Georgia,"Times New Roman",serif;font-size:11px;letter-spacing:.08em}
+.footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
+@media(max-width:700px){
+  .page{padding:28px 22px 22px}
+  .brand{font-size:16px}
+  .content{margin:58px auto 72px}
+  .section-name{margin-top:26px}
+  .apps-kuumo{position:static;width:92px;max-width:30vw;margin:-4px auto -6px}
+  .apps-list{margin-top:48px}
+  .app-entry{padding:19px 2px 20px}
+  .app-entry h2{font-size:13px}
+}
 </style>
 </head>
 <body>
 <div class="page">
-  <header class="top"><a class="brand" href="../">some clouds</a><a class="back" href="../">← Home</a></header>
+  <header class="top">
+    <a class="brand" href="../">some clouds</a>
+    <a class="back" href="../">← Home</a>
+  </header>
   <main class="content">
-    <section class="collection-intro" aria-labelledby="page-title">
-      <svg class="cloud" viewBox="0 0 180 105" aria-hidden="true"><path d="M31 77 C16 72,15 56,26 48 C33 43,40 43,47 46 C53 27,72 18,88 26 C100 11,124 14,131 32 C148 32,159 44,158 57 C170 63,165 79,151 84 C138 88,47 87,31 77Z"/></svg>
-      <h1 id="page-title">Apps</h1>
-      <p class="lead">small things in progress.</p>
-      <p class="status">ただいま準備中です。</p>
+    <h1>Apps</h1>
+    <p class="section-name">小さなアプリをつくっています。</p>
+    <img class="apps-kuumo" src="../assets/kuumo/kumomo-apps.png" alt="スマートフォンを見ているくもも" draggable="false">
+    <section class="apps-list" aria-label="Apps一覧">
+      <article class="app-entry">
+        <h2>きろくためる</h2>
+        <p class="app-status">coming soon</p>
+      </article>
     </section>
-    <div class="entries" aria-label="Apps一覧"></div>
   </main>
   <footer class="footer">sakurak02 · a project by K企画</footer>
 </div>
