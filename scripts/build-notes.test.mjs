@@ -69,6 +69,33 @@ date: 2026-09-29
   assert.match(page, /width="400"/);
 });
 
+test("Timeline and Fragments group entries by descending year, month, and day", () => {
+  const timelineEntries = [
+    parseTimeline("---\ndate: 2026-09-30\n---\n\n## PERSONAL\n\n9月30日", "t20260930.md", "2026", "09"),
+    parseTimeline("---\ndate: 2026-10-01\n---\n\n## PERSONAL\n\n10月1日", "t20261001.md", "2026", "10"),
+    parseTimeline("---\ndate: 2026-10-02\n---\n\n## PERSONAL\n\n10月2日", "t20261002.md", "2026", "10"),
+  ];
+  const fragmentEntries = timelineEntries.map((entry) => parseFragments(
+    `---\ndate: ${entry.date}\n---\n\n断片`,
+    `f${entry.date.replaceAll("-", "")}.md`,
+    entry.year,
+    entry.month,
+  ));
+
+  for (const page of [renderTimelinePage(timelineEntries), renderFragmentsPage(fragmentEntries)]) {
+    assert.match(page, /<details class="year">\s*<summary>2026<\/summary>/);
+    assert.match(page, /<details class="month">\s*<summary>10月<\/summary>/);
+    assert.match(page, /<details class="month">\s*<summary>9月<\/summary>/);
+    assert.ok(page.indexOf("<summary>10月</summary>") < page.indexOf("<summary>9月</summary>"));
+    assert.ok(page.indexOf("2026-10-02") < page.indexOf("2026-10-01"));
+  }
+});
+
+test("Timeline keeps the requested fixed line breaks in the Kumomo introduction", () => {
+  const page = renderTimelinePage([]);
+  assert.match(page, /生まれた、<br>クーモの仲間。<br>日々の記録や、つくっているものの<br>そばにいます。/);
+});
+
 const articleSource = `---
 date: 2026-10-15
 title: Xcodeを開いた

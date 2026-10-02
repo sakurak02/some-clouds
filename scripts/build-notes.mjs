@@ -504,12 +504,31 @@ function renderYearGroups(entries, renderDay) {
   if (entries.length === 0) return '<p class="empty">まだ記録はありません。</p>';
   return groupByYear(entries)
     .map(
-      ([year, yearEntries]) => `<details class="year">
-  <summary>${year}</summary>
+      ([year, yearEntries]) => {
+        const months = new Map();
+        for (const entry of yearEntries) {
+          if (!months.has(entry.month)) months.set(entry.month, []);
+          months.get(entry.month).push(entry);
+        }
+        const monthGroups = [...months.entries()]
+          .sort(([a], [b]) => b.localeCompare(a))
+          .map(([month, monthEntries]) => `<details class="month">
+  <summary>${Number(month)}月</summary>
   <div class="days">
-    ${yearEntries.map(renderDay).join("\n")}
+    ${[...monthEntries]
+      .sort((a, b) => b.dateObject - a.dateObject)
+      .map(renderDay)
+      .join("\n")}
   </div>
-</details>`,
+</details>`)
+          .join("\n");
+        return `<details class="year">
+  <summary>${year}</summary>
+  <div class="months">
+    ${monthGroups}
+  </div>
+</details>`;
+      },
     )
     .join("\n");
 }
@@ -533,9 +552,13 @@ details>summary::-webkit-details-marker{display:none}
 .year{border-top:1px solid #dadada}
 .year:last-child{border-bottom:1px solid #dadada}
 .year>summary{display:flex;align-items:center;justify-content:space-between;padding:19px 2px;font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.06em}
-.year>summary::after,.day>summary::after{content:"＋";font-family:"Noto Sans JP",sans-serif;font-size:13px;font-weight:400;color:#777}
-.year[open]>summary::after,.day[open]>summary::after{content:"−"}
-.days{padding:0 0 18px 28px}
+.year>summary::after,.month>summary::after,.day>summary::after{content:"＋";font-family:"Noto Sans JP",sans-serif;font-size:13px;font-weight:400;color:#777}
+.year[open]>summary::after,.month[open]>summary::after,.day[open]>summary::after{content:"−"}
+.months{padding:0 0 18px 28px}
+.month{border-top:1px solid #ededed}
+.month>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-size:13px;letter-spacing:.07em;color:#555}
+.month>summary::after{font-size:11px}
+.days{padding:0 0 14px 20px}
 .day{border-top:1px solid #ededed}
 .day>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-family:Georgia,"Times New Roman",serif;font-size:14px;letter-spacing:.07em}
 .day>summary::after{font-size:11px}
@@ -549,7 +572,8 @@ details>summary::-webkit-details-marker{display:none}
   .content{margin:58px auto 72px}
   .section-name{margin-top:26px}
   .archive{margin-top:48px}
-  .days{padding-left:14px}
+  .months{padding-left:14px}
+  .days{padding-left:12px}
 }`;
 
 function renderTimelinePage(entries) {
@@ -610,7 +634,7 @@ ${sharedStyles}
     <div class="timeline-kuumo-group">
       <div class="timeline-kuumo-copy">
         <p class="timeline-kuumo-name">くもも</p>
-        <p class="timeline-kuumo-description">some clouds からちぎれて生まれた、クーモの仲間。<br>日々の記録や、つくっているもののそばにいます。</p>
+        <p class="timeline-kuumo-description">some clouds からちぎれて生まれた、<br>クーモの仲間。<br>日々の記録や、つくっているものの<br>そばにいます。</p>
       </div>
       <img class="timeline-kuumo" src="../assets/kuumo/Timeline.png" alt="" aria-hidden="true" draggable="false">
     </div>
