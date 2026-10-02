@@ -41,7 +41,7 @@ body{
   letter-spacing:.06em;
 }
 .content{
-  width:min(960px,100%);
+  width:min(580px,100%);
   margin:auto;
   padding:58px 0 78px;
 }
@@ -76,31 +76,6 @@ h1{
   max-width:560px;
   font-size:15px;
   line-height:2.05;
-  letter-spacing:.02em;
-}
-.about-layout{
-  display:grid;
-  grid-template-columns:minmax(0,560px) minmax(220px,320px);
-  justify-content:space-between;
-  align-items:start;
-  gap:clamp(40px,7vw,80px);
-}
-.about-kuumo{
-  min-width:0;
-  margin:0;
-}
-.about-kuumo-image{
-  display:block;
-  width:100%;
-  max-width:320px;
-  height:auto;
-}
-.about-kuumo-caption{
-  max-width:320px;
-  margin:12px 0 0;
-  color:#666;
-  font-size:11px;
-  line-height:1.8;
   letter-spacing:.02em;
 }
 .rule{
@@ -143,12 +118,6 @@ h1{
   .content{padding:52px 0 60px}
   .brand{font-size:16px}
   .intro{font-size:14px;line-height:1.95}
-  .about-layout{display:block}
-  .about-kuumo{
-    width:min(100%,320px);
-    margin:36px auto 0;
-  }
-  .about-kuumo-image{max-width:100%}
   .face{width:32px;height:32px}
   .logo{width:36px;height:36px}
 }
@@ -169,29 +138,14 @@ h1{
       <p class="handle">sakurak02</p>
     </div>
 
-    <div class="about-layout">
-      <p class="intro">
-        <strong>64歳から、小さなアプリを作りはじめました。</strong><br><br>
-        some clouds は、思いついたものを少しずつ形にしていく個人サイトです。<br><br>
-        むずかしくて大きなものより、<br>
-        <strong>誰でも気軽に使える、小さくてシンプルなもの。</strong><br><br>
-        「こんなのがあったらいいな」と思ったものを、WebやiPhoneアプリとして、ひとつずつ作っていきます。<br><br>
-        完成したものは <strong>Apps</strong> に。<br>
-        作っている途中の試行錯誤は <strong>Development</strong> に。<br>
-        日々の記録や言葉の断片は <strong>Notes</strong> に。<br><br>
-        うまくいくかは、まだわかりません。<br>
-        でも、作ってみたいものがあります。<br><br>
-        だから、ひとつずつ。
-      </p>
-
-      <figure class="about-kuumo">
-        <img class="about-kuumo-image" src="../assets/kuumo/kuumo-about.png" alt="壁からひょっこり顔を出すクーモ">
-        <figcaption class="about-kuumo-caption">
-          some clouds からちぎれて生まれた、クーモ。<br>
-          小さなアプリと、ものづくりのそばにいます。
-        </figcaption>
-      </figure>
-    </div>
+    <p class="intro">
+      64歳から、数学を学びなおしています。<br><br>
+      数学の記録を残したり、<br>
+      小さなアプリを作ったり、<br>
+      日々のことを書き留めたり。<br><br>
+      some clouds は、<br>
+      そんなものを少しずつ置いている個人サイトです。
+    </p>
 
     <div class="rule"></div>
 
