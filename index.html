@@ -38,6 +38,7 @@ body{cursor:none;overflow:hidden}
 .center-mark{position:absolute;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-50%);z-index:1}
 h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07em;white-space:nowrap}
 .sub{margin-top:7px;font-family:Arial,sans-serif;font-size:10px;letter-spacing:.22em;color:#888;text-transform:uppercase;white-space:nowrap}
+.top-kuumo{position:absolute;top:52px;left:calc(50% + 72px);display:block;width:68px;max-width:15vw;height:auto;pointer-events:none;user-select:none}
 .cloud-link{--f:8px;position:absolute;display:flex;flex-direction:column;align-items:center;gap:5px;color:#202020;text-decoration:none;transform:translate(-50%,-50%);animation:float 6s ease-in-out infinite}
 .cloud{display:block;width:clamp(120px,11vw,150px);height:auto;filter:drop-shadow(0 5px 7px rgba(0,0,0,.035));transition:.28s}
 .cloud path{fill:#fff;stroke:#2c2c2c;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
@@ -65,6 +66,7 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
   .center-mark{position:relative;left:auto;top:auto;width:100%;min-height:51px;transform:none}
   h1{font-size:23px}
   .sub{margin-top:6px}
+  .top-kuumo{top:18px;left:calc(50% + 78px);width:46px;max-width:12vw}
   .cloud-link{position:static;width:100%;min-height:118px;gap:4px;transform:none;animation:none}
   .cloud{width:118px}
   .label{font-size:15px}
@@ -80,6 +82,7 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
     <div class="center-mark">
       <h1>some clouds</h1>
       <div class="sub">tap a cloud</div>
+      <img class="top-kuumo" src="./assets/kuumo/c5.png" alt="" aria-hidden="true" draggable="false">
     </div>
 
     <a class="cloud-link math" href="https://sakurak02.github.io/math-study-log/">
