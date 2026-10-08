@@ -12,8 +12,8 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="短い言葉の断片。">
-<title>Fragments — some clouds</title>
+<meta name="description" content="アプリができるまでの記録。">
+<title>開発日記 — Development — some clouds</title>
 <link rel="icon" href="../../assets/cloud.svg" type="image/svg+xml">
 <style>
 
@@ -35,12 +35,18 @@ details>summary::-webkit-details-marker{display:none}
 .year{border-top:1px solid #dadada}
 .year:last-child{border-bottom:1px solid #dadada}
 .year>summary{display:flex;align-items:center;justify-content:space-between;padding:19px 2px;font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.06em}
-.year>summary::after,.day>summary::after{content:"＋";font-family:"Noto Sans JP",sans-serif;font-size:13px;font-weight:400;color:#777}
-.year[open]>summary::after,.day[open]>summary::after{content:"−"}
-.days{padding:0 0 18px 28px}
+.year>summary::after,.month>summary::after,.day>summary::after{content:"＋";font-family:"Noto Sans JP",sans-serif;font-size:13px;font-weight:400;color:#777}
+.year[open]>summary::after,.month[open]>summary::after,.day[open]>summary::after{content:"−"}
+.months{padding:0 0 18px 28px}
+.month{border-top:1px solid #ededed}
+.month>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-size:13px;letter-spacing:.07em;color:#555}
+.month>summary::after{font-size:11px}
+.days{padding:0 0 14px 20px}
 .day{border-top:1px solid #ededed}
 .day>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-family:Georgia,"Times New Roman",serif;font-size:14px;letter-spacing:.07em}
 .day>summary::after{font-size:11px}
+.content-image{margin:18px 0}
+.content-image img{display:block;max-width:100%;height:auto}
 .empty{margin:0;color:#888;font-size:12px}
 .footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
 @media(max-width:700px){
@@ -49,21 +55,34 @@ details>summary::-webkit-details-marker{display:none}
   .content{margin:58px auto 72px}
   .section-name{margin-top:26px}
   .archive{margin-top:48px}
-  .days{padding-left:14px}
+  .months{padding-left:14px}
+  .days{padding-left:12px}
 }
 .back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666}
 .content{position:relative;width:min(720px,100%)}
 .content h1{font-size:clamp(30px,3vw,40px)}
 .section-name{color:#777}
-.fragments-kuumo{position:absolute;top:-18px;right:clamp(4px,3vw,28px);display:block;width:174px;height:auto;pointer-events:none;user-select:none}
-.fragment-body{padding:20px 16px 34px;font-size:14px;line-height:2;letter-spacing:.025em;overflow-wrap:anywhere}
-.fragment-body p{margin:0;max-width:620px}
-.fragment-body hr{width:36px;height:1px;margin:27px 0;border:0;background:#d3d3d3}
-.fragment-body a{text-underline-offset:3px}
+.journal-kuumo{position:absolute;top:-18px;right:clamp(4px,3vw,28px);display:block;width:174px;height:auto;pointer-events:none;user-select:none}
+.months{padding:0 0 18px 28px}
+.month{border-top:1px solid #ededed}
+.month>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-family:Georgia,"Times New Roman",serif;font-size:14px;letter-spacing:.07em}
+.month>summary::after{content:"＋";font-size:11px;font-weight:400;color:#777}
+.month[open]>summary::after{content:"−"}
+.entries{margin:0;padding:0 0 12px 18px;list-style:none}
+.entry{border-top:1px solid #f0f0f0}
+.entry a{display:grid;grid-template-columns:74px minmax(0,1fr);gap:20px;align-items:baseline;padding:14px 2px;color:#222;text-decoration:none}
+.entry time{color:#777;font-family:Georgia,"Times New Roman",serif;font-size:11px;letter-spacing:.07em}
+.entry span{font-size:13px;line-height:1.75}
+.entry a:hover span{text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:4px}
+.status{margin:0;padding:22px 2px 23px;border-top:1px solid #dadada;border-bottom:1px solid #dadada;color:#888;font-size:12px}
 @media(max-width:700px){
-  .fragments-kuumo{top:5px;right:0;width:112px}
-  .fragment-body{padding:18px 4px 28px 12px;font-size:13px;line-height:1.95}
-  .fragment-body hr{margin:23px 0}
+  .journal-kuumo{top:5px;right:0;width:112px}
+  .months{padding-left:14px}
+  .entries{padding-left:10px}
+  .status{padding:19px 2px 20px}
+  .entry a{display:block;padding:16px 2px}
+  .entry time{display:block;margin-bottom:7px;font-size:11px}
+  .entry span{font-size:13px}
 }
 </style>
 </head>
@@ -74,32 +93,11 @@ details>summary::-webkit-details-marker{display:none}
     <a class="back" href="../">← Timeline</a>
   </header>
   <main class="content">
-    <h1>Fragments</h1>
-    <p class="section-name">短い言葉の断片。</p>
-    <img class="fragments-kuumo" src="../../assets/kuumo/Fragments.png" alt="" aria-hidden="true" draggable="false">
+    <h1>開発日記</h1>
+    <p class="section-name">アプリができるまでの記録。</p>
+    <img class="journal-kuumo" src="../../assets/kuumo/Fragments.png" alt="" aria-hidden="true" draggable="false">
     <div class="archive">
-      <details class="year">
-  <summary>2026</summary>
-  <div class="days">
-    <details class="day">
-  <summary><time datetime="2026-09-21">09.21</time></summary>
-  <div class="fragment-body">
-    <p>短く読む文学、続けるかどうか迷ってる。<br>物理と数学、ガチらんと伸びないしなあ。<br>時間が足らんのよ、どうしよ</p>
-<hr>
-  </div>
-</details>
-<details class="day">
-  <summary><time datetime="2026-09-20">09.20</time></summary>
-  <div class="fragment-body">
-    <p>サイトは増やすより、<br>減らしたときのほうが自分らしくなることがある。</p>
-<hr>
-<p>数学は、わかった瞬間より、<br>わからないまま粘っている時間のほうが長い。</p>
-<hr>
-<p>クーモはやっぱりサイトの顔になりそう。</p>
-  </div>
-</details>
-  </div>
-</details>
+      <p class="status">まだ記事はありません。</p>
     </div>
   </main>
   <footer class="footer">sakurak02 · a project by K企画</footer>

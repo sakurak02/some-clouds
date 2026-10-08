@@ -39,13 +39,12 @@ jobs:
         run: |
           test -f index.html
           test -f about/index.html
-          test -f notes/index.html
-          test -f notes/fragments/index.html
           test -f development/index.html
+          test -f development/journal/index.html
           test -f sitemap.xml
-          grep -q "Timeline" notes/index.html
-          grep -q "Fragments" notes/fragments/index.html
           grep -q "Development" development/index.html
+          grep -q "Timeline" development/index.html
+          grep -q "開発日記" development/journal/index.html
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4

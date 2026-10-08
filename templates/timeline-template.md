@@ -2,10 +2,4 @@
 date: YYYY-MM-DD
 ---
 
-## NEWS
-
-- 
-
-## PERSONAL
-
-- 
+短い開発メモを書く。

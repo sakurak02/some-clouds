@@ -4,17 +4,14 @@ import { fileURLToPath } from "node:url";
 
 const scriptFile = fileURLToPath(import.meta.url);
 const projectRoot = path.resolve(path.dirname(scriptFile), "..");
-const notesDirectory = path.join(projectRoot, "notes");
-const timelineDirectory = path.join(notesDirectory, "timeline");
-const fragmentsDirectory = path.join(notesDirectory, "fragments");
 const developmentDirectory = path.join(projectRoot, "development");
-const notesIndexFile = path.join(notesDirectory, "index.html");
-const fragmentsIndexFile = path.join(fragmentsDirectory, "index.html");
+const timelineDirectory = path.join(developmentDirectory, "timeline");
+const journalDirectory = path.join(developmentDirectory, "journal");
 const developmentIndexFile = path.join(developmentDirectory, "index.html");
+const journalIndexFile = path.join(journalDirectory, "index.html");
 const sitemapFile = path.join(projectRoot, "sitemap.xml");
 const siteUrl = "https://sakurak02.github.io/some-clouds/";
 const timelineFilePattern = /^t(\d{4})(\d{2})(\d{2})\.md$/;
-const fragmentFilePattern = /^f(\d{4})(\d{2})(\d{2})\.md$/;
 const developmentFilePattern = /^d(\d{4})(\d{2})(\d{2})\.md$/;
 const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
@@ -286,21 +283,6 @@ function parseDate(source, fileName, yearName, monthName, filePattern, expectedF
   };
 }
 
-function extractSection(source, sectionName) {
-  const lines = source.split("\n");
-  const start = lines.findIndex((line) => new RegExp(`^##\\s+${sectionName}\\s*$`, "i").test(line));
-  if (start === -1) return "";
-
-  let end = lines.length;
-  for (let index = start + 1; index < lines.length; index += 1) {
-    if (/^##\s+/.test(lines[index])) {
-      end = index;
-      break;
-    }
-  }
-  return lines.slice(start + 1, end).join("\n").trim();
-}
-
 function parseTimeline(source, fileName, yearName, monthName) {
   const dateData = parseDate(
     source,
@@ -310,26 +292,9 @@ function parseTimeline(source, fileName, yearName, monthName) {
     timelineFilePattern,
     "tYYYYMMDD.md",
   );
-  const news = extractSection(dateData.normalized, "NEWS");
-  const personal = extractSection(dateData.normalized, "PERSONAL");
-  if (!news && !personal) {
-    throw new Error(`${fileName}: add a NEWS or PERSONAL section`);
-  }
-  return { ...dateData, news, personal };
-}
-
-function parseFragments(source, fileName, yearName, monthName) {
-  const dateData = parseDate(
-    source,
-    fileName,
-    yearName,
-    monthName,
-    fragmentFilePattern,
-    "fYYYYMMDD.md",
-  );
   const body = dateData.bodySource.trim();
   if (!body) {
-    throw new Error(`${fileName}: add at least one fragment`);
+    throw new Error(`${fileName}: add a development note`);
   }
   return { ...dateData, body };
 }
@@ -437,15 +402,15 @@ async function loadCollection(directory, parser) {
 }
 
 async function loadDevelopmentArticles() {
-  await mkdir(developmentDirectory, { recursive: true });
-  const directoryEntries = await readdir(developmentDirectory, { withFileTypes: true });
+  await mkdir(journalDirectory, { recursive: true });
+  const directoryEntries = await readdir(journalDirectory, { withFileTypes: true });
   const yearDirectories = directoryEntries
     .filter((entry) => entry.isDirectory() && /^\d{4}$/.test(entry.name))
     .sort((a, b) => b.name.localeCompare(a.name));
   const entries = [];
 
   for (const yearEntry of yearDirectories) {
-    const yearDirectory = path.join(developmentDirectory, yearEntry.name);
+    const yearDirectory = path.join(journalDirectory, yearEntry.name);
     const monthDirectories = (await readdir(yearDirectory, { withFileTypes: true }))
       .filter((entry) => entry.isDirectory() && /^(0[1-9]|1[0-2])$/.test(entry.name))
       .sort((a, b) => b.name.localeCompare(a.name));
@@ -483,19 +448,10 @@ function groupByYear(entries) {
 
 function renderTimelineDay(entry) {
   const assetBase = `./timeline/${entry.year}/${entry.month}`;
-  const news = entry.news
-    ? `<section class="entry-side news"><h3>NEWS</h3>${renderMarkdown(entry.news, assetBase)}</section>`
-    : "";
-  const personal = entry.personal
-    ? `<section class="entry-side personal"><h3>PERSONAL</h3>${renderMarkdown(entry.personal, assetBase)}</section>`
-    : "";
-
   return `<details class="day">
   <summary><time datetime="${entry.date}">${entry.displayDate}</time></summary>
   <div class="day-content">
-    ${news}
-    <div class="axis" aria-hidden="true"><span>${entry.displayDate}</span><i></i></div>
-    ${personal}
+    ${renderMarkdown(entry.body, assetBase)}
   </div>
 </details>`;
 }
@@ -584,40 +540,32 @@ function renderTimelinePage(entries) {
 ${googleTag}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="世界と、自分の記録。">
-<title>Notes — some clouds</title>
+<meta name="description" content="日々の短い開発メモ。">
+<title>Development — some clouds</title>
 <link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
 <style>
 ${sharedStyles}
-.fragments-link{position:relative;display:inline-flex;align-items:center;min-width:30px;min-height:30px;justify-content:center;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.08em;color:#555}
-.fragments-link::after{content:"fragments";position:absolute;right:34px;top:50%;transform:translateY(-50%);font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.08em;color:#999;opacity:0;transition:opacity .2s;pointer-events:none}
-.fragments-link:hover::after,.fragments-link:focus-visible::after{opacity:1}
+.journal-link{position:relative;display:inline-flex;align-items:center;min-width:30px;min-height:30px;justify-content:center;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.08em;color:#555}
+.journal-link::after{content:"開発日記";position:absolute;right:34px;top:50%;transform:translateY(-50%);font-family:"Noto Sans JP",sans-serif;font-size:10px;letter-spacing:.08em;color:#999;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.journal-link:hover::after,.journal-link:focus-visible::after{opacity:1}
 .content{position:relative}
 .timeline-kuumo-group{position:absolute;top:-10px;right:clamp(14px,4vw,58px);display:flex;align-items:center;gap:8px}
 .timeline-kuumo-copy{width:clamp(190px,23vw,270px)}
 .timeline-kuumo-name{margin:0 0 8px;font-size:13px;font-weight:500;letter-spacing:.06em}
 .timeline-kuumo-description{margin:0;color:#777;font-size:10px;line-height:1.8;letter-spacing:.04em}
 .timeline-kuumo{display:block;flex:0 0 auto;width:230px;height:auto;pointer-events:none;user-select:none}
-.day-content{display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);gap:34px;padding:26px 14px 34px}
-.entry-side{min-width:0;font-size:13px;line-height:1.95;letter-spacing:.02em;overflow-wrap:anywhere}
-.entry-side h3{margin:0 0 16px;font-size:10px;font-weight:500;letter-spacing:.16em;color:#777}
-.entry-side p{margin:0 0 14px}.entry-side p:last-child{margin-bottom:0}
-.entry-side ul{margin:0;padding-left:1.25em}.entry-side li+li{margin-top:7px}
-.news{grid-column:1}.personal{grid-column:3}
-.axis{position:relative;grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:center;align-self:stretch;min-height:92px;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em;color:#999}
-.axis::before{content:"";position:absolute;top:25px;bottom:0;left:50%;width:1px;background:#dedede}
-.axis i{position:relative;width:5px;height:5px;margin-top:11px;border:1px solid #aaa;border-radius:50%;background:#fff;z-index:1}
+.day-content{padding:22px 14px 30px;font-size:13px;line-height:1.95;letter-spacing:.02em;overflow-wrap:anywhere}
+.day-content p{margin:0 0 14px;max-width:720px}.day-content p:last-child{margin-bottom:0}
+.day-content ul{margin:0;padding-left:1.25em}.day-content li+li{margin-top:7px}
+.day-content hr{width:36px;height:1px;margin:25px 0;border:0;background:#d3d3d3}
 @media(max-width:700px){
-  .fragments-link::after{display:none}
+  .journal-link::after{display:none}
   .timeline-kuumo-group{position:static;display:grid;grid-template-columns:minmax(0,1fr) 130px;gap:4px;width:100%;margin:14px 0 -22px}
   .timeline-kuumo-copy{width:auto;min-width:0}
   .timeline-kuumo-name{margin-bottom:6px;font-size:12px}
   .timeline-kuumo-description{font-size:9.5px;line-height:1.75}
   .timeline-kuumo{width:130px}
-  .day-content{display:flex;flex-direction:column;gap:29px;padding:20px 4px 28px 12px}
-  .entry-side{font-size:13px;line-height:1.9}
-  .entry-side h3{margin-bottom:12px}
-  .axis{display:none}
+  .day-content{padding:19px 4px 27px 12px;font-size:13px;line-height:1.9}
 }
 </style>
 </head>
@@ -625,12 +573,12 @@ ${sharedStyles}
 <div class="page">
   <header class="top">
     <a class="brand" href="../">some clouds</a>
-    <a class="fragments-link" href="./fragments/" aria-label="Fragments" title="Fragments">…</a>
+    <a class="journal-link" href="./journal/" aria-label="開発日記" title="開発日記">…</a>
   </header>
   <main class="content">
-    <h1>Notes</h1>
+    <h1>Development</h1>
     <p class="section-name">Timeline</p>
-    <p class="tagline">世界と、自分の記録。</p>
+    <p class="tagline">日々の短い開発メモ。</p>
     <div class="timeline-kuumo-group">
       <div class="timeline-kuumo-copy">
         <p class="timeline-kuumo-name">くもも</p>
@@ -649,66 +597,7 @@ ${sharedStyles}
 `;
 }
 
-function renderFragmentDay(entry) {
-  return `<details class="day">
-  <summary><time datetime="${entry.date}">${entry.displayDate}</time></summary>
-  <div class="fragment-body">
-    ${renderMarkdown(entry.body, `./${entry.year}/${entry.month}`)}
-  </div>
-</details>`;
-}
-
-function renderFragmentsPage(entries) {
-  const years = renderYearGroups(entries, renderFragmentDay);
-  return `<!doctype html>
-<html lang="ja">
-<head>
-${googleTag}
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="短い言葉の断片。">
-<title>Fragments — some clouds</title>
-<link rel="icon" href="../../assets/cloud.svg" type="image/svg+xml">
-<style>
-${sharedStyles}
-.back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666}
-.content{position:relative;width:min(720px,100%)}
-.content h1{font-size:clamp(30px,3vw,40px)}
-.section-name{color:#777}
-.fragments-kuumo{position:absolute;top:-18px;right:clamp(4px,3vw,28px);display:block;width:174px;height:auto;pointer-events:none;user-select:none}
-.fragment-body{padding:20px 16px 34px;font-size:14px;line-height:2;letter-spacing:.025em;overflow-wrap:anywhere}
-.fragment-body p{margin:0;max-width:620px}
-.fragment-body hr{width:36px;height:1px;margin:27px 0;border:0;background:#d3d3d3}
-.fragment-body a{text-underline-offset:3px}
-@media(max-width:700px){
-  .fragments-kuumo{top:5px;right:0;width:112px}
-  .fragment-body{padding:18px 4px 28px 12px;font-size:13px;line-height:1.95}
-  .fragment-body hr{margin:23px 0}
-}
-</style>
-</head>
-<body>
-<div class="page">
-  <header class="top">
-    <a class="brand" href="../../">some clouds</a>
-    <a class="back" href="../">← Timeline</a>
-  </header>
-  <main class="content">
-    <h1>Fragments</h1>
-    <p class="section-name">短い言葉の断片。</p>
-    <img class="fragments-kuumo" src="../../assets/kuumo/Fragments.png" alt="" aria-hidden="true" draggable="false">
-    <div class="archive">
-      ${years}
-    </div>
-  </main>
-  <footer class="footer">${footerCredit}</footer>
-</div>
-</body>
-</html>
-`;
-}
-
-function renderDevelopmentIndexPage(entries) {
+function renderDevelopmentJournalPage(entries) {
   const archive = entries.length > 0
     ? groupByYear(entries)
       .map(([year, yearEntries]) => {
@@ -737,7 +626,7 @@ function renderDevelopmentIndexPage(entries) {
 </details>`;
       })
       .join("\n")
-    : '<p class="status">開発日記は、もうすぐ始まります。</p>';
+    : '<p class="status">まだ記事はありません。</p>';
 
   return `<!doctype html>
 <html lang="ja">
@@ -745,16 +634,16 @@ function renderDevelopmentIndexPage(entries) {
 ${googleTag}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="つくっている途中の記録。">
-<title>Development — some clouds</title>
-<link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
+<meta name="description" content="アプリができるまでの記録。">
+<title>開発日記 — Development — some clouds</title>
+<link rel="icon" href="../../assets/cloud.svg" type="image/svg+xml">
 <style>
 ${sharedStyles}
 .back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666}
 .content{position:relative;width:min(720px,100%)}
 .content h1{font-size:clamp(30px,3vw,40px)}
 .section-name{color:#777}
-.development-kuumo{position:absolute;top:-18px;right:clamp(4px,3vw,28px);display:block;width:144px;max-width:26vw;height:auto;pointer-events:none;user-select:none}
+.journal-kuumo{position:absolute;top:-18px;right:clamp(4px,3vw,28px);display:block;width:174px;height:auto;pointer-events:none;user-select:none}
 .months{padding:0 0 18px 28px}
 .month{border-top:1px solid #ededed}
 .month>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-family:Georgia,"Times New Roman",serif;font-size:14px;letter-spacing:.07em}
@@ -768,7 +657,7 @@ ${sharedStyles}
 .entry a:hover span{text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:4px}
 .status{margin:0;padding:22px 2px 23px;border-top:1px solid #dadada;border-bottom:1px solid #dadada;color:#888;font-size:12px}
 @media(max-width:700px){
-  .development-kuumo{top:5px;right:0;width:92px;max-width:30vw}
+  .journal-kuumo{top:5px;right:0;width:112px}
   .months{padding-left:14px}
   .entries{padding-left:10px}
   .status{padding:19px 2px 20px}
@@ -781,13 +670,13 @@ ${sharedStyles}
 <body>
 <div class="page">
   <header class="top">
-    <a class="brand" href="../">some clouds</a>
-    <a class="back" href="../">← Home</a>
+    <a class="brand" href="../../">some clouds</a>
+    <a class="back" href="../">← Timeline</a>
   </header>
   <main class="content">
-    <h1>Development</h1>
-    <p class="section-name">つくっている途中の記録。</p>
-    <img class="development-kuumo" src="../assets/kuumo/kumomo-development.png" alt="ノートPCの前で穏やかに作業するくもも" draggable="false">
+    <h1>開発日記</h1>
+    <p class="section-name">アプリができるまでの記録。</p>
+    <img class="journal-kuumo" src="../../assets/kuumo/Fragments.png" alt="" aria-hidden="true" draggable="false">
     <div class="archive">
       ${archive}
     </div>
@@ -806,8 +695,8 @@ function renderDevelopmentArticlePage(entry) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="${escapeHtml(entry.title)}">
-<title>${escapeHtml(entry.title)} — Development — some clouds</title>
-<link rel="icon" href="../../assets/cloud.svg" type="image/svg+xml">
+<title>${escapeHtml(entry.title)} — 開発日記 — some clouds</title>
+<link rel="icon" href="../../../assets/cloud.svg" type="image/svg+xml">
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:#fff;color:#202020}
@@ -843,7 +732,7 @@ h1{margin:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif
 </head>
 <body>
 <div class="page">
-  <header class="top"><a class="brand" href="../../">some clouds</a><a class="back" href="../">← Development</a></header>
+  <header class="top"><a class="brand" href="../../../">some clouds</a><a class="back" href="../">← 開発日記</a></header>
   <main class="content">
     <article>
       <header class="article-header">
@@ -868,9 +757,8 @@ function renderSitemap(developmentEntries = []) {
     `${siteUrl}about/`,
     `${siteUrl}apps/`,
     `${siteUrl}development/`,
-    ...developmentEntries.map((entry) => `${siteUrl}development/${entry.year}/${entry.slug}.html`),
-    `${siteUrl}notes/`,
-    `${siteUrl}notes/fragments/`,
+    `${siteUrl}development/journal/`,
+    ...developmentEntries.map((entry) => `${siteUrl}development/journal/${entry.year}/${entry.slug}.html`),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -879,45 +767,42 @@ ${urls.map((url) => `  <url><loc>${url}</loc></url>`).join("\n")}
 `;
 }
 
-async function buildNotes() {
-  const [timelineEntries, fragmentEntries, developmentEntries] = await Promise.all([
+async function buildDevelopment() {
+  const [timelineEntries, developmentEntries] = await Promise.all([
     loadCollection(timelineDirectory, parseTimeline),
-    loadCollection(fragmentsDirectory, parseFragments),
     loadDevelopmentArticles(),
   ]);
 
-  await mkdir(fragmentsDirectory, { recursive: true });
-  await writeFile(notesIndexFile, renderTimelinePage(timelineEntries), "utf8");
-  await writeFile(fragmentsIndexFile, renderFragmentsPage(fragmentEntries), "utf8");
-  await writeFile(developmentIndexFile, renderDevelopmentIndexPage(developmentEntries), "utf8");
+  await mkdir(journalDirectory, { recursive: true });
+  await writeFile(developmentIndexFile, renderTimelinePage(timelineEntries), "utf8");
+  await writeFile(journalIndexFile, renderDevelopmentJournalPage(developmentEntries), "utf8");
   for (const entry of developmentEntries) {
-    const articleHtmlFile = path.join(developmentDirectory, entry.year, `${entry.slug}.html`);
+    const articleYearDirectory = path.join(journalDirectory, entry.year);
+    await mkdir(articleYearDirectory, { recursive: true });
+    const articleHtmlFile = path.join(articleYearDirectory, `${entry.slug}.html`);
     await writeFile(articleHtmlFile, renderDevelopmentArticlePage(entry), "utf8");
   }
   await writeFile(sitemapFile, renderSitemap(developmentEntries), "utf8");
 
-  console.log(`Generated notes/index.html from ${timelineEntries.length} timeline file(s).`);
-  console.log(`Generated notes/fragments/index.html from ${fragmentEntries.length} fragment file(s).`);
-  console.log(`Generated development/index.html and ${developmentEntries.length} article page(s).`);
+  console.log(`Generated development/index.html from ${timelineEntries.length} timeline file(s).`);
+  console.log(`Generated development/journal/index.html and ${developmentEntries.length} article page(s).`);
   console.log("Generated sitemap.xml.");
 }
 
 export {
-  buildNotes,
+  buildDevelopment,
   groupByYear,
   parseDevelopmentArticle,
-  parseFragments,
   parseTimeline,
   renderDevelopmentArticlePage,
-  renderDevelopmentIndexPage,
-  renderFragmentsPage,
+  renderDevelopmentJournalPage,
   renderMarkdown,
   renderSitemap,
   renderTimelinePage,
 };
 
 if (process.argv[1] && path.resolve(process.argv[1]) === scriptFile) {
-  buildNotes().catch((error) => {
+  buildDevelopment().catch((error) => {
     console.error(error.message);
     process.exitCode = 1;
   });
