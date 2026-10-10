@@ -36,12 +36,12 @@ body{cursor:none;overflow:hidden}
 .about{position:absolute;top:28px;right:38px;z-index:2;color:#202020;text-decoration:none;font-size:13px;letter-spacing:.06em}
 .constellation{position:absolute;inset:42px 5vw 52px;margin:auto;max-width:980px}
 .center-mark{position:absolute;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-50%);z-index:1}
+.title-kokumo{position:absolute;left:50%;bottom:100%;display:block;width:80px;height:auto;transform:translateX(-50%);pointer-events:none;user-select:none}
 h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07em;white-space:nowrap}
 .sub{margin-top:7px;font-family:Arial,sans-serif;font-size:10px;letter-spacing:.22em;color:#888;text-transform:uppercase;white-space:nowrap}
 .top-kuumo{--f:5px;position:absolute;top:52px;left:50%;display:block;width:68px;max-width:15vw;height:auto;transform:translateX(-50%);pointer-events:none;user-select:none;animation:float 5.4s ease-in-out infinite;animation-delay:-1.4s}
 .cloud-link{--f:8px;position:absolute;display:flex;flex-direction:column;align-items:center;gap:5px;color:#202020;text-decoration:none;transform:translate(-50%,-50%);animation:float 6s ease-in-out infinite}
-.cloud{display:block;width:clamp(120px,11vw,150px);height:auto;filter:drop-shadow(0 5px 7px rgba(0,0,0,.035));transition:.28s}
-.cloud path{fill:#fff;stroke:#2c2c2c;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.cloud{display:block;width:clamp(120px,11vw,150px);aspect-ratio:5/3;object-fit:cover;object-position:center 43%;filter:drop-shadow(0 5px 7px rgba(0,0,0,.035));transition:.28s}
 .label{font-size:clamp(14px,1.25vw,18px);letter-spacing:.04em;white-space:nowrap}
 .jp{font-family:Arial,sans-serif;font-size:9px;color:#8d8d8d;letter-spacing:.12em;white-space:nowrap}
 .cloud-link:hover .cloud{transform:scale(1.07) rotate(-1deg)}
@@ -50,6 +50,8 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
 .apps{left:72%;top:72%;animation-delay:-4.2s}
 @keyframes float{0%,100%{translate:0 0}50%{translate:0 calc(var(--f)*-1)}}
 .footer{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);text-align:center;white-space:nowrap}
+.characters-link{display:block;margin-bottom:7px;color:#666;text-decoration:none;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.07em}
+.characters-link:hover,.characters-link:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
 .footer .name{display:block;font-size:12px;letter-spacing:.08em}
 .footer .project{display:block;margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
 .cursor{position:fixed;width:20px;height:20px;left:0;top:0;pointer-events:none;z-index:99;transform:translate(-3px,-3px)}
@@ -63,6 +65,7 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
   .about{top:22px;right:20px}
   .constellation{position:static;display:flex;flex-direction:column;align-items:center;gap:23px;width:100%;max-width:none;margin:0;padding-top:58px}
   .center-mark{position:relative;left:auto;top:auto;width:100%;min-height:108px;transform:none}
+  .title-kokumo{bottom:100%;width:72px}
   h1{font-size:23px}
   .sub{margin-top:6px}
   .top-kuumo{top:49px;left:50%;width:48px;max-width:14vw}
@@ -79,25 +82,26 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
   <a class="about" href="./about/">About</a>
   <div class="constellation">
     <div class="center-mark">
+      <img class="title-kokumo" src="./assets/characters/kokumo.png" alt="" aria-hidden="true" draggable="false">
       <h1>some clouds</h1>
       <div class="sub">tap a cloud</div>
       <img class="top-kuumo" src="./assets/kuumo/c5.png" alt="" aria-hidden="true" draggable="false">
     </div>
 
     <a class="cloud-link math" href="https://sakurak02.github.io/math-study-log/">
-      <svg class="cloud" viewBox="0 0 180 105" aria-hidden="true"><path d="M31 77 C16 72,15 56,26 48 C33 43,40 43,47 46 C53 27,72 18,88 26 C100 11,124 14,131 32 C148 32,159 44,158 57 C170 63,165 79,151 84 C138 88,47 87,31 77Z"/></svg>
+      <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
       <span class="label">Math</span><span class="jp">数学学習記録</span>
     </a>
     <a class="cloud-link development" href="./development/">
-      <svg class="cloud" viewBox="0 0 180 105" aria-hidden="true"><path d="M31 77 C16 72,15 56,26 48 C33 43,40 43,47 46 C53 27,72 18,88 26 C100 11,124 14,131 32 C148 32,159 44,158 57 C170 63,165 79,151 84 C138 88,47 87,31 77Z"/></svg>
+      <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
       <span class="label">Development</span><span class="jp">開発の記録</span>
     </a>
     <a class="cloud-link apps" href="./apps/">
-      <svg class="cloud" viewBox="0 0 180 105" aria-hidden="true"><path d="M31 77 C16 72,15 56,26 48 C33 43,40 43,47 46 C53 27,72 18,88 26 C100 11,124 14,131 32 C148 32,159 44,158 57 C170 63,165 79,151 84 C138 88,47 87,31 77Z"/></svg>
+      <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
       <span class="label">Apps</span><span class="jp">小さなアプリ</span>
     </a>
   </div>
-  <footer class="footer"><span class="name">sakurak02</span><span class="project">a project by K企画</span></footer>
+  <footer class="footer"><a class="characters-link" href="./characters/">クーモとこくもと、ときどきくもくも</a><span class="name">sakurak02</span><span class="project">a project by K企画</span></footer>
 </main>
 <div class="cursor"><svg viewBox="0 0 24 24"><path d="M3 2.5 L18 13 L11.4 14.2 L8.5 21 L3 2.5 Z"/></svg></div>
 <script>

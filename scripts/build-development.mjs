@@ -756,6 +756,7 @@ function renderSitemap(developmentEntries = []) {
     siteUrl,
     `${siteUrl}about/`,
     `${siteUrl}apps/`,
+    `${siteUrl}characters/`,
     `${siteUrl}development/`,
     `${siteUrl}development/journal/`,
     ...developmentEntries.map((entry) => `${siteUrl}development/journal/${entry.year}/${entry.slug}.html`),
