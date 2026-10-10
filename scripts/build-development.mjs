@@ -581,7 +581,7 @@ ${sharedStyles}
     <p class="tagline">日々の短い開発メモ。</p>
     <div class="timeline-kuumo-group">
       <div class="timeline-kuumo-copy">
-        <p class="timeline-kuumo-name">くもも</p>
+        <p class="timeline-kuumo-name">こくも</p>
         <p class="timeline-kuumo-description">some clouds からちぎれて生まれた、<br>クーモの仲間。<br>日々の記録や、つくっているものの<br>そばにいます。</p>
       </div>
       <img class="timeline-kuumo" src="../assets/kuumo/Timeline.png" alt="" aria-hidden="true" draggable="false">

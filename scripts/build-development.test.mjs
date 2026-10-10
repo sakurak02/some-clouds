@@ -49,9 +49,11 @@ test("Timeline groups entries by descending year, month, and day", () => {
   assert.ok(page.indexOf("10.02") < page.indexOf("10.01"));
 });
 
-test("Development keeps Kumomo and links to the development journal", () => {
+test("Development keeps Kokumo and links to the development journal", () => {
   const page = renderTimelinePage([]);
   assert.match(page, /src="\.\.\/assets\/kuumo\/Timeline\.png"/);
+  assert.match(page, /<p class="timeline-kuumo-name">こくも<\/p>/);
+  assert.doesNotMatch(page, /くもも/);
   assert.match(page, /some clouds からちぎれて生まれた、<br>クーモの仲間。/);
   assert.match(page, /href="\.\/journal\/"/);
 });
