@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="some clouds の小さな仲間、クーモ・こくも・くもくもの紹介。">
+<title>クーモとこくもと、ときどきくもくも — some clouds</title>
+<link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#fff;color:#222}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;overflow-wrap:anywhere}
+a{color:inherit}
+.page{min-height:100dvh;padding:38px 50px 30px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.07em;text-decoration:none;white-space:nowrap}
+.back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666;white-space:nowrap}
+.content{width:min(920px,100%);margin:82px auto 96px}
+.hero{text-align:center}
+h1{margin:0;font-size:clamp(25px,3.3vw,38px);font-weight:500;line-height:1.45;letter-spacing:.055em}
+.subtitle{margin:11px 0 0;color:#888;font-size:13px;letter-spacing:.16em}
+.rule{width:32px;height:1px;margin:28px auto 27px;background:#cfcfcf}
+.intro{margin:0;font-size:14px;line-height:2;letter-spacing:.06em}
+.characters{display:grid;gap:14px;margin-top:46px}
+.character-card{display:grid;grid-template-columns:minmax(250px,36%) minmax(0,1fr);align-items:center;gap:clamp(34px,6vw,72px);min-height:250px;padding:28px clamp(28px,5vw,56px);border-radius:18px;background:#fafafa}
+.character-image{display:block;width:100%;height:190px;object-fit:cover;object-position:center 43%;pointer-events:none;user-select:none}
+.character-copy h2{margin:0;font-size:clamp(25px,3vw,34px);font-weight:500;letter-spacing:.08em}
+.catch{margin:9px 0 0;color:#777;font-size:14px;letter-spacing:.1em}
+.description{margin:24px 0 0;font-size:14px;line-height:2;letter-spacing:.045em}
+.closing{margin:42px auto 0;text-align:center;font-size:14px;line-height:2.15;letter-spacing:.055em}
+.closing p{margin:0}
+.closing p+p{margin-top:20px}
+.home-link{display:block;width:max-content;max-width:100%;margin:40px auto 0;color:#666;font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.06em;text-decoration:none}
+.home-link:hover,.home-link:focus-visible{text-decoration:underline;text-underline-offset:4px}
+.footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
+@media(max-width:700px){
+  .page{padding:28px 22px 22px}
+  .brand{font-size:16px}
+  .content{margin:54px auto 70px}
+  h1{font-size:clamp(23px,7.2vw,30px);letter-spacing:.035em}
+  .subtitle{font-size:11px;letter-spacing:.11em}
+  .intro{font-size:13px}
+  .characters{gap:12px;margin-top:38px}
+  .character-card{grid-template-columns:1fr;gap:4px;min-height:0;padding:25px 22px 30px;text-align:center}
+  .character-image{width:min(250px,100%);height:176px;margin:0 auto}
+  .character-copy h2{font-size:27px}
+  .catch{font-size:13px}
+  .description{margin-top:18px;font-size:13px;line-height:1.95;text-align:left}
+  .closing{margin-top:34px;font-size:13px;line-height:2.05}
+  .home-link{min-height:44px;padding:14px 8px 0}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="brand" href="../">some clouds</a>
+    <a class="back" href="../">← Home</a>
+  </header>
+
+  <main class="content">
+    <section class="hero" aria-labelledby="page-title">
+      <h1 id="page-title">クーモとこくもと、ときどきくもくも</h1>
+      <p class="subtitle">some clouds の小さな仲間たち</p>
+      <div class="rule" aria-hidden="true"></div>
+      <p class="intro">some clouds には、<br>空をふわふわ漂う仲間たちがいます。</p>
+    </section>
+
+    <div class="characters">
+      <article class="character-card">
+        <img class="character-image" src="../assets/characters/kuumo.png" alt="クーモ" draggable="false">
+        <div class="character-copy">
+          <h2>クーモ</h2>
+          <p class="catch">おしゃべりな案内役</p>
+          <p class="description">some clouds から生まれた、独立したキャラクター。<br>考えたり、話したり、<br>ときどき何かを教えてくれます。</p>
+        </div>
+      </article>
+
+      <article class="character-card">
+        <img class="character-image" src="../assets/characters/kokumo.png" alt="こくも" draggable="false">
+        <div class="character-copy">
+          <h2>こくも</h2>
+          <p class="catch">ちいさな仲間たち</p>
+          <p class="description">くもくもから、ちぎれて生まれた小さな雲。<br>ふわふわ漂ったり、そばに寄りそったりする、<br>ペットのような静かな仲間たちです。</p>
+        </div>
+      </article>
+
+      <article class="character-card">
+        <img class="character-image" src="../assets/characters/kumokumo.png" alt="くもくも" draggable="false">
+        <div class="character-copy">
+          <h2>くもくも</h2>
+          <p class="catch">静かに見守る雲</p>
+          <p class="description">some clouds にいる、大きな雲。<br>こくもたちのもとになった存在で、<br>話さず、静かにみんなを見守っています。</p>
+        </div>
+      </article>
+    </div>
+
+    <section class="closing" aria-label="仲間たちについて">
+      <p>くもくもからこくもが生まれ、<br>クーモはその世界の中で動き、話します。</p>
+      <p>some clouds は、<br>そんな小さな仲間たちといっしょにできています。</p>
+    </section>
+
+    <a class="home-link" href="../">← some clouds に戻る</a>
+  </main>
+
+  <footer class="footer">sakurak02 · a project by K企画</footer>
+</div>
+</body>
+</html>
