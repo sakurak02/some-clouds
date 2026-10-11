@@ -16,7 +16,7 @@ const developmentFilePattern = /^d(\d{4})(\d{2})(\d{2})\.md$/;
 const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
 const footerCredit = "sakurak02 · a project by K企画";
-const footerLink = '<a class="footer-x" href="https://x.com/kokumo_cloud">こくものX</a>';
+const footerLink = '<a class="footer-x" href="https://x.com/kokumo_cloud">こくものX ↗</a>';
 const footerLinkStyles = `.footer-x{display:block;margin-bottom:7px;color:#666;text-decoration:none;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.07em}
 .footer-x:hover,.footer-x:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}`;
 const googleTag = `<!-- Google tag (gtag.js) -->
