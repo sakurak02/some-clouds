@@ -16,6 +16,9 @@ const developmentFilePattern = /^d(\d{4})(\d{2})(\d{2})\.md$/;
 const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
 const footerCredit = "sakurak02 · a project by K企画";
+const footerLink = '<a class="footer-x" href="https://x.com/kokumo_cloud">こくものX ↗</a>';
+const footerLinkStyles = `.footer-x{display:block;margin-bottom:7px;color:#666;text-decoration:none;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.07em}
+.footer-x:hover,.footer-x:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}`;
 const googleTag = `<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSXKPMSF5X"></script>
 <script>
@@ -522,6 +525,7 @@ details>summary::-webkit-details-marker{display:none}
 .content-image img{display:block;max-width:100%;height:auto}
 .empty{margin:0;color:#888;font-size:12px}
 .footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
+${footerLinkStyles}
 @media(max-width:700px){
   .page{padding:28px 22px 22px}
   .brand{font-size:16px}
@@ -590,7 +594,7 @@ ${sharedStyles}
       ${years}
     </div>
   </main>
-  <footer class="footer">${footerCredit}</footer>
+  <footer class="footer">${footerLink}${footerCredit}</footer>
 </div>
 </body>
 </html>
@@ -681,7 +685,7 @@ ${sharedStyles}
       ${archive}
     </div>
   </main>
-  <footer class="footer">${footerCredit}</footer>
+  <footer class="footer">${footerLink}${footerCredit}</footer>
 </div>
 </body>
 </html>
@@ -720,6 +724,7 @@ h1{margin:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif
 .article-image{margin:30px 0}
 .article-image img{display:block;max-width:100%;height:auto;margin:auto}
 .footer{margin-top:auto;text-align:center;font-size:10px;letter-spacing:.06em;color:#666}
+${footerLinkStyles}
 @media(max-width:700px){
   .page{padding:28px 22px 22px}
   .brand{font-size:16px}
@@ -744,7 +749,7 @@ h1{margin:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif
       </div>
     </article>
   </main>
-  <footer class="footer">${footerCredit}</footer>
+  <footer class="footer">${footerLink}${footerCredit}</footer>
 </div>
 </body>
 </html>
