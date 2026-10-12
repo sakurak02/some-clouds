@@ -40,6 +40,33 @@ body{
   font-size:13px;
   letter-spacing:.06em;
 }
+.top-meta{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.language-switch{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:11px;
+  letter-spacing:.06em;
+}
+.language-switch button{
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#888;
+  font:inherit;
+  cursor:pointer;
+}
+.language-switch button[aria-pressed="true"]{
+  color:#1f1f1f;
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
+[hidden]{display:none!important}
 .content{
   width:min(580px,100%);
   margin:auto;
@@ -150,13 +177,20 @@ h1{
 <div class="page">
   <header class="top">
     <a class="brand" href="../">some clouds</a>
-    <span class="about-label">About</span>
+    <div class="top-meta">
+      <span class="about-label">About</span>
+      <div class="language-switch" aria-label="言語 / Language">
+        <button type="button" data-language-button="ja" aria-pressed="true">日本語</button>
+        <span aria-hidden="true">/</span>
+        <button type="button" data-language-button="en" aria-pressed="false">English</button>
+      </div>
+    </div>
   </header>
 
   <main class="content">
     <div class="heading-row">
-      <h1>このサイトについて</h1>
-      <img class="heading-kuumo" src="../assets/kuumo/kuumo-about-arrow.png" alt="矢印を持ったクーモ" draggable="false">
+      <h1><span data-language="ja">このサイトについて</span><span data-language="en" hidden>About this website</span></h1>
+      <img class="heading-kuumo" src="../assets/kuumo/kuumo-about-arrow.png" alt="矢印を持ったクーモ" data-alt-ja="矢印を持ったクーモ" data-alt-en="Ku-mo holding an arrow" draggable="false">
     </div>
 
     <div class="identity">
@@ -164,17 +198,26 @@ h1{
       <p class="handle">sakurak02</p>
     </div>
 
-    <p class="intro">
+    <p class="intro" data-language="ja">
       このサイトの管理人、sakurak02です。<br><br>
       文学を短く読むサイトをつくったり、<br>
       小さなアプリをつくったり。<br><br>
       アプリづくりは、プログラム経験ゼロから。<br>
       Macを買うところから始めた記録を、Developmentに残しています。<br><br>
-      クーモやくもくも、こくもたちも、あちこちにいます。<br>
+      クーモやくもくも、こくも、ここくもたちも、あちこちにいます。<br>
       わたしは「かんりにん」と呼ばれています。<br><br>
       some clouds は、<br>
       文学やアプリづくりの記録と、<br>
-      クーモ、くもくも、こくも、そしてかんりにんが住んでいる個人サイトです。
+      クーモ、くもくも、こくも、ここくも、そしてかんりにんが住んでいる個人サイトです。
+    </p>
+
+    <p class="intro" data-language="en" hidden>
+      Hi, I'm sakurak02, the caretaker of this website.<br><br>
+      I make a website for reading literature in brief, and small apps.<br><br>
+      I started making apps with no programming experience at all. My journey began with buying a Mac, and I'm keeping a record of it in Development.<br><br>
+      Ku-mo, kumokumo, kokumo, and kokokumo are here and there, too.<br>
+      They call me the caretaker.<br><br>
+      some clouds is a personal website where I keep a record of my literature and app-making projects, and where Ku-mo, kumokumo, kokumo, kokokumo, and their caretaker live.
     </p>
 
     <div class="rule"></div>
@@ -189,9 +232,39 @@ h1{
   </main>
 
   <footer class="footer">
-    <a class="footer-x" href="https://x.com/kokumo_cloud">こくものX ↗</a>
+    <a class="footer-x" href="https://x.com/kokumo_cloud"><span data-language="ja">こくものX ↗</span><span data-language="en" hidden>kokumo on X ↗</span></a>
     sakurak02 · a project by K企画
   </footer>
 </div>
+<script>
+const languageButtons = document.querySelectorAll('[data-language-button]');
+const languageContent = document.querySelectorAll('[data-language]');
+const headingKuumo = document.querySelector('.heading-kuumo');
+
+function setLanguage(language) {
+  document.documentElement.lang = language;
+  languageContent.forEach(element => {
+    element.hidden = element.dataset.language !== language;
+  });
+  languageButtons.forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.languageButton === language));
+  });
+  headingKuumo.alt = language === 'en' ? headingKuumo.dataset.altEn : headingKuumo.dataset.altJa;
+  try {
+    localStorage.setItem('some-clouds-language', language);
+  } catch {}
+}
+
+let initialLanguage = 'ja';
+try {
+  const savedLanguage = localStorage.getItem('some-clouds-language');
+  if (savedLanguage === 'ja' || savedLanguage === 'en') initialLanguage = savedLanguage;
+} catch {}
+
+languageButtons.forEach(button => {
+  button.addEventListener('click', () => setLanguage(button.dataset.languageButton));
+});
+setLanguage(initialLanguage);
+</script>
 </body>
 </html>
