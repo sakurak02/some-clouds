@@ -40,12 +40,13 @@ body{cursor:none;overflow:hidden}
 h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07em;white-space:nowrap}
 .sub{margin-top:7px;font-family:Arial,sans-serif;font-size:10px;letter-spacing:.22em;color:#888;text-transform:uppercase;white-space:nowrap}
 .top-kuumo{--f:5px;position:absolute;top:52px;left:50%;display:block;width:68px;max-width:15vw;height:auto;transform:translateX(-50%);pointer-events:none;user-select:none;animation:float 5.4s ease-in-out infinite;animation-delay:-1.4s}
-.cloud-link{--f:8px;position:absolute;display:flex;flex-direction:column;align-items:center;gap:5px;color:#202020;text-decoration:none;transform:translate(-50%,-50%);animation:float 6s ease-in-out infinite}
-.cloud{display:block;width:clamp(120px,11vw,150px);aspect-ratio:5/3;object-fit:cover;object-position:center 43%;filter:drop-shadow(0 5px 7px rgba(0,0,0,.035));transition:.28s}
+.cloud-link{--f:8px;position:absolute;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;border:0;background:transparent;color:#202020;text-decoration:none;transform:translate(-50%,-50%);animation:float 6s ease-in-out infinite}
+.cloud{display:block;width:clamp(120px,11vw,150px);aspect-ratio:5/3;object-fit:cover;object-position:center 43%;mix-blend-mode:multiply;transition:.28s}
 .label{font-size:clamp(14px,1.25vw,18px);letter-spacing:.04em;white-space:nowrap}
 .jp{font-family:Arial,sans-serif;font-size:9px;color:#8d8d8d;letter-spacing:.12em;white-space:nowrap}
 .cloud-link:hover .cloud{transform:scale(1.07) rotate(-1deg)}
-.math{left:50%;top:24%;animation-delay:-3.1s}
+.math{left:28%;top:28%;animation-delay:-3.1s}
+.literature{left:72%;top:28%;animation-delay:-3.7s}
 .development{left:28%;top:72%;animation-delay:-2s}
 .apps{left:72%;top:72%;animation-delay:-4.2s}
 @keyframes float{0%,100%{translate:0 0}50%{translate:0 calc(var(--f)*-1)}}
@@ -63,13 +64,13 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
   .cursor{display:none}
   .sky{height:auto;min-height:100dvh;padding:22px 20px 88px}
   .about{top:22px;right:20px}
-  .constellation{position:static;display:flex;flex-direction:column;align-items:center;gap:23px;width:100%;max-width:none;margin:0;padding-top:58px}
-  .center-mark{position:relative;left:auto;top:auto;width:100%;min-height:108px;transform:none}
+  .constellation{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 8px;width:100%;max-width:none;margin:0;padding-top:58px}
+  .center-mark{position:relative;left:auto;top:auto;grid-column:1/-1;width:100%;min-height:108px;transform:none}
   .title-kokumo{bottom:100%;width:72px}
   h1{font-size:23px}
   .sub{margin-top:6px}
   .top-kuumo{top:49px;left:50%;width:48px;max-width:14vw}
-  .cloud-link{position:static;width:100%;min-height:118px;gap:4px;transform:none}
+  .cloud-link{position:static;justify-self:center;width:max-content;max-width:100%;min-height:118px;gap:4px;transform:none}
   .cloud{width:118px}
   .label{font-size:15px}
   .jp{font-size:9px}
@@ -90,7 +91,11 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
 
     <a class="cloud-link math" href="https://sakurak02.github.io/math-study-log/">
       <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
-      <span class="label">Math</span><span class="jp">数学学習記録</span>
+      <span class="label">Mathematics</span><span class="jp">数学学習記録</span>
+    </a>
+    <a class="cloud-link literature" href="https://sakurak02.github.io/literature-in-brief/">
+      <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
+      <span class="label">Literature</span><span class="jp">短く読む文学</span>
     </a>
     <a class="cloud-link development" href="./development/">
       <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
