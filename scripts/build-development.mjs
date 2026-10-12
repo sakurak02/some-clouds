@@ -582,7 +582,7 @@ ${sharedStyles}
   <main class="content">
     <h1>Development</h1>
     <p class="section-name">Timeline</p>
-    <p class="tagline">日々の短い開発メモ。</p>
+    <p class="tagline">アプリや本づくり、日々の制作と試行錯誤の記録。</p>
     <div class="timeline-kuumo-group">
       <div class="timeline-kuumo-copy">
         <p class="timeline-kuumo-name">こくも</p>
@@ -661,6 +661,7 @@ ${sharedStyles}
 .entry a:hover span{text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:4px}
 .status{margin:0;padding:22px 2px 23px;border-top:1px solid #dadada;border-bottom:1px solid #dadada;color:#888;font-size:12px}
 @media(max-width:700px){
+  .section-name{max-width:calc(100% - 124px)}
   .journal-kuumo{top:5px;right:0;width:112px}
   .months{padding-left:14px}
   .entries{padding-left:10px}
@@ -679,7 +680,7 @@ ${sharedStyles}
   </header>
   <main class="content">
     <h1>開発日記</h1>
-    <p class="section-name">アプリができるまでの記録。</p>
+    <p class="section-name">アプリをつくったり、本をつくったり。あれこれ試している記録。</p>
     <img class="journal-kuumo" src="../../assets/kuumo/Fragments.png" alt="" aria-hidden="true" draggable="false">
     <div class="archive">
       ${archive}
