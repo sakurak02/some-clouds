@@ -32,7 +32,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:#fff;color:#202020;font-family:Georgia,"Times New Roman",serif}
 body{cursor:none;overflow:hidden}
-.sky{position:relative;width:100%;height:100dvh;min-height:560px;background:#fff}
+.sky{position:relative;width:100%;height:100dvh;min-height:640px;background:#fff}
 .about{position:absolute;top:28px;right:38px;z-index:2;color:#202020;text-decoration:none;font-size:13px;letter-spacing:.06em}
 .constellation{position:absolute;inset:42px 5vw 52px;margin:auto;max-width:980px}
 .center-mark{position:absolute;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;transform:translate(-50%,-50%);z-index:1}
@@ -51,20 +51,23 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
 .development{left:72%;top:72%;animation-delay:-4.2s}
 @keyframes float{0%,100%{translate:0 0}50%{translate:0 calc(var(--f)*-1)}}
 .footer{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);text-align:center;white-space:nowrap}
-.characters-link{display:block;margin-bottom:7px;color:#666;text-decoration:none;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.07em}
-.characters-link:hover,.characters-link:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
-.footer .name{display:block;font-size:12px;letter-spacing:.08em}
-.footer .project{display:block;margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
+.footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
+.footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
+.footer-meet,.footer-social{width:max-content;max-width:100%;margin-right:auto;margin-left:auto;color:#666;text-decoration:none;font-size:10px;letter-spacing:.06em}
+.footer-meet{margin-bottom:7px}
+.footer-social{margin-bottom:5px}
+.footer-social-disabled{color:#999}
+.footer-name{margin-top:8px;font-size:12px;letter-spacing:.08em}
+.footer-project{margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
+.footer-meet:hover,.footer-meet:focus-visible,.footer-social[href]:hover,.footer-social[href]:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
 .cursor{position:fixed;width:20px;height:20px;left:0;top:0;pointer-events:none;z-index:99;transform:translate(-3px,-3px)}
 .cursor svg{width:100%;height:100%}
 .cursor path{fill:#fff;stroke:#242424;stroke-width:1.4;stroke-linejoin:round}
-.footer-x{display:block;margin-bottom:7px;color:#666;text-decoration:none;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.07em}
-.footer-x:hover,.footer-x:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
 @media(max-width:700px){
   html,body{height:auto;min-height:100%;overflow-x:hidden}
   body{cursor:auto;overflow-y:auto}
   .cursor{display:none}
-  .sky{height:auto;min-height:100dvh;padding:22px 20px 88px}
+  .sky{height:auto;min-height:100dvh;padding:22px 20px 154px}
   .about{top:22px;right:20px}
   .constellation{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 8px;width:100%;max-width:none;margin:0;padding-top:58px}
   .center-mark{position:relative;left:auto;top:auto;grid-column:1/-1;width:100%;min-height:108px;transform:none}
@@ -108,7 +111,7 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
       <span class="label">Development</span><span class="jp">開発の記録</span>
     </a>
   </div>
-  <footer class="footer"><a class="characters-link" href="./characters/">クーモとこくもと、ときどきくもくも</a><a class="footer-x" href="https://x.com/kokumo_cloud">こくものX ↗</a><span class="name">sakurak02</span><span class="project">a project by K企画</span></footer>
+  <footer class="footer"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="./characters/">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></footer>
 </main>
 <div class="cursor"><svg viewBox="0 0 24 24"><path d="M3 2.5 L18 13 L11.4 14.2 L8.5 21 L3 2.5 Z"/></svg></div>
 <script>

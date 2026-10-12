@@ -15,6 +15,11 @@ a{color:inherit}
 .top{display:flex;align-items:center;justify-content:space-between;gap:24px}
 .brand{font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.07em;text-decoration:none;white-space:nowrap}
 .back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666;white-space:nowrap}
+.top-actions{display:flex;align-items:center;gap:16px}
+.language-switch{display:flex;align-items:center;gap:8px;font-family:Georgia,"Times New Roman",serif;font-size:11px;letter-spacing:.06em;white-space:nowrap}
+.language-switch button{padding:0;border:0;background:transparent;color:#888;font:inherit;cursor:pointer}
+.language-switch button[aria-pressed="true"]{color:#222;text-decoration:underline;text-underline-offset:4px}
+[hidden]{display:none!important}
 .content{width:min(920px,100%);margin:82px auto 96px}
 .hero{text-align:center}
 h1{margin:0;font-size:clamp(25px,3.3vw,38px);font-weight:500;line-height:1.45;letter-spacing:.055em}
@@ -33,11 +38,20 @@ h1{margin:0;font-size:clamp(25px,3.3vw,38px);font-weight:500;line-height:1.45;le
 .home-link{display:block;width:max-content;max-width:100%;margin:40px auto 0;color:#666;font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.06em;text-decoration:none}
 .home-link:hover,.home-link:focus-visible{text-decoration:underline;text-underline-offset:4px}
 .footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
-.footer-x{display:block;margin-bottom:7px;color:#666;text-decoration:none;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.07em}
-.footer-x:hover,.footer-x:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
+.footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
+.footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
+.footer-meet,.footer-social{width:max-content;max-width:100%;margin-right:auto;margin-left:auto;color:#666;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
+.footer-meet{margin-bottom:7px}
+.footer-social{margin-bottom:5px}
+.footer-social-disabled{color:#999}
+.footer-name{margin-top:8px;font-size:12px;letter-spacing:.08em}
+.footer-project{margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
+.footer-meet:hover,.footer-meet:focus-visible,.footer-social[href]:hover,.footer-social[href]:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
 @media(max-width:700px){
   .page{padding:28px 22px 22px}
   .brand{font-size:16px}
+  .top{align-items:flex-start;gap:12px}
+  .top-actions{align-items:flex-end;flex-direction:column;gap:9px}
   .content{margin:54px auto 70px}
   h1{font-size:clamp(23px,7.2vw,30px);letter-spacing:.035em}
   .subtitle{font-size:11px;letter-spacing:.11em}
@@ -57,55 +71,99 @@ h1{margin:0;font-size:clamp(25px,3.3vw,38px);font-weight:500;line-height:1.45;le
 <div class="page">
   <header class="top">
     <a class="brand" href="../">some clouds</a>
-    <a class="back" href="../">← Home</a>
+    <div class="top-actions">
+      <a class="back" href="../">← Home</a>
+      <div class="language-switch" aria-label="言語 / Language">
+        <button type="button" data-language-button="ja" aria-pressed="true">日本語</button>
+        <span aria-hidden="true">/</span>
+        <button type="button" data-language-button="en" aria-pressed="false">English</button>
+      </div>
+    </div>
   </header>
 
   <main class="content">
     <section class="hero" aria-labelledby="page-title">
-      <h1 id="page-title">クーモとこくもと、ときどきくもくも</h1>
-      <p class="subtitle">some clouds の小さな仲間たち</p>
+      <h1 id="page-title"><span data-language="ja">クーモとこくもと、ときどきくもくも</span><span data-language="en" hidden>Ku-mo, kokumo, and sometimes kumokumo</span></h1>
+      <p class="subtitle"><span data-language="ja">some clouds の小さな仲間たち</span><span data-language="en" hidden>the little friends of some clouds</span></p>
       <div class="rule" aria-hidden="true"></div>
-      <p class="intro">some clouds には、<br>空をふわふわ漂う仲間たちがいます。</p>
+      <p class="intro"><span data-language="ja">some clouds には、<br>空をふわふわ漂う仲間たちがいます。</span><span data-language="en" hidden>At some clouds,<br>there are friends who float gently through the sky.</span></p>
     </section>
 
     <div class="characters">
       <article class="character-card">
-        <img class="character-image" src="../assets/characters/kuumo.png" alt="クーモ" draggable="false">
+        <img class="character-image" src="../assets/characters/kuumo.png" alt="クーモ" data-alt-ja="クーモ" data-alt-en="Ku-mo" draggable="false">
         <div class="character-copy">
-          <h2>クーモ</h2>
-          <p class="catch">おしゃべりな案内役</p>
-          <p class="description">some clouds から生まれた、独立したキャラクター。<br>考えたり、話したり、<br>ときどき何かを教えてくれます。</p>
+          <h2><span data-language="ja">クーモ</span><span data-language="en" hidden>Ku-mo</span></h2>
+          <p class="catch"><span data-language="ja">おしゃべりな案内役</span><span data-language="en" hidden>A talkative guide</span></p>
+          <p class="description"><span data-language="ja">some clouds から生まれた、独立したキャラクター。<br>考えたり、話したり、<br>ときどき何かを教えてくれます。</span><span data-language="en" hidden>An independent character born from some clouds.<br>Ku-mo thinks, talks,<br>and sometimes tells us something new.</span></p>
         </div>
       </article>
 
       <article class="character-card">
-        <img class="character-image" src="../assets/characters/kokumo.png" alt="こくも" draggable="false">
+        <img class="character-image" src="../assets/characters/kokumo.png" alt="こくも" data-alt-ja="こくも" data-alt-en="kokumo" draggable="false">
         <div class="character-copy">
-          <h2>こくも</h2>
-          <p class="catch">ちいさな仲間たち</p>
-          <p class="description">くもくもから、ちぎれて生まれた小さな雲。<br>ふわふわ漂ったり、そばに寄りそったりする、<br>ペットのような静かな仲間たちです。</p>
+          <h2><span data-language="ja">こくも</span><span data-language="en" hidden>kokumo</span></h2>
+          <p class="catch"><span data-language="ja">ちいさな仲間たち</span><span data-language="en" hidden>Little companions</span></p>
+          <p class="description"><span data-language="ja">くもくもから、ちぎれて生まれた小さな雲。<br>ふわふわ漂ったり、そばに寄りそったりする、<br>ペットのような静かな仲間たちです。</span><span data-language="en" hidden>Little clouds born as pieces that broke away from kumokumo.<br>They float gently or nestle close by—<br>quiet, pet-like companions.</span></p>
         </div>
       </article>
 
       <article class="character-card">
-        <img class="character-image" src="../assets/characters/kumokumo.png" alt="くもくも" draggable="false">
+        <img class="character-image" src="../assets/characters/kumokumo.png" alt="くもくも" data-alt-ja="くもくも" data-alt-en="kumokumo" draggable="false">
         <div class="character-copy">
-          <h2>くもくも</h2>
-          <p class="catch">静かに見守る雲</p>
-          <p class="description">some clouds にいる、大きな雲。<br>こくもたちのもとになった存在で、<br>話さず、静かにみんなを見守っています。</p>
+          <h2><span data-language="ja">くもくも</span><span data-language="en" hidden>kumokumo</span></h2>
+          <p class="catch"><span data-language="ja">静かに見守る雲</span><span data-language="en" hidden>A quietly watchful cloud</span></p>
+          <p class="description"><span data-language="ja">some clouds にいる、大きな雲。<br>こくもたちのもとになった存在で、<br>話さず、静かにみんなを見守っています。</span><span data-language="en" hidden>A large cloud at some clouds.<br>It is where the kokumo came from,<br>and quietly watches over everyone without speaking.</span></p>
         </div>
       </article>
     </div>
 
-    <section class="closing" aria-label="仲間たちについて">
-      <p>くもくもからこくもが生まれ、<br>クーモはその世界の中で動き、話します。</p>
-      <p>some clouds は、<br>そんな小さな仲間たちといっしょにできています。</p>
+    <section class="closing" aria-label="仲間たちについて" data-label-ja="仲間たちについて" data-label-en="About the clouds">
+      <p><span data-language="ja">くもくもからこくもが生まれ、<br>クーモはその世界の中で動き、話します。</span><span data-language="en" hidden>The kokumo are born from kumokumo,<br>and Ku-mo moves and talks within their world.</span></p>
+      <p><span data-language="ja">some clouds は、<br>そんな小さな仲間たちといっしょにできています。</span><span data-language="en" hidden>some clouds is made<br>together with these little friends.</span></p>
     </section>
 
-    <a class="home-link" href="../">← some clouds に戻る</a>
+    <a class="home-link" href="../"><span data-language="ja">← some clouds に戻る</span><span data-language="en" hidden>← Back to some clouds</span></a>
   </main>
 
-  <footer class="footer"><a class="footer-x" href="https://x.com/kokumo_cloud">こくものX ↗</a>sakurak02 · a project by K企画</footer>
+  <footer class="footer"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="./">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></footer>
 </div>
+<script>
+const languageButtons = document.querySelectorAll('[data-language-button]');
+const languageContent = document.querySelectorAll('[data-language]');
+const characterImages = document.querySelectorAll('[data-alt-ja]');
+const closingSection = document.querySelector('.closing');
+
+function setLanguage(language) {
+  document.documentElement.lang = language;
+  languageContent.forEach(element => {
+    element.hidden = element.dataset.language !== language;
+  });
+  languageButtons.forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.languageButton === language));
+  });
+  characterImages.forEach(image => {
+    image.alt = language === 'en' ? image.dataset.altEn : image.dataset.altJa;
+  });
+  closingSection.setAttribute('aria-label', language === 'en' ? closingSection.dataset.labelEn : closingSection.dataset.labelJa);
+  document.title = language === 'en'
+    ? 'Meet the clouds — some clouds'
+    : 'クーモとこくもと、ときどきくもくも — some clouds';
+  try {
+    localStorage.setItem('some-clouds-language', language);
+  } catch {}
+}
+
+let initialLanguage = 'ja';
+try {
+  const savedLanguage = localStorage.getItem('some-clouds-language');
+  if (savedLanguage === 'ja' || savedLanguage === 'en') initialLanguage = savedLanguage;
+} catch {}
+
+languageButtons.forEach(button => {
+  button.addEventListener('click', () => setLanguage(button.dataset.languageButton));
+});
+setLanguage(initialLanguage);
+</script>
 </body>
 </html>

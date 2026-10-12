@@ -15,10 +15,19 @@ const timelineFilePattern = /^t(\d{4})(\d{2})(\d{2})\.md$/;
 const developmentFilePattern = /^d(\d{4})(\d{2})(\d{2})\.md$/;
 const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
-const footerCredit = "sakurak02 · a project by K企画";
-const footerLink = '<a class="footer-x" href="https://x.com/kokumo_cloud">こくものX ↗</a>';
-const footerLinkStyles = `.footer-x{display:block;margin-bottom:7px;color:#666;text-decoration:none;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.07em}
-.footer-x:hover,.footer-x:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}`;
+const footerLinkStyles = `.footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
+.footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
+.footer-meet,.footer-social{width:max-content;max-width:100%;margin-right:auto;margin-left:auto;color:#666;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
+.footer-meet{margin-bottom:7px}
+.footer-social{margin-bottom:5px}
+.footer-social-disabled{color:#999}
+.footer-name{margin-top:8px;font-size:12px;letter-spacing:.08em}
+.footer-project{margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
+.footer-meet:hover,.footer-meet:focus-visible,.footer-social[href]:hover,.footer-social[href]:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}`;
+
+function renderFooter(charactersPath) {
+  return `<span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="${charactersPath}">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span>`;
+}
 const googleTag = `<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSXKPMSF5X"></script>
 <script>
@@ -594,7 +603,7 @@ ${sharedStyles}
       ${years}
     </div>
   </main>
-  <footer class="footer">${footerLink}${footerCredit}</footer>
+  <footer class="footer">${renderFooter("../characters/")}</footer>
 </div>
 </body>
 </html>
@@ -686,7 +695,7 @@ ${sharedStyles}
       ${archive}
     </div>
   </main>
-  <footer class="footer">${footerLink}${footerCredit}</footer>
+  <footer class="footer">${renderFooter("../../characters/")}</footer>
 </div>
 </body>
 </html>
@@ -750,7 +759,7 @@ ${footerLinkStyles}
       </div>
     </article>
   </main>
-  <footer class="footer">${footerLink}${footerCredit}</footer>
+  <footer class="footer">${renderFooter("../../../characters/")}</footer>
 </div>
 </body>
 </html>
