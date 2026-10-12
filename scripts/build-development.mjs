@@ -761,6 +761,7 @@ function renderSitemap(developmentEntries = []) {
     siteUrl,
     `${siteUrl}about/`,
     `${siteUrl}apps/`,
+    `${siteUrl}books/`,
     `${siteUrl}characters/`,
     `${siteUrl}development/`,
     `${siteUrl}development/journal/`,
