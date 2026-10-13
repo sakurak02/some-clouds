@@ -1,6 +1,6 @@
 ---
 date: YYYY-MM-DD
-categories: []
+categories:
 ---
 
 短い開発メモを書く。
