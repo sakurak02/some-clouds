@@ -22,7 +22,7 @@
 html,body{margin:0;min-height:100%;background:#fff;color:#222}
 body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif}
 a{color:inherit}
-.page{min-height:100dvh;padding:38px 50px 30px}
+.page{min-height:100dvh;padding:38px 50px 30px;display:flex;flex-direction:column}
 .top{display:flex;align-items:center;justify-content:space-between}
 .brand{font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.07em;text-decoration:none}
 .content{width:min(1040px,100%);margin:86px auto 100px}
@@ -141,7 +141,10 @@ details>summary::-webkit-details-marker{display:none}
     <details class="day" data-categories="APP">
   <summary><span class="day-heading"><time datetime="2026-10-13">10.13</time><span class="day-categories">APP</span></span></summary>
   <div class="day-content">
-    <p>-Developmentにカテゴリー機能を追加。Obsidianとの形式の違いでビルドエラー。修正して解決。</p>
+    <ul><li>Developmentにカテゴリー機能を追加。Obsidianとの形式の違いでビルドエラー。修正して解決。</li></ul>
+<ul><li>Books、Development、Timelineのフッターが他のページと揃っていなかったため修正を依頼。</li></ul>
+<ul><li>右寄せにはなったものの、トップページとは配置が異なり、再修正することに。</li></ul>
+<ul><li>小さな修正でも思いどおりにいかない。AIへの指示の難しさを実感。でも文句</li></ul>
   </div>
 </details>
 <details class="day" data-categories="APP">
@@ -187,7 +190,7 @@ details>summary::-webkit-details-marker{display:none}
     </div>
     <p class="filter-empty" hidden>該当する記録はありません。</p>
   </main>
-  <footer class="footer"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="../characters/">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></footer>
+  <footer class="footer"><div class="footer-links"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="../characters/">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span></div><div class="footer-credit"><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></div></footer>
 </div>
 <script>
 const categoryTabs = document.querySelectorAll('[data-category-filter]');

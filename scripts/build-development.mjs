@@ -26,7 +26,7 @@ const footerLinkStyles = `.footer-tagline,.footer-meet,.footer-social,.footer-na
 .footer-meet:hover,.footer-meet:focus-visible,.footer-social[href]:hover,.footer-social[href]:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}`;
 
 function renderFooter(charactersPath) {
-  return `<span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="${charactersPath}">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span>`;
+  return `<div class="footer-links"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="${charactersPath}">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span></div><div class="footer-credit"><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></div>`;
 }
 const googleTag = `<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSXKPMSF5X"></script>
@@ -547,7 +547,7 @@ const sharedStyles = `
 html,body{margin:0;min-height:100%;background:#fff;color:#222}
 body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif}
 a{color:inherit}
-.page{min-height:100dvh;padding:38px 50px 30px}
+.page{min-height:100dvh;padding:38px 50px 30px;display:flex;flex-direction:column}
 .top{display:flex;align-items:center;justify-content:space-between}
 .brand{font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.07em;text-decoration:none}
 .content{width:min(1040px,100%);margin:86px auto 100px}
