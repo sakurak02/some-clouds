@@ -634,6 +634,7 @@ ${sharedStyles}
   .day-content{padding:19px 4px 27px 12px;font-size:13px;line-height:1.9}
 }
 </style>
+<link rel="stylesheet" href="../assets/site-footer.css">
 </head>
 <body>
 <div class="page">
@@ -774,6 +775,7 @@ ${sharedStyles}
   .entry span{font-size:13px}
 }
 </style>
+<link rel="stylesheet" href="../../assets/site-footer.css">
 </head>
 <body>
 <div class="page">
@@ -838,6 +840,7 @@ ${footerLinkStyles}
   .article-body h2,.article-body h3,.article-body h4{margin-top:34px}
 }
 </style>
+<link rel="stylesheet" href="../../../assets/site-footer.css">
 </head>
 <body>
 <div class="page">

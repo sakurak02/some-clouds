@@ -1,0 +1,9 @@
+.footer {
+  text-align: right;
+}
+
+.footer .footer-meet,
+.footer .footer-social {
+  margin-right: 0;
+  margin-left: auto;
+}

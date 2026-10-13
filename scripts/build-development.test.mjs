@@ -52,6 +52,7 @@ categories: [APP, BOOK]
   assert.match(page, /data-categories="APP BOOK"/);
   assert.match(page, /<span class="day-categories">APP · BOOK<\/span>/);
   assert.match(page, /function filterTimeline\(category\)/);
+  assert.match(page, /href="\.\.\/assets\/site-footer\.css"/);
 });
 
 test("Timeline accepts Obsidian list properties for categories", () => {
@@ -152,6 +153,7 @@ test("Development journal uses the former Fragments atmosphere and newest-first 
   assert.match(page, /src="\.\.\/\.\.\/assets\/kuumo\/Fragments\.png"/);
   assert.match(page, /<details class="year">\s*<summary>2026<\/summary>/);
   assert.match(page, /href="\.\/2026\/d20261015\.html"/);
+  assert.match(page, /href="\.\.\/\.\.\/assets\/site-footer\.css"/);
 
   const sitemap = renderSitemap([newer]);
   assert.match(sitemap, /some-clouds\/books\//);
@@ -168,4 +170,10 @@ test("Development journal rejects mismatched filenames and month folders", () =>
     () => parseDevelopmentArticle(articleSource, "d20261015.md", "2026", "11"),
     /move this article into the 10 month folder/,
   );
+});
+
+test("Development article uses the shared right-aligned footer styles", () => {
+  const article = parseDevelopmentArticle(articleSource, "d20261015.md", "2026", "10");
+  const page = renderDevelopmentArticlePage(article);
+  assert.match(page, /href="\.\.\/\.\.\/\.\.\/assets\/site-footer\.css"/);
 });
