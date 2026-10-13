@@ -224,14 +224,27 @@ function renderArticleMarkdown(markdown, assetMonth = "") {
 }
 
 function parseTimelineCategories(frontMatterSource, fileName) {
-  const field = frontMatterSource.match(/^categor(?:y|ies):\s*(.*?)\s*$/im);
-  if (!field || !field[1].trim()) return [];
+  const lines = normalize(frontMatterSource).split("\n");
+  const fieldIndex = lines.findIndex((line) => /^categor(?:y|ies):/i.test(line));
+  if (fieldIndex === -1) return [];
 
-  const values = field[1]
-    .trim()
-    .replace(/^\[/, "")
-    .replace(/\]$/, "")
-    .split(",")
+  const field = lines[fieldIndex].match(/^categor(?:y|ies):[ \t]*(.*)$/i);
+  const inlineValue = field?.[1].trim() ?? "";
+  const listValues = [];
+  if (!inlineValue) {
+    for (const line of lines.slice(fieldIndex + 1)) {
+      if (!line.trim()) continue;
+      if (/^\S/.test(line)) break;
+      if (/^[ \t]+-[ \t]+/.test(line)) {
+        listValues.push(line.replace(/^[ \t]+-[ \t]+/, ""));
+      }
+    }
+  }
+  const rawValues = inlineValue
+    ? inlineValue.replace(/^\[/, "").replace(/\]$/, "").split(",")
+    : listValues;
+
+  const values = rawValues
     .map((value) => value.trim().replace(/^['"]|['"]$/g, "").toUpperCase())
     .filter(Boolean);
   const invalid = values.filter((value) => value !== "APP" && value !== "BOOK");

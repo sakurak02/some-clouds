@@ -54,6 +54,29 @@ categories: [APP, BOOK]
   assert.match(page, /function filterTimeline\(category\)/);
 });
 
+test("Timeline accepts Obsidian list properties for categories", () => {
+  const appEntry = parseTimeline(`---
+date: 2026-10-10
+categories:
+  - APP
+---
+
+アプリを作った。
+`, "t20261010.md", "2026", "10");
+  const bothEntry = parseTimeline(`---
+date: 2026-10-11
+categories:
+  - APP
+  - BOOK
+---
+
+アプリと本を作った。
+`, "t20261011.md", "2026", "10");
+
+  assert.deepEqual(appEntry.categories, ["APP"]);
+  assert.deepEqual(bothEntry.categories, ["APP", "BOOK"]);
+});
+
 test("Timeline rejects unsupported categories", () => {
   assert.throws(
     () => parseTimeline("---\ndate: 2026-10-13\ncategories: [APP, OTHER]\n---\n\n記録", "t20261013.md", "2026", "10"),
