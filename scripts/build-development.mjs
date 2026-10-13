@@ -223,6 +223,26 @@ function renderArticleMarkdown(markdown, assetMonth = "") {
   return blocks.join("\n");
 }
 
+function parseTimelineCategories(frontMatterSource, fileName) {
+  const field = frontMatterSource.match(/^categor(?:y|ies):\s*(.*?)\s*$/im);
+  if (!field || !field[1].trim()) return [];
+
+  const values = field[1]
+    .trim()
+    .replace(/^\[/, "")
+    .replace(/\]$/, "")
+    .split(",")
+    .map((value) => value.trim().replace(/^['"]|['"]$/g, "").toUpperCase())
+    .filter(Boolean);
+  const invalid = values.filter((value) => value !== "APP" && value !== "BOOK");
+  if (invalid.length > 0) {
+    throw new Error(`${fileName}: categories must contain only APP and/or BOOK`);
+  }
+
+  const selected = new Set(values);
+  return ["APP", "BOOK"].filter((category) => selected.has(category));
+}
+
 function extractDateMetadata(normalized, fileName) {
   const frontMatter = normalized.match(yamlFrontMatterPattern);
   if (frontMatter) {
@@ -232,6 +252,7 @@ function extractDateMetadata(normalized, fileName) {
     if (dateField) {
       return {
         date: dateField[1],
+        categories: parseTimelineCategories(frontMatter[1], fileName),
         bodySource: normalized.slice(frontMatter[0].length),
       };
     }
@@ -242,6 +263,7 @@ function extractDateMetadata(normalized, fileName) {
   if (heading) {
     return {
       date: heading[1],
+      categories: [],
       bodySource: normalized
         .replace(/^---[ \t]*\n/, "")
         .replace(dateHeadingPattern, ""),
@@ -292,6 +314,7 @@ function parseDate(source, fileName, yearName, monthName, filePattern, expectedF
     year: String(year),
     month: expectedMonth,
     displayDate: `${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}`,
+    categories: metadata.categories,
   };
 }
 
@@ -460,8 +483,12 @@ function groupByYear(entries) {
 
 function renderTimelineDay(entry) {
   const assetBase = `./timeline/${entry.year}/${entry.month}`;
-  return `<details class="day">
-  <summary><time datetime="${entry.date}">${entry.displayDate}</time></summary>
+  const categories = entry.categories.join(" · ");
+  const categoryLabel = categories
+    ? `<span class="day-categories">${categories}</span>`
+    : "";
+  return `<details class="day" data-categories="${entry.categories.join(" ")}">
+  <summary><span class="day-heading"><time datetime="${entry.date}">${entry.displayDate}</time>${categoryLabel}</span></summary>
   <div class="day-content">
     ${renderMarkdown(entry.body, assetBase)}
   </div>
@@ -567,6 +594,16 @@ ${sharedStyles}
 .timeline-kuumo-name{margin:0 0 8px;font-size:13px;font-weight:500;letter-spacing:.06em}
 .timeline-kuumo-description{margin:0;color:#777;font-size:10px;line-height:1.8;letter-spacing:.04em}
 .timeline-kuumo{display:block;flex:0 0 auto;width:230px;height:auto;pointer-events:none;user-select:none}
+.day-heading{display:flex;align-items:baseline;gap:12px}
+.day-categories{color:#999;font-family:"Noto Sans JP",sans-serif;font-size:9px;font-weight:400;letter-spacing:.1em}
+.tagline p{margin:0}.tagline p+p{margin-top:5px}
+.category-tabs{display:flex;align-items:center;gap:6px;margin-top:66px}
+.category-tab{min-height:30px;padding:4px 11px;border:1px solid #ddd;border-radius:999px;background:#fff;color:#888;font-family:"Noto Sans JP",sans-serif;font-size:10px;letter-spacing:.08em;cursor:pointer}
+.category-tab[aria-pressed="true"]{border-color:#aaa;color:#333}
+.category-tab:hover,.category-tab:focus-visible{border-color:#aaa;color:#333}
+.timeline-archive{margin-top:18px}
+.filter-empty{margin:18px 0 0;color:#888;font-size:12px}
+[hidden]{display:none!important}
 .day-content{padding:22px 14px 30px;font-size:13px;line-height:1.95;letter-spacing:.02em;overflow-wrap:anywhere}
 .day-content p{margin:0 0 14px;max-width:720px}.day-content p:last-child{margin-bottom:0}
 .day-content ul{margin:0;padding-left:1.25em}.day-content li+li{margin-top:7px}
@@ -578,6 +615,9 @@ ${sharedStyles}
   .timeline-kuumo-name{margin-bottom:6px;font-size:12px}
   .timeline-kuumo-description{font-size:9.5px;line-height:1.75}
   .timeline-kuumo{width:130px}
+  .category-tabs{margin-top:48px}
+  .category-tab{min-height:36px;padding:6px 13px}
+  .timeline-archive{margin-top:16px}
   .day-content{padding:19px 4px 27px 12px;font-size:13px;line-height:1.9}
 }
 </style>
@@ -591,7 +631,11 @@ ${sharedStyles}
   <main class="content">
     <h1>Development</h1>
     <p class="section-name">Timeline</p>
-    <p class="tagline">アプリや本づくり、日々の制作と試行錯誤の記録。</p>
+    <div class="tagline">
+      <p>64歳、主婦。プログラミング経験ゼロからのアプリづくり。</p>
+      <p>本づくりやペン画も、少しずつ。</p>
+      <p>日々の制作と試行錯誤の記録。</p>
+    </div>
     <div class="timeline-kuumo-group">
       <div class="timeline-kuumo-copy">
         <p class="timeline-kuumo-name">こくも</p>
@@ -599,12 +643,49 @@ ${sharedStyles}
       </div>
       <img class="timeline-kuumo" src="../assets/kuumo/Timeline.png" alt="" aria-hidden="true" draggable="false">
     </div>
-    <div class="archive">
+    <div class="category-tabs" role="group" aria-label="カテゴリーで絞り込む">
+      <button class="category-tab" type="button" data-category-filter="all" aria-pressed="true">すべて</button>
+      <button class="category-tab" type="button" data-category-filter="APP" aria-pressed="false">APP</button>
+      <button class="category-tab" type="button" data-category-filter="BOOK" aria-pressed="false">BOOK</button>
+    </div>
+    <div class="archive timeline-archive">
       ${years}
     </div>
+    <p class="filter-empty" hidden>該当する記録はありません。</p>
   </main>
   <footer class="footer">${renderFooter("../characters/")}</footer>
 </div>
+<script>
+const categoryTabs = document.querySelectorAll('[data-category-filter]');
+const timelineDays = document.querySelectorAll('.day');
+const timelineMonths = document.querySelectorAll('.month');
+const timelineYears = document.querySelectorAll('.year');
+const filterEmpty = document.querySelector('.filter-empty');
+
+function filterTimeline(category) {
+  let visibleDayCount = 0;
+  timelineDays.forEach(day => {
+    const categories = day.dataset.categories.split(' ').filter(Boolean);
+    const visible = category === 'all' || categories.includes(category);
+    day.hidden = !visible;
+    if (visible) visibleDayCount += 1;
+  });
+  timelineMonths.forEach(month => {
+    month.hidden = !month.querySelector('.day:not([hidden])');
+  });
+  timelineYears.forEach(year => {
+    year.hidden = !year.querySelector('.month:not([hidden])');
+  });
+  categoryTabs.forEach(tab => {
+    tab.setAttribute('aria-pressed', String(tab.dataset.categoryFilter === category));
+  });
+  filterEmpty.hidden = category === 'all' || visibleDayCount > 0;
+}
+
+categoryTabs.forEach(tab => {
+  tab.addEventListener('click', () => filterTimeline(tab.dataset.categoryFilter));
+});
+</script>
 </body>
 </html>
 `;

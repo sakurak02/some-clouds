@@ -20,10 +20,45 @@ Xcodeで画面遷移を試した。
 
   assert.equal(entry.date, "2026-10-08");
   assert.equal(entry.body, "Xcodeで画面遷移を試した。");
+  assert.deepEqual(entry.categories, []);
   const page = renderTimelinePage([entry]);
   assert.match(page, /<h1>Development<\/h1>/);
   assert.match(page, /<p class="section-name">Timeline<\/p>/);
   assert.doesNotMatch(page, /NEWS|PERSONAL/);
+});
+
+test("Timeline accepts APP and BOOK categories and renders filter controls", () => {
+  const appEntry = parseTimeline(`---
+date: 2026-10-11
+categories: [APP]
+---
+
+アプリを作った。
+`, "t20261011.md", "2026", "10");
+  const bothEntry = parseTimeline(`---
+date: 2026-10-12
+categories: [APP, BOOK]
+---
+
+アプリと本を作った。
+`, "t20261012.md", "2026", "10");
+
+  assert.deepEqual(appEntry.categories, ["APP"]);
+  assert.deepEqual(bothEntry.categories, ["APP", "BOOK"]);
+  const page = renderTimelinePage([appEntry, bothEntry]);
+  assert.match(page, /data-category-filter="all"[^>]*aria-pressed="true">すべて/);
+  assert.match(page, /data-category-filter="APP"/);
+  assert.match(page, /data-category-filter="BOOK"/);
+  assert.match(page, /data-categories="APP BOOK"/);
+  assert.match(page, /<span class="day-categories">APP · BOOK<\/span>/);
+  assert.match(page, /function filterTimeline\(category\)/);
+});
+
+test("Timeline rejects unsupported categories", () => {
+  assert.throws(
+    () => parseTimeline("---\ndate: 2026-10-13\ncategories: [APP, OTHER]\n---\n\n記録", "t20261013.md", "2026", "10"),
+    /categories must contain only APP and\/or BOOK/,
+  );
 });
 
 test("Timeline renders Obsidian images from the same month images folder", () => {
