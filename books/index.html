@@ -18,8 +18,15 @@ body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sa
 .back{font-size:12px;letter-spacing:.05em;color:#666}
 .content{width:min(720px,100%);margin:auto;padding:86px 0 100px}
 h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,3vw,40px);font-weight:400;letter-spacing:.03em}
-.books-list{margin-top:34px}
-.empty{margin:0;font-size:15px;line-height:2;letter-spacing:.04em}
+.books-intro{margin:24px 0 0;font-size:15px;line-height:2;letter-spacing:.04em}
+.books-list{display:grid;gap:72px;margin-top:48px}
+.book{display:grid;grid-template-columns:240px minmax(0,1fr);gap:36px;align-items:start}
+.book-cover{display:block;width:100%;height:auto}
+.book-title{margin:0;font-size:18px;font-weight:400;line-height:1.8;letter-spacing:.03em;overflow-wrap:anywhere}
+.book-description{margin:16px 0 0;font-size:14px;line-height:2;letter-spacing:.04em}
+.book-price{margin:18px 0 0;font-size:13px;line-height:1.8;letter-spacing:.04em}
+.book-link{display:inline-block;margin-top:12px;color:#666;font-size:12px;line-height:2;letter-spacing:.04em;text-decoration:none}
+.book-link:hover,.book-link:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
 .footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
 .footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
 .footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
@@ -34,8 +41,11 @@ h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,3vw
   .page{padding:28px 22px 22px}
   .brand{font-size:16px}
   .content{padding:58px 0 72px}
-  .books-list{margin-top:26px}
-  .empty{font-size:14px;line-height:1.95}
+  .books-intro{margin-top:20px;font-size:14px;line-height:1.95}
+  .books-list{margin-top:36px;gap:56px}
+  .book{grid-template-columns:minmax(0,1fr);gap:22px}
+  .book-cover{width:min(280px,100%);margin-inline:auto}
+  .book-title{font-size:16px}
 }
 </style>
 <link rel="stylesheet" href="../assets/site-footer.css">
@@ -48,8 +58,35 @@ h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,3vw
   </header>
   <main class="content">
     <h1>Books</h1>
+    <p class="books-intro">かんりにんが作った本や教材を並べています。</p>
     <section class="books-list" aria-label="書籍一覧">
-      <p class="empty">ただいま、最初の一冊を制作中です。</p>
+      <article class="book" aria-labelledby="book-8529005">
+        <img class="book-cover" src="../assets/books/8529005.jpg" alt="複素数平面への入り口の商品画像" width="1024" height="576" decoding="async">
+        <div class="book-details">
+          <h2 class="book-title" id="book-8529005">複素数平面への入り口</h2>
+          <p class="book-description">複素数平面の考え方を、図や動きを通して視覚的に理解するための教材です。</p>
+          <p class="book-price">価格：490円</p>
+          <a class="book-link" href="https://kikakuk.booth.pm/items/8529005" target="_blank" rel="noopener noreferrer">BOOTHで見る ↗</a>
+        </div>
+      </article>
+      <article class="book" aria-labelledby="book-8420562">
+        <img class="book-cover" src="../assets/books/8420562.jpg" alt="【インタラクティブ教材】2次関数 最大・最小 場合分け体験ドリルの商品画像" width="1024" height="670" decoding="async">
+        <div class="book-details">
+          <h2 class="book-title" id="book-8420562">【インタラクティブ教材】2次関数 最大・最小 場合分け体験ドリル</h2>
+          <p class="book-description">2次関数の最大・最小と場合分けを、操作しながら体験できる教材です。</p>
+          <p class="book-price">価格：490円</p>
+          <a class="book-link" href="https://kikakuk.booth.pm/items/8420562" target="_blank" rel="noopener noreferrer">BOOTHで見る ↗</a>
+        </div>
+      </article>
+      <article class="book" aria-labelledby="book-8398118">
+        <img class="book-cover" src="../assets/books/8398118.jpg" alt="【高校数学教材】式と曲線の商品画像" width="678" height="372" decoding="async">
+        <div class="book-details">
+          <h2 class="book-title" id="book-8398118">【高校数学教材】式と曲線</h2>
+          <p class="book-description">高校数学Cの式と曲線を、グラフの動きとともに学べるインタラクティブ教材です。</p>
+          <p class="book-price">価格：980円</p>
+          <a class="book-link" href="https://kikakuk.booth.pm/items/8398118" target="_blank" rel="noopener noreferrer">BOOTHで見る ↗</a>
+        </div>
+      </article>
     </section>
   </main>
   <footer class="footer">
