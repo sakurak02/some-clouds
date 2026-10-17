@@ -160,7 +160,7 @@ test("Development journal uses the former Fragments atmosphere and newest-first 
   assert.match(page, /<div class="footer-credit">/);
 
   const sitemap = renderSitemap([newer]);
-  assert.match(sitemap, /some-clouds\/books\//);
+  assert.match(sitemap, /some-clouds\/shop\//);
   assert.match(sitemap, /development\/journal\/2026\/d20261015\.html/);
   assert.doesNotMatch(sitemap, /\/notes\//);
 });

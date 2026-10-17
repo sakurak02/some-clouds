@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="some clouds の本と小さな作品。">
+<title>Shop — some clouds</title>
+<link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400&display=swap");
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#fff;color:#222}
+body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif}
+.page{min-height:100dvh;padding:38px 50px 30px;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between}
+.brand,.back{font-family:Georgia,"Times New Roman",serif;text-decoration:none;color:inherit}
+.brand{font-size:18px;letter-spacing:.07em}
+.back{font-size:12px;letter-spacing:.05em;color:#666}
+.content{width:min(720px,100%);margin:auto;padding:86px 0 100px}
+.shop-section{margin-top:48px}
+.shop-section+.shop-section{margin-top:72px}
+.shop-section-title{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:24px;font-weight:400;letter-spacing:.03em}
+h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,3vw,40px);font-weight:400;letter-spacing:.03em}
+.books-intro{margin:24px 0 0;font-size:15px;line-height:2;letter-spacing:.04em}
+.books-list{display:grid;gap:56px;margin-top:48px}
+.book{display:grid;grid-template-columns:210px minmax(0,1fr);gap:36px;align-items:start}
+.book-cover{display:block;width:100%;height:auto}
+.book-title{margin:0;font-size:18px;font-weight:400;line-height:1.8;letter-spacing:.03em;overflow-wrap:anywhere}
+.book-description{margin:12px 0 0;font-size:14px;line-height:2;letter-spacing:.04em}
+.book-price{margin:14px 0 0;font-size:13px;line-height:1.8;letter-spacing:.04em}
+.book-link{display:inline-block;margin-top:8px;color:#666;font-size:12px;line-height:2;letter-spacing:.04em;text-decoration:none}
+.book-link:hover,.book-link:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
+.footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
+.footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
+.footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
+.footer-meet,.footer-social{width:max-content;max-width:100%;margin-right:auto;margin-left:auto;color:#666;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
+.footer-meet{margin-bottom:7px}
+.footer-social{margin-bottom:5px}
+.footer-social-disabled{color:#999}
+.footer-name{margin-top:8px;font-size:12px;letter-spacing:.08em}
+.footer-project{margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
+.footer-meet:hover,.footer-meet:focus-visible,.footer-social[href]:hover,.footer-social[href]:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:700px){
+  .page{padding:28px 22px 22px}
+  .brand{font-size:16px}
+  .content{padding:58px 0 72px}
+  .shop-section{margin-top:36px}
+  .shop-section+.shop-section{margin-top:56px}
+  .books-intro{margin-top:20px;font-size:14px;line-height:1.95}
+  .books-list{margin-top:36px;gap:44px}
+  .book{grid-template-columns:minmax(0,1fr);gap:22px}
+  .book-cover{width:min(210px,100%);margin-inline:auto}
+  .book-title{font-size:16px}
+}
+</style>
+<link rel="stylesheet" href="../assets/site-footer.css">
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <a class="brand" href="../">some clouds</a>
+    <a class="back" href="../">← Home</a>
+  </header>
+  <main class="content">
+    <h1>Shop</h1>
+    <section class="shop-section" id="books" aria-labelledby="books-heading">
+      <h2 class="shop-section-title" id="books-heading">Books</h2>
+      <p class="books-intro">かんりにんが作った本や教材を並べています。</p>
+      <div class="books-list" aria-label="書籍一覧">
+        <article class="book" aria-labelledby="book-8529005">
+          <img class="book-cover" src="../assets/books/8529005.jpg" alt="複素数平面への入り口の商品画像" width="1024" height="576" decoding="async">
+          <div class="book-details">
+            <h3 class="book-title" id="book-8529005">複素数平面への入り口</h3>
+            <p class="book-description">複素数平面の考え方を、図や動きを通して視覚的に理解するための教材です。</p>
+            <p class="book-price">価格：490円</p>
+            <a class="book-link" href="https://kikakuk.booth.pm/items/8529005" target="_blank" rel="noopener noreferrer">BOOTHで見る ↗</a>
+          </div>
+        </article>
+        <article class="book" aria-labelledby="book-8420562">
+          <img class="book-cover" src="../assets/books/8420562.jpg" alt="【インタラクティブ教材】2次関数 最大・最小 場合分け体験ドリルの商品画像" width="1024" height="670" decoding="async">
+          <div class="book-details">
+            <h3 class="book-title" id="book-8420562">【インタラクティブ教材】2次関数 最大・最小 場合分け体験ドリル</h3>
+            <p class="book-description">2次関数の最大・最小と場合分けを、操作しながら体験できる教材です。</p>
+            <p class="book-price">価格：490円</p>
+            <a class="book-link" href="https://kikakuk.booth.pm/items/8420562" target="_blank" rel="noopener noreferrer">BOOTHで見る ↗</a>
+          </div>
+        </article>
+        <article class="book" aria-labelledby="book-8398118">
+          <img class="book-cover" src="../assets/books/8398118.jpg" alt="【高校数学教材】式と曲線の商品画像" width="678" height="372" decoding="async">
+          <div class="book-details">
+            <h3 class="book-title" id="book-8398118">【高校数学教材】式と曲線</h3>
+            <p class="book-description">高校数学Cの式と曲線を、グラフの動きとともに学べるインタラクティブ教材です。</p>
+            <p class="book-price">価格：980円</p>
+            <a class="book-link" href="https://kikakuk.booth.pm/items/8398118" target="_blank" rel="noopener noreferrer">BOOTHで見る ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="shop-section" id="works" aria-labelledby="works-heading">
+      <h2 class="shop-section-title" id="works-heading">Works</h2>
+      <div class="books-list" aria-label="作品一覧">
+        <article class="book" aria-labelledby="work-9002377">
+          <img class="book-cover" src="../assets/shop/9002377.jpg" alt="こくもと暮らす壁紙セットの商品紹介画像" width="1024" height="1024" decoding="async">
+          <div class="book-details">
+            <h3 class="book-title" id="work-9002377">こくもと暮らす壁紙セット｜kokumo wallpapers</h3>
+            <p class="book-description">スマホ用3枚＋PC用2枚の壁紙セット。</p>
+            <p class="book-price">価格：300円</p>
+            <a class="book-link" href="https://kikakuk.booth.pm/items/9002377" target="_blank" rel="noopener noreferrer">BOOTHで見る ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="footer-links"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="../characters/">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span></div>
+    <div class="footer-credit"><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></div>
+  </footer>
+</div>
+</body>
+</html>
