@@ -15,6 +15,8 @@ const timelineFilePattern = /^t(\d{4})(\d{2})(\d{2})\.md$/;
 const developmentFilePattern = /^d(\d{4})(\d{2})(\d{2})\.md$/;
 const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
+const developmentCategories = ["APP", "BOOK", "WORKS"];
+const categoryStyles = `.development-categories{color:#999;font-family:"Noto Sans JP",sans-serif;font-size:9px;font-weight:400;letter-spacing:.1em}`;
 const footerLinkStyles = `.footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
 .footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
 .footer-meet,.footer-social{width:max-content;max-width:100%;margin-right:auto;margin-left:auto;color:#666;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
@@ -223,7 +225,7 @@ function renderArticleMarkdown(markdown, assetMonth = "") {
   return blocks.join("\n");
 }
 
-function parseTimelineCategories(frontMatterSource, fileName) {
+function parseDevelopmentCategories(frontMatterSource, fileName) {
   const lines = normalize(frontMatterSource).split("\n");
   const fieldIndex = lines.findIndex((line) => /^categor(?:y|ies):/i.test(line));
   if (fieldIndex === -1) return [];
@@ -247,13 +249,19 @@ function parseTimelineCategories(frontMatterSource, fileName) {
   const values = rawValues
     .map((value) => value.trim().replace(/^['"]|['"]$/g, "").toUpperCase())
     .filter(Boolean);
-  const invalid = values.filter((value) => value !== "APP" && value !== "BOOK");
+  const invalid = values.filter((value) => !developmentCategories.includes(value));
   if (invalid.length > 0) {
-    throw new Error(`${fileName}: categories must contain only APP and/or BOOK`);
+    throw new Error(`${fileName}: categories must contain only APP, BOOK, WORKS`);
   }
 
   const selected = new Set(values);
-  return ["APP", "BOOK"].filter((category) => selected.has(category));
+  return developmentCategories.filter((category) => selected.has(category));
+}
+
+function renderCategories(categories) {
+  return categories.length
+    ? `<span class="development-categories">${categories.join(" · ")}</span>`
+    : "";
 }
 
 function extractDateMetadata(normalized, fileName) {
@@ -265,7 +273,7 @@ function extractDateMetadata(normalized, fileName) {
     if (dateField) {
       return {
         date: dateField[1],
-        categories: parseTimelineCategories(frontMatter[1], fileName),
+        categories: parseDevelopmentCategories(frontMatter[1], fileName),
         bodySource: normalized.slice(frontMatter[0].length),
       };
     }
@@ -414,6 +422,7 @@ function parseDevelopmentArticle(source, fileName, yearName, monthName) {
     displayDate: `${year}.${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}`,
     title,
     body,
+    categories: parseDevelopmentCategories(frontMatter[1], fileName),
   };
 }
 
@@ -496,10 +505,7 @@ function groupByYear(entries) {
 
 function renderTimelineDay(entry) {
   const assetBase = `./timeline/${entry.year}/${entry.month}`;
-  const categories = entry.categories.join(" · ");
-  const categoryLabel = categories
-    ? `<span class="day-categories">${categories}</span>`
-    : "";
+  const categoryLabel = renderCategories(entry.categories);
   return `<details class="day" data-categories="${entry.categories.join(" ")}">
   <summary><span class="day-heading"><time datetime="${entry.date}">${entry.displayDate}</time>${categoryLabel}</span></summary>
   <div class="day-content">
@@ -608,7 +614,7 @@ ${sharedStyles}
 .timeline-kuumo-description{margin:0;color:#777;font-size:10px;line-height:1.8;letter-spacing:.04em}
 .timeline-kuumo{display:block;flex:0 0 auto;width:230px;height:auto;pointer-events:none;user-select:none}
 .day-heading{display:flex;align-items:baseline;gap:12px}
-.day-categories{color:#999;font-family:"Noto Sans JP",sans-serif;font-size:9px;font-weight:400;letter-spacing:.1em}
+${categoryStyles}
 .tagline p{margin:0}.tagline p+p{margin-top:5px}
 .category-tabs{display:flex;align-items:center;gap:6px;margin-top:66px}
 .category-tab{min-height:30px;padding:4px 11px;border:1px solid #ddd;border-radius:999px;background:#fff;color:#888;font-family:"Noto Sans JP",sans-serif;font-size:10px;letter-spacing:.08em;cursor:pointer}
@@ -659,8 +665,7 @@ ${sharedStyles}
     </div>
     <div class="category-tabs" role="group" aria-label="カテゴリーで絞り込む">
       <button class="category-tab" type="button" data-category-filter="all" aria-pressed="true">すべて</button>
-      <button class="category-tab" type="button" data-category-filter="APP" aria-pressed="false">APP</button>
-      <button class="category-tab" type="button" data-category-filter="BOOK" aria-pressed="false">BOOK</button>
+      ${developmentCategories.map((category) => `<button class="category-tab" type="button" data-category-filter="${category}" aria-pressed="false">${category}</button>`).join("\n      ")}
     </div>
     <div class="archive timeline-archive">
       ${years}
@@ -721,7 +726,7 @@ function renderDevelopmentJournalPage(entries) {
   <ol class="entries">
     ${monthEntries
       .sort((a, b) => b.dateObject - a.dateObject)
-      .map((entry) => `<li class="entry"><a href="./${entry.year}/${entry.slug}.html"><time datetime="${entry.date}">${entry.displayDate.slice(5)}</time><span>${escapeHtml(entry.title)}</span></a></li>`)
+      .map((entry) => `<li class="entry"><a href="./${entry.year}/${entry.slug}.html"><time datetime="${entry.date}">${entry.displayDate.slice(5)}</time><span class="entry-heading"><span>${escapeHtml(entry.title)}</span>${renderCategories(entry.categories)}</span></a></li>`)
       .join("\n    ")}
   </ol>
 </details>`)
@@ -761,8 +766,10 @@ ${sharedStyles}
 .entry{border-top:1px solid #f0f0f0}
 .entry a{display:grid;grid-template-columns:74px minmax(0,1fr);gap:20px;align-items:baseline;padding:14px 2px;color:#222;text-decoration:none}
 .entry time{color:#777;font-family:Georgia,"Times New Roman",serif;font-size:11px;letter-spacing:.07em}
-.entry span{font-size:13px;line-height:1.75}
-.entry a:hover span{text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:4px}
+.entry-heading{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;min-width:0;font-size:13px;line-height:1.75;overflow-wrap:anywhere}
+.entry-heading>span:first-child{font-size:13px}
+${categoryStyles}
+.entry a:hover .entry-heading>span:first-child{text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:4px}
 .status{margin:0;padding:22px 2px 23px;border-top:1px solid #dadada;border-bottom:1px solid #dadada;color:#888;font-size:12px}
 @media(max-width:700px){
   .section-name{max-width:calc(100% - 124px)}
@@ -772,7 +779,6 @@ ${sharedStyles}
   .status{padding:19px 2px 20px}
   .entry a{display:block;padding:16px 2px}
   .entry time{display:block;margin-bottom:7px;font-size:11px}
-  .entry span{font-size:13px}
 }
 </style>
 <link rel="stylesheet" href="../../assets/site-footer.css">
@@ -819,6 +825,9 @@ body{font-family:Georgia,"Times New Roman",serif}
 .article-header{padding-bottom:28px;border-bottom:1px solid #dadada}
 h1{margin:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:clamp(27px,4vw,38px);font-weight:500;line-height:1.55;letter-spacing:.02em}
 .date{display:block;margin-top:14px;color:#777;font-size:11px;letter-spacing:.08em}
+.article-meta{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin-top:14px}
+.article-meta .date{margin-top:0}
+${categoryStyles}
 .article-body{padding-top:34px;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:14px;line-height:2;letter-spacing:.025em;overflow-wrap:anywhere}
 .article-body h2,.article-body h3,.article-body h4{margin:42px 0 16px;font-family:Georgia,"Times New Roman",serif;font-weight:400;line-height:1.6}
 .article-body h2{font-size:22px}.article-body h3{font-size:18px}.article-body h4{font-size:16px}
@@ -849,7 +858,7 @@ ${footerLinkStyles}
     <article>
       <header class="article-header">
         <h1>${escapeHtml(entry.title)}</h1>
-        <time class="date" datetime="${entry.date}">${entry.displayDate}</time>
+        ${entry.categories.length ? `<div class="article-meta"><time class="date" datetime="${entry.date}">${entry.displayDate}</time>${renderCategories(entry.categories)}</div>` : `<time class="date" datetime="${entry.date}">${entry.displayDate}</time>`}
       </header>
       <div class="article-body">
         ${renderArticleMarkdown(entry.body, entry.month)}

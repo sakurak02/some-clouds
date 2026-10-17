@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 
 import {
   parseDevelopmentArticle,
@@ -50,7 +51,7 @@ categories: [APP, BOOK]
   assert.match(page, /data-category-filter="APP"/);
   assert.match(page, /data-category-filter="BOOK"/);
   assert.match(page, /data-categories="APP BOOK"/);
-  assert.match(page, /<span class="day-categories">APP · BOOK<\/span>/);
+  assert.match(page, /<span class="development-categories">APP · BOOK<\/span>/);
   assert.match(page, /function filterTimeline\(category\)/);
   assert.match(page, /href="\.\.\/assets\/site-footer\.css"/);
   assert.match(page, /<div class="footer-links">/);
@@ -80,10 +81,48 @@ categories:
   assert.deepEqual(bothEntry.categories, ["APP", "BOOK"]);
 });
 
+test("Timeline and Journal share all three categories in existing YAML formats", () => {
+  for (const categoryField of [
+    "category: WORKS",
+    "categories: [WORKS]",
+    "categories:\n  - WORKS",
+    "categories: [works, BOOK, APP, WORKS]",
+    "categories:\n  - WORKS\n  - BOOK\n  - APP",
+  ]) {
+    const source = `---\ndate: 2026-10-17\ntitle: 作品制作\n${categoryField}\n---\n\n本文`;
+    const timeline = parseTimeline(source, "t20261017.md", "2026", "10");
+    const journal = parseDevelopmentArticle(source, "d20261017.md", "2026", "10");
+    const expected = categoryField.includes("BOOK") ? ["APP", "BOOK", "WORKS"] : ["WORKS"];
+    assert.deepEqual(timeline.categories, expected);
+    assert.deepEqual(journal.categories, expected);
+    const label = `<span class="development-categories">${expected.join(" · ")}</span>`;
+    assert.ok(renderTimelinePage([timeline]).includes(label));
+    assert.ok(renderDevelopmentJournalPage([journal]).includes(label));
+    assert.ok(renderDevelopmentArticlePage(journal).includes(label));
+    assert.match(renderTimelinePage([timeline]), /data-category-filter="WORKS"/);
+  }
+});
+
+test("SITE stays unsupported in both collections", () => {
+  const source = "---\ndate: 2026-10-17\ntitle: 記録\ncategories: [SITE]\n---\n\n本文";
+  assert.throws(() => parseTimeline(source, "t20261017.md", "2026", "10"), /categories must contain only APP, BOOK, WORKS/);
+  assert.throws(() => parseDevelopmentArticle(source, "d20261017.md", "2026", "10"), /categories must contain only APP, BOOK, WORKS/);
+});
+
+test("October 17 Journal renders WORKS with its existing title and date", async () => {
+  const source = await readFile(new URL("../development/journal/2026/10/d20261017.md", import.meta.url), "utf8");
+  const article = parseDevelopmentArticle(source, "d20261017.md", "2026", "10");
+  assert.equal(article.title, "こくもたちのデビュー");
+  assert.equal(article.date, "2026-10-17");
+  assert.deepEqual(article.categories, ["WORKS"]);
+  assert.match(renderDevelopmentJournalPage([article]), /development-categories">WORKS<\/span>/);
+  assert.match(renderDevelopmentArticlePage(article), /development-categories">WORKS<\/span>/);
+});
+
 test("Timeline rejects unsupported categories", () => {
   assert.throws(
     () => parseTimeline("---\ndate: 2026-10-13\ncategories: [APP, OTHER]\n---\n\n記録", "t20261013.md", "2026", "10"),
-    /categories must contain only APP and\/or BOOK/,
+    /categories must contain only APP, BOOK, WORKS/,
   );
 });
 
