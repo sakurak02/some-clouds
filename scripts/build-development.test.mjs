@@ -119,6 +119,21 @@ test("October 17 Journal renders WORKS with its existing title and date", async 
   assert.match(renderDevelopmentArticlePage(article), /development-categories">WORKS<\/span>/);
 });
 
+test("Journal shares Timeline filter buttons and exposes categories without changing article links", () => {
+  const article = parseDevelopmentArticle(
+    "---\ndate: 2026-10-17\ntitle: こくもたちのデビュー\ncategories: [APP, WORKS]\n---\n\n本文",
+    "d20261017.md", "2026", "10",
+  );
+  const page = renderDevelopmentJournalPage([article]);
+  const buttons = (html) => html.match(/<div class="category-tabs"[\s\S]*?<\/div>/)[0];
+  assert.equal(buttons(page), buttons(renderTimelinePage([])));
+  assert.deepEqual([...page.matchAll(/data-category-filter="(.*?)"/g)].map((match) => match[1]), ["all", "APP", "BOOK", "WORKS"]);
+  assert.match(page, /data-category-filter="all" aria-pressed="true"/);
+  assert.ok(page.indexOf('class="category-tabs"') < page.indexOf('<summary>2026</summary>'));
+  assert.match(page, /<li class="entry" data-categories="APP WORKS"><a href="\.\/2026\/d20261017\.html">/);
+  assert.match(page, /<p class="filter-empty" hidden>該当する記事はありません。<\/p>/);
+});
+
 test("Timeline rejects unsupported categories", () => {
   assert.throws(
     () => parseTimeline("---\ndate: 2026-10-13\ncategories: [APP, OTHER]\n---\n\n記録", "t20261013.md", "2026", "10"),

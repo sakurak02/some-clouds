@@ -591,6 +591,20 @@ ${footerLinkStyles}
   .days{padding-left:12px}
 }`;
 
+const categoryFilterStyles = `.category-tabs{display:flex;align-items:center;gap:6px;margin-top:66px}
+.category-tab{min-height:30px;padding:4px 11px;border:1px solid #ddd;border-radius:999px;background:#fff;color:#888;font-family:"Noto Sans JP",sans-serif;font-size:10px;letter-spacing:.08em;cursor:pointer}
+.category-tab[aria-pressed="true"]{border-color:#aaa;color:#333}
+.category-tab:hover,.category-tab:focus-visible{border-color:#aaa;color:#333}`;
+const mobileCategoryFilterStyles = `  .category-tabs{margin-top:48px}
+  .category-tab{min-height:36px;padding:6px 13px}`;
+
+function renderCategoryTabs() {
+  return `<div class="category-tabs" role="group" aria-label="カテゴリーで絞り込む">
+      <button class="category-tab" type="button" data-category-filter="all" aria-pressed="true">すべて</button>
+      ${developmentCategories.map((category) => `<button class="category-tab" type="button" data-category-filter="${category}" aria-pressed="false">${category}</button>`).join("\n      ")}
+    </div>`;
+}
+
 function renderTimelinePage(entries) {
   const years = renderYearGroups(entries, renderTimelineDay);
   return `<!doctype html>
@@ -616,10 +630,7 @@ ${sharedStyles}
 .day-heading{display:flex;align-items:baseline;gap:12px}
 ${categoryStyles}
 .tagline p{margin:0}.tagline p+p{margin-top:5px}
-.category-tabs{display:flex;align-items:center;gap:6px;margin-top:66px}
-.category-tab{min-height:30px;padding:4px 11px;border:1px solid #ddd;border-radius:999px;background:#fff;color:#888;font-family:"Noto Sans JP",sans-serif;font-size:10px;letter-spacing:.08em;cursor:pointer}
-.category-tab[aria-pressed="true"]{border-color:#aaa;color:#333}
-.category-tab:hover,.category-tab:focus-visible{border-color:#aaa;color:#333}
+${categoryFilterStyles}
 .timeline-archive{margin-top:18px}
 .filter-empty{margin:18px 0 0;color:#888;font-size:12px}
 [hidden]{display:none!important}
@@ -634,8 +645,7 @@ ${categoryStyles}
   .timeline-kuumo-name{margin-bottom:6px;font-size:12px}
   .timeline-kuumo-description{font-size:9.5px;line-height:1.75}
   .timeline-kuumo{width:130px}
-  .category-tabs{margin-top:48px}
-  .category-tab{min-height:36px;padding:6px 13px}
+${mobileCategoryFilterStyles}
   .timeline-archive{margin-top:16px}
   .day-content{padding:19px 4px 27px 12px;font-size:13px;line-height:1.9}
 }
@@ -663,10 +673,7 @@ ${categoryStyles}
       </div>
       <img class="timeline-kuumo" src="../assets/kuumo/Timeline.png" alt="" aria-hidden="true" draggable="false">
     </div>
-    <div class="category-tabs" role="group" aria-label="カテゴリーで絞り込む">
-      <button class="category-tab" type="button" data-category-filter="all" aria-pressed="true">すべて</button>
-      ${developmentCategories.map((category) => `<button class="category-tab" type="button" data-category-filter="${category}" aria-pressed="false">${category}</button>`).join("\n      ")}
-    </div>
+    ${renderCategoryTabs()}
     <div class="archive timeline-archive">
       ${years}
     </div>
@@ -726,7 +733,7 @@ function renderDevelopmentJournalPage(entries) {
   <ol class="entries">
     ${monthEntries
       .sort((a, b) => b.dateObject - a.dateObject)
-      .map((entry) => `<li class="entry"><a href="./${entry.year}/${entry.slug}.html"><time datetime="${entry.date}">${entry.displayDate.slice(5)}</time><span class="entry-heading"><span>${escapeHtml(entry.title)}</span>${renderCategories(entry.categories)}</span></a></li>`)
+      .map((entry) => `<li class="entry" data-categories="${entry.categories.join(" ")}"><a href="./${entry.year}/${entry.slug}.html"><time datetime="${entry.date}">${entry.displayDate.slice(5)}</time><span class="entry-heading"><span>${escapeHtml(entry.title)}</span>${renderCategories(entry.categories)}</span></a></li>`)
       .join("\n    ")}
   </ol>
 </details>`)
@@ -771,6 +778,10 @@ ${sharedStyles}
 ${categoryStyles}
 .entry a:hover .entry-heading>span:first-child{text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:4px}
 .status{margin:0;padding:22px 2px 23px;border-top:1px solid #dadada;border-bottom:1px solid #dadada;color:#888;font-size:12px}
+${categoryFilterStyles}
+.journal-archive{margin-top:18px}
+.filter-empty{margin:18px 0 0;color:#888;font-size:12px}
+[hidden]{display:none!important}
 @media(max-width:700px){
   .section-name{max-width:calc(100% - 124px)}
   .journal-kuumo{top:5px;right:0;width:112px}
@@ -779,6 +790,8 @@ ${categoryStyles}
   .status{padding:19px 2px 20px}
   .entry a{display:block;padding:16px 2px}
   .entry time{display:block;margin-bottom:7px;font-size:11px}
+${mobileCategoryFilterStyles}
+  .journal-archive{margin-top:16px}
 }
 </style>
 <link rel="stylesheet" href="../../assets/site-footer.css">
@@ -793,12 +806,45 @@ ${categoryStyles}
     <h1>開発日記</h1>
     <p class="section-name">アプリをつくったり、本をつくったり。あれこれ試している記録。</p>
     <img class="journal-kuumo" src="../../assets/kuumo/Fragments.png" alt="" aria-hidden="true" draggable="false">
-    <div class="archive">
+    ${renderCategoryTabs()}
+    <div class="archive journal-archive">
       ${archive}
     </div>
+    <p class="filter-empty" hidden>該当する記事はありません。</p>
   </main>
   <footer class="footer">${renderFooter("../../characters/")}</footer>
 </div>
+<script>
+const categoryTabs = document.querySelectorAll('[data-category-filter]');
+const journalEntries = document.querySelectorAll('.entry');
+const journalMonths = document.querySelectorAll('.month');
+const journalYears = document.querySelectorAll('.year');
+const filterEmpty = document.querySelector('.filter-empty');
+
+function filterJournal(category) {
+  let visibleEntryCount = 0;
+  journalEntries.forEach(entry => {
+    const categories = entry.dataset.categories.split(' ').filter(Boolean);
+    const visible = category === 'all' || categories.includes(category);
+    entry.hidden = !visible;
+    if (visible) visibleEntryCount += 1;
+  });
+  journalMonths.forEach(month => {
+    month.hidden = !month.querySelector('.entry:not([hidden])');
+  });
+  journalYears.forEach(year => {
+    year.hidden = !year.querySelector('.month:not([hidden])');
+  });
+  categoryTabs.forEach(tab => {
+    tab.setAttribute('aria-pressed', String(tab.dataset.categoryFilter === category));
+  });
+  filterEmpty.hidden = category === 'all' || visibleEntryCount > 0;
+}
+
+categoryTabs.forEach(tab => {
+  tab.addEventListener('click', () => filterJournal(tab.dataset.categoryFilter));
+});
+</script>
 </body>
 </html>
 `;
