@@ -1,25 +1,102 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Reading — some clouds の読書記録。">
 <title>Reading — some clouds</title>
 <link rel="icon" href="../assets/cloud.svg" type="image/svg+xml">
 <style>
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap");
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:#fff;color:#222}
-body{font-family:Georgia,"Times New Roman",serif}
-.page{min-height:100dvh;padding:38px 50px 30px}
-.content{width:min(720px,100%);margin:86px auto 100px;font-size:15px;line-height:2;letter-spacing:.03em}
+body{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif}
+a{color:inherit}
+.page{min-height:100dvh;padding:38px 50px 30px;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.07em;text-decoration:none}
+.content{width:min(1040px,100%);margin:86px auto 100px}
+h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(34px,4vw,48px);font-weight:400;letter-spacing:.03em}
+.section-name{margin:34px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:15px;letter-spacing:.08em}
+.tagline{margin:8px 0 0;font-size:12px;color:#777;letter-spacing:.05em}
+.archive{margin-top:66px}
+details>summary{list-style:none;cursor:pointer}
+details>summary::-webkit-details-marker{display:none}
+.year{border-top:1px solid #dadada}
+.year:last-child{border-bottom:1px solid #dadada}
+.year>summary{display:flex;align-items:center;justify-content:space-between;padding:19px 2px;font-family:Georgia,"Times New Roman",serif;font-size:18px;letter-spacing:.06em}
+.year>summary::after,.month>summary::after,.day>summary::after{content:"＋";font-family:"Noto Sans JP",sans-serif;font-size:13px;font-weight:400;color:#777}
+.year[open]>summary::after,.month[open]>summary::after,.day[open]>summary::after{content:"−"}
+.months{padding:0 0 18px 28px}
+.month{border-top:1px solid #ededed}
+.month>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-size:13px;letter-spacing:.07em;color:#555}
+.month>summary::after{font-size:11px}
+.days{padding:0 0 14px 20px}
+.day{border-top:1px solid #ededed}
+.day>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 2px;font-family:Georgia,"Times New Roman",serif;font-size:14px;letter-spacing:.07em}
+.day>summary::after{font-size:11px}
+.content-image{margin:18px 0}
+.content-image img{display:block;max-width:100%;height:auto}
+.empty{margin:0;color:#888;font-size:12px}
+.footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
+.footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
+.footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
+.footer-meet,.footer-social{width:max-content;max-width:100%;margin-right:auto;margin-left:auto;color:#666;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
+.footer-meet{margin-bottom:7px}
+.footer-social{margin-bottom:5px}
+.footer-social-disabled{color:#999}
+.footer-name{margin-top:8px;font-size:12px;letter-spacing:.08em}
+.footer-project{margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
+.footer-meet:hover,.footer-meet:focus-visible,.footer-social[href]:hover,.footer-social[href]:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
 @media(max-width:700px){
   .page{padding:28px 22px 22px}
+  .brand{font-size:16px}
   .content{margin:58px auto 72px}
+  .section-name{margin-top:26px}
+  .archive{margin-top:48px}
+  .months{padding-left:14px}
+  .days{padding-left:12px}
+}
+
+.content{width:min(720px,100%)}
+.back{font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.05em;text-decoration:none;color:#666}
+.bookshelf{margin:48px 0 0;padding:0;list-style:none;border-bottom:1px solid #dadada}
+.shelf-book{border-top:1px solid #dadada}
+.shelf-link{display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding:24px 2px;text-decoration:none}
+.shelf-info{min-width:0;overflow-wrap:anywhere}
+.shelf-title{display:block;font-size:16px;line-height:1.8;font-weight:400}
+.shelf-author{display:block;margin-top:6px;font-size:12px;color:#777;line-height:1.8}
+.reading-status{flex-shrink:0;color:#777;font-size:11px;letter-spacing:.05em;white-space:nowrap}
+.shelf-link:hover .shelf-title,.shelf-link:focus-visible .shelf-title{text-decoration:underline;text-underline-offset:4px;text-decoration-color:#aaa}
+.reading-empty{margin:48px 0 0;padding:24px 2px;border-top:1px solid #dadada;border-bottom:1px solid #dadada;font-size:13px;line-height:1.9;color:#777}
+.book-heading{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:clamp(27px,4vw,38px);line-height:1.55;overflow-wrap:anywhere}
+.book-author{margin:14px 0 0;color:#777;font-size:14px;line-height:1.8;overflow-wrap:anywhere}
+.book-metadata{display:grid;grid-template-columns:100px minmax(0,1fr);gap:12px 24px;margin:30px 0 0;padding:28px 0;border-top:1px solid #dadada;border-bottom:1px solid #dadada;font-size:13px;line-height:1.8}
+.book-metadata dt{color:#777}.book-metadata dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.reading-notes{margin-top:42px;font-size:14px;line-height:2;letter-spacing:.025em;overflow-wrap:anywhere}
+.reading-notes h2{margin:0 0 28px;font-size:20px;font-weight:400}
+.page-notes{margin-top:30px}.page-notes h3{margin:0 0 12px;color:#777;font-family:Georgia,"Times New Roman",serif;font-size:14px;font-weight:400;letter-spacing:.06em}
+.page-notes ul{margin:0;padding-left:1.4em}.page-notes li+li{margin-top:10px}.page-notes p{margin:0}.page-notes a{text-underline-offset:3px}
+.notes-empty{color:#777;font-size:13px}
+@media(max-width:700px){
+  .bookshelf,.reading-empty{margin-top:36px}
+  .shelf-link{gap:16px;padding:20px 2px}.shelf-title{font-size:15px}
+  .book-metadata{grid-template-columns:86px minmax(0,1fr);gap:10px 14px;font-size:12px;padding:23px 0}
+  .reading-notes{margin-top:34px;font-size:13px;line-height:1.95}
 }
 </style>
+<link rel="stylesheet" href="../assets/site-footer.css">
 </head>
 <body>
-<main class="page">
-  <p class="content">Reading notes — Coming soon.</p>
-</main>
+<div class="page">
+  <header class="top"><a class="brand" href="../">some clouds</a><a class="back" href="../">← Home</a></header>
+  <main class="content">
+    <h1>Reading</h1>
+    <p class="section-name">本棚</p>
+    <p class="reading-empty">本はまだ登録されていません。</p>
+  </main>
+  <footer class="footer"><div class="footer-links"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="../characters/">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span></div><div class="footer-credit"><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></div></footer>
+</div>
 </body>
 </html>

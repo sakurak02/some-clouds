@@ -920,7 +920,7 @@ ${footerLinkStyles}
 `;
 }
 
-function renderSitemap(developmentEntries = []) {
+function renderSitemap(developmentEntries = [], readingEntries = []) {
   const urls = [
     siteUrl,
     `${siteUrl}about/`,
@@ -930,6 +930,8 @@ function renderSitemap(developmentEntries = []) {
     `${siteUrl}development/`,
     `${siteUrl}development/journal/`,
     ...developmentEntries.map((entry) => `${siteUrl}development/journal/${entry.year}/${entry.slug}.html`),
+    `${siteUrl}reading/`,
+    ...readingEntries.map((entry) => `${siteUrl}reading/notes/${entry.slug}.html`),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -958,6 +960,7 @@ async function buildDevelopment() {
   console.log(`Generated development/index.html from ${timelineEntries.length} timeline file(s).`);
   console.log(`Generated development/journal/index.html and ${developmentEntries.length} article page(s).`);
   console.log("Generated sitemap.xml.");
+  return developmentEntries;
 }
 
 export {
@@ -970,6 +973,9 @@ export {
   renderMarkdown,
   renderSitemap,
   renderTimelinePage,
+  escapeHtml,
+  renderFooter,
+  sharedStyles,
 };
 
 if (process.argv[1] && path.resolve(process.argv[1]) === scriptFile) {
