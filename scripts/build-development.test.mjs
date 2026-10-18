@@ -28,7 +28,7 @@ Xcodeで画面遷移を試した。
   assert.doesNotMatch(page, /NEWS|PERSONAL/);
 });
 
-test("Timeline accepts APP and BOOK categories and renders filter controls", () => {
+test("Timeline accepts legacy BOOK as WORK and renders filter controls", () => {
   const appEntry = parseTimeline(`---
 date: 2026-10-11
 categories: [APP]
@@ -45,13 +45,13 @@ categories: [APP, BOOK]
 `, "t20261012.md", "2026", "10");
 
   assert.deepEqual(appEntry.categories, ["APP"]);
-  assert.deepEqual(bothEntry.categories, ["APP", "BOOK"]);
+  assert.deepEqual(bothEntry.categories, ["APP", "WORK"]);
   const page = renderTimelinePage([appEntry, bothEntry]);
   assert.match(page, /data-category-filter="all"[^>]*aria-pressed="true">すべて/);
   assert.match(page, /data-category-filter="APP"/);
-  assert.match(page, /data-category-filter="BOOK"/);
-  assert.match(page, /data-categories="APP BOOK"/);
-  assert.match(page, /<span class="development-categories">APP · BOOK<\/span>/);
+  assert.match(page, /data-category-filter="WORK"/);
+  assert.match(page, /data-categories="APP WORK"/);
+  assert.match(page, /<span class="development-categories">APP · WORK<\/span>/);
   assert.match(page, /function filterTimeline\(category\)/);
   assert.match(page, /href="\.\.\/assets\/site-footer\.css"/);
   assert.match(page, /<div class="footer-links">/);
@@ -78,11 +78,17 @@ categories:
 `, "t20261011.md", "2026", "10");
 
   assert.deepEqual(appEntry.categories, ["APP"]);
-  assert.deepEqual(bothEntry.categories, ["APP", "BOOK"]);
+  assert.deepEqual(bothEntry.categories, ["APP", "WORK"]);
 });
 
-test("Timeline and Journal share all three categories in existing YAML formats", () => {
+test("Timeline and Journal normalize WORK and legacy categories in existing YAML formats", () => {
   for (const categoryField of [
+    "category: WORK",
+    "categories: [WORK]",
+    "categories:\n  - WORK",
+    "categories: [APP, WORK]",
+    "categories: [WORK, BOOK, WORKS]",
+    "category: BOOK",
     "category: WORKS",
     "categories: [WORKS]",
     "categories:\n  - WORKS",
@@ -92,31 +98,31 @@ test("Timeline and Journal share all three categories in existing YAML formats",
     const source = `---\ndate: 2026-10-17\ntitle: 作品制作\n${categoryField}\n---\n\n本文`;
     const timeline = parseTimeline(source, "t20261017.md", "2026", "10");
     const journal = parseDevelopmentArticle(source, "d20261017.md", "2026", "10");
-    const expected = categoryField.includes("BOOK") ? ["APP", "BOOK", "WORKS"] : ["WORKS"];
+    const expected = categoryField.includes("APP") ? ["APP", "WORK"] : ["WORK"];
     assert.deepEqual(timeline.categories, expected);
     assert.deepEqual(journal.categories, expected);
     const label = `<span class="development-categories">${expected.join(" · ")}</span>`;
     assert.ok(renderTimelinePage([timeline]).includes(label));
     assert.ok(renderDevelopmentJournalPage([journal]).includes(label));
     assert.ok(renderDevelopmentArticlePage(journal).includes(label));
-    assert.match(renderTimelinePage([timeline]), /data-category-filter="WORKS"/);
+    assert.match(renderTimelinePage([timeline]), /data-category-filter="WORK"/);
   }
 });
 
 test("SITE stays unsupported in both collections", () => {
   const source = "---\ndate: 2026-10-17\ntitle: 記録\ncategories: [SITE]\n---\n\n本文";
-  assert.throws(() => parseTimeline(source, "t20261017.md", "2026", "10"), /categories must contain only APP, BOOK, WORKS/);
-  assert.throws(() => parseDevelopmentArticle(source, "d20261017.md", "2026", "10"), /categories must contain only APP, BOOK, WORKS/);
+  assert.throws(() => parseTimeline(source, "t20261017.md", "2026", "10"), /categories must contain only APP, WORK/);
+  assert.throws(() => parseDevelopmentArticle(source, "d20261017.md", "2026", "10"), /categories must contain only APP, WORK/);
 });
 
-test("October 17 Journal renders WORKS with its existing title and date", async () => {
+test("October 17 Journal renders legacy WORKS as WORK with its existing title and date", async () => {
   const source = await readFile(new URL("../development/journal/2026/10/d20261017.md", import.meta.url), "utf8");
   const article = parseDevelopmentArticle(source, "d20261017.md", "2026", "10");
   assert.equal(article.title, "こくもたちのデビュー");
   assert.equal(article.date, "2026-10-17");
-  assert.deepEqual(article.categories, ["WORKS"]);
-  assert.match(renderDevelopmentJournalPage([article]), /development-categories">WORKS<\/span>/);
-  assert.match(renderDevelopmentArticlePage(article), /development-categories">WORKS<\/span>/);
+  assert.deepEqual(article.categories, ["WORK"]);
+  assert.match(renderDevelopmentJournalPage([article]), /development-categories">WORK<\/span>/);
+  assert.match(renderDevelopmentArticlePage(article), /development-categories">WORK<\/span>/);
 });
 
 test("Journal shares Timeline filter buttons and exposes categories without changing article links", () => {
@@ -127,17 +133,17 @@ test("Journal shares Timeline filter buttons and exposes categories without chan
   const page = renderDevelopmentJournalPage([article]);
   const buttons = (html) => html.match(/<div class="category-tabs"[\s\S]*?<\/div>/)[0];
   assert.equal(buttons(page), buttons(renderTimelinePage([])));
-  assert.deepEqual([...page.matchAll(/data-category-filter="(.*?)"/g)].map((match) => match[1]), ["all", "APP", "BOOK", "WORKS"]);
+  assert.deepEqual([...page.matchAll(/data-category-filter="(.*?)"/g)].map((match) => match[1]), ["all", "APP", "WORK"]);
   assert.match(page, /data-category-filter="all" aria-pressed="true"/);
   assert.ok(page.indexOf('class="category-tabs"') < page.indexOf('<summary>2026</summary>'));
-  assert.match(page, /<li class="entry" data-categories="APP WORKS"><a href="\.\/2026\/d20261017\.html">/);
+  assert.match(page, /<li class="entry" data-categories="APP WORK"><a href="\.\/2026\/d20261017\.html">/);
   assert.match(page, /<p class="filter-empty" hidden>該当する記事はありません。<\/p>/);
 });
 
 test("Timeline rejects unsupported categories", () => {
   assert.throws(
     () => parseTimeline("---\ndate: 2026-10-13\ncategories: [APP, OTHER]\n---\n\n記録", "t20261013.md", "2026", "10"),
-    /categories must contain only APP, BOOK, WORKS/,
+    /categories must contain only APP, WORK/,
   );
 });
 

@@ -15,7 +15,7 @@ const timelineFilePattern = /^t(\d{4})(\d{2})(\d{2})\.md$/;
 const developmentFilePattern = /^d(\d{4})(\d{2})(\d{2})\.md$/;
 const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
-const developmentCategories = ["APP", "BOOK", "WORKS"];
+const developmentCategories = ["APP", "WORK"];
 const categoryStyles = `.development-categories{color:#999;font-family:"Noto Sans JP",sans-serif;font-size:9px;font-weight:400;letter-spacing:.1em}`;
 const footerLinkStyles = `.footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
 .footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
@@ -248,10 +248,12 @@ function parseDevelopmentCategories(frontMatterSource, fileName) {
 
   const values = rawValues
     .map((value) => value.trim().replace(/^['"]|['"]$/g, "").toUpperCase())
+    // Keep existing Markdown categories readable during migration.
+    .map((value) => value === "BOOK" || value === "WORKS" ? "WORK" : value)
     .filter(Boolean);
   const invalid = values.filter((value) => !developmentCategories.includes(value));
   if (invalid.length > 0) {
-    throw new Error(`${fileName}: categories must contain only APP, BOOK, WORKS`);
+    throw new Error(`${fileName}: categories must contain only APP, WORK`);
   }
 
   const selected = new Set(values);
