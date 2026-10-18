@@ -665,8 +665,8 @@ ${mobileCategoryFilterStyles}
     <p class="section-name">Timeline</p>
     <div class="tagline">
       <p>64歳、主婦。プログラミング経験ゼロからのアプリづくり。</p>
-      <p>本づくりやペン画も、少しずつ。</p>
-      <p>日々の制作と試行錯誤の記録。</p>
+      <p>小さな作品をつくったり、あれこれ試したり。</p>
+      <p>日々の制作と試行錯誤のメモ。</p>
     </div>
     <div class="timeline-kuumo-group">
       <div class="timeline-kuumo-copy">
@@ -806,7 +806,7 @@ ${mobileCategoryFilterStyles}
   </header>
   <main class="content">
     <h1>開発日記</h1>
-    <p class="section-name">アプリをつくったり、本をつくったり。あれこれ試している記録。</p>
+    <p class="section-name">アプリを作ったり、小さな作品を生み出したりしている記録。</p>
     <img class="journal-kuumo" src="../../assets/kuumo/Fragments.png" alt="" aria-hidden="true" draggable="false">
     ${renderCategoryTabs()}
     <div class="archive journal-archive">
