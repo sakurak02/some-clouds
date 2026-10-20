@@ -41,6 +41,7 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
 .sub{margin-top:7px;font-family:Arial,sans-serif;font-size:10px;letter-spacing:.22em;color:#888;text-transform:uppercase;white-space:nowrap}
 .top-kuumo{--f:5px;position:absolute;top:52px;left:50%;display:block;width:68px;max-width:15vw;height:auto;transform:translateX(-50%);pointer-events:none;user-select:none;animation:float 5.4s ease-in-out infinite;animation-delay:-1.4s}
 .cloud-link{--f:8px;position:absolute;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;border:0;background:transparent;color:#202020;text-decoration:none;transform:translate(-50%,-50%);animation:float 6s ease-in-out infinite}
+.cloud-link[hidden]{display:none}
 .cloud{display:block;width:clamp(120px,11vw,150px);aspect-ratio:5/3;object-fit:cover;object-position:center 43%;mix-blend-mode:multiply;transition:.28s}
 .label{font-size:clamp(14px,1.25vw,18px);letter-spacing:.04em;white-space:nowrap}
 .jp{font-family:Arial,sans-serif;font-size:9px;color:#8d8d8d;letter-spacing:.12em;white-space:nowrap}
@@ -111,7 +112,8 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
       <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
       <span class="label">Development</span><span class="jp">開発の記録</span>
     </a>
-    <a class="cloud-link reading" href="./reading/">
+    <!-- Readingを再表示する場合は、次のリンクの hidden 属性を外す。 -->
+    <a class="cloud-link reading" href="./reading/" hidden>
       <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
       <span class="label">Reading</span><span class="jp">読書の記録</span>
     </a>
