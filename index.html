@@ -50,6 +50,7 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
 .shop{left:72%;top:28%;animation-delay:-3.7s}
 .development{left:28%;top:72%;animation-delay:-2s}
 .reading{left:72%;top:72%;animation-delay:-4.2s}
+.constellation:has(.reading[hidden]) .development{left:50%;top:max(72%,calc(50% + 180px))}
 @keyframes float{0%,100%{translate:0 0}50%{translate:0 calc(var(--f)*-1)}}
 .footer{position:absolute;right:0;bottom:16px;left:0;text-align:center;white-space:nowrap}
 .footer-links{width:max-content;max-width:100%;margin:0 auto}
@@ -81,6 +82,7 @@ h1{margin:0;font-size:clamp(22px,2.1vw,30px);font-weight:400;letter-spacing:.07e
   .sub{margin-top:6px}
   .top-kuumo{top:49px;left:50%;width:48px;max-width:14vw}
   .cloud-link{position:static;justify-self:center;width:max-content;max-width:100%;min-height:110px;gap:4px;transform:none}
+  .constellation:has(.reading[hidden]) .development{grid-column:1/-1}
   .cloud{width:118px}
   .label{font-size:15px}
   .jp{font-size:9px}
