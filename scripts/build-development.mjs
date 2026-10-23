@@ -106,7 +106,8 @@ function renderImageBlock(image, className) {
   return `<figure class="${className}"><img src="${safeLinkUrl(image.url)}" alt="${escapeHtml(image.alt)}" loading="lazy"${width}></figure>`;
 }
 
-function renderMarkdown(markdown, assetBase = "") {
+function renderMarkdown(markdown, assetBase = "", { headings = false } = {}) {
+  const headingPattern = /^ {0,3}(#{1,6})[ \t]+(.+?)\s*$/;
   const lines = normalize(markdown).split("\n");
   const blocks = [];
   let index = 0;
@@ -120,6 +121,16 @@ function renderMarkdown(markdown, assetBase = "") {
 
     if (/^\s*---\s*$/.test(line)) {
       blocks.push("<hr>");
+      index += 1;
+      continue;
+    }
+
+    const heading = headings && line.match(headingPattern);
+    if (heading) {
+      // Keep the page title as h1 and nest Timeline headings beneath it.
+      const level = Math.min(heading[1].length + 1, 6);
+      const text = heading[2].replace(/[ \t]+#+$/, "").trim();
+      blocks.push(`<h${level}>${renderInline(text)}</h${level}>`);
       index += 1;
       continue;
     }
@@ -149,6 +160,7 @@ function renderMarkdown(markdown, assetBase = "") {
       index < lines.length &&
       lines[index].trim() &&
       !/^\s*---\s*$/.test(lines[index]) &&
+      !(headings && headingPattern.test(lines[index])) &&
       !parseImageLine(lines[index], assetBase) &&
       !/^\s*[-+*]\s+/.test(lines[index])
     ) {
@@ -511,7 +523,7 @@ function renderTimelineDay(entry) {
   return `<details class="day" data-categories="${entry.categories.join(" ")}">
   <summary><span class="day-heading"><time datetime="${entry.date}">${entry.displayDate}</time>${categoryLabel}</span></summary>
   <div class="day-content">
-    ${renderMarkdown(entry.body, assetBase)}
+    ${renderMarkdown(entry.body, assetBase, { headings: true })}
   </div>
 </details>`;
 }
@@ -637,6 +649,9 @@ ${categoryFilterStyles}
 .filter-empty{margin:18px 0 0;color:#888;font-size:12px}
 [hidden]{display:none!important}
 .day-content{padding:22px 14px 30px;font-size:13px;line-height:1.95;letter-spacing:.02em;overflow-wrap:anywhere}
+.day-content :is(h2,h3,h4,h5,h6){margin:24px 0 14px;max-width:720px;font-family:inherit;font-weight:500;line-height:1.7;letter-spacing:inherit}
+.day-content :is(h2,h3,h4,h5,h6):first-child{margin-top:0}
+.day-content h2{font-size:18px}.day-content h3{font-size:16px}.day-content h4{font-size:14px}.day-content h5,.day-content h6{font-size:13px}
 .day-content p{margin:0 0 14px;max-width:720px}.day-content p:last-child{margin-bottom:0}
 .day-content ul{margin:0;padding-left:1.25em}.day-content li+li{margin-top:7px}
 .day-content hr{width:36px;height:1px;margin:25px 0;border:0;background:#d3d3d3}

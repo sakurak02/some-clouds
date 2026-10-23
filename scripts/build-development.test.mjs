@@ -7,9 +7,45 @@ import {
   parseTimeline,
   renderDevelopmentArticlePage,
   renderDevelopmentJournalPage,
+  renderMarkdown,
   renderSitemap,
   renderTimelinePage,
 } from "./build-development.mjs";
+
+const renderMarkdownWithHeadings = (source) => renderMarkdown(source, "", { headings: true });
+
+test("Timeline renders Markdown heading levels beneath the page title", () => {
+  assert.equal(renderMarkdownWithHeadings("# 大見出し\n## **中見出し**\n### [小見出し](https://example.com)\n#### 四段目\n##### 五段目\n###### 六段目"),
+    '<h2>大見出し</h2>\n<h3><strong>中見出し</strong></h3>\n<h4><a href="https://example.com">小見出し</a></h4>\n<h5>四段目</h5>\n<h6>五段目</h6>\n<h6>六段目</h6>');
+  assert.equal(renderMarkdownWithHeadings("段落\n# 見出し\n本文\n続き\n\n- **項目**\n- 次の項目\n\n最後の段落"),
+    '<p>段落</p>\n<h2>見出し</h2>\n<p>本文<br>続き</p>\n<ul><li><strong>項目</strong></li><li>次の項目</li></ul>\n<p>最後の段落</p>');
+});
+
+test("Timeline headings escape HTML and preserve ordinary hash text", () => {
+  assert.equal(renderMarkdownWithHeadings("  ## <script> & 見出し ##"), '<h3>&lt;script&gt; &amp; 見出し</h3>');
+  assert.equal(renderMarkdownWithHeadings("#タグ\n####### 見出しではない\n文中の # 記号"), '<p>#タグ<br>####### 見出しではない<br>文中の # 記号</p>');
+});
+
+test("October Timeline headings render while lists, emphasis and paragraphs remain", async () => {
+  for (const [day, heading] of [
+    ["15", "<h4>今日の成果</h4>"],
+    ["16", "<h4>今日の成果</h4>"],
+    ["22", "<h4>音楽制作、いよいよ本格始動</h4>"],
+    ["23", "<h2>音楽制作の外堀工事が完成</h2>"],
+  ]) {
+    const filename = `t202610${day}.md`;
+    const source = await readFile(new URL(`../development/timeline/2026/10/${filename}`, import.meta.url), "utf8");
+    const entry = parseTimeline(source, filename, "2026", "10");
+    const page = renderTimelinePage([entry]);
+    assert.ok(page.includes(heading), filename);
+    assert.doesNotMatch(page, /<p>#{1,6} /);
+    if (day === "23") {
+      assert.match(page, /<li><strong>Danceable<\/strong>：赤<\/li>/);
+      assert.match(page, /<strong>ProRes 4444で透過MOVとして書き出し<\/strong>/);
+      assert.match(page, /<p>some clouds music のYouTube動画制作に向けて/);
+    }
+  }
+});
 
 test("Timeline accepts one-column development notes", () => {
   const entry = parseTimeline(`---
