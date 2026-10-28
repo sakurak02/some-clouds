@@ -120,6 +120,9 @@ h1{
   line-height:2.05;
   letter-spacing:.02em;
 }
+.ai-note{display:flex;align-items:center;gap:20px;margin-top:30px}
+.ai-note .intro{flex:1;min-width:0}
+.ai-bro{display:block;flex:0 0 auto;width:88px;height:auto;pointer-events:none;user-select:none}
 .rule{
   width:44px;
   height:1px;
@@ -172,6 +175,8 @@ h1{
   .heading-row h1{font-size:clamp(24px,7vw,28px)}
   .heading-kuumo{width:100px;max-width:28vw;margin:-30px -16px -19px -18px}
   .intro{font-size:14px;line-height:1.95}
+  .ai-note{gap:12px}
+  .ai-bro{width:68px}
   .face{width:32px;height:32px}
   .logo{width:36px;height:36px}
 }
@@ -225,6 +230,12 @@ h1{
       a home for my math learning journey, small creations, and the clouds who live here.
     </p>
 
+    <div class="ai-note">
+      <p class="intro" data-language="ja">このサイトや作品の制作には、AIの力を借りています。<br>名前はBro.。ぶろと呼んでいます。</p>
+      <p class="intro" data-language="en" hidden>I get help from AI to make this website and my creations.<br>Its name is Bro. — I call it “Buro.”</p>
+      <img class="ai-bro" src="../assets/characters/bro-about.png" alt="手を振っているぶろ（Bro.）" data-alt-ja="手を振っているぶろ（Bro.）" data-alt-en="Bro. waving hello" width="1024" height="1024" draggable="false">
+    </div>
+
     <div class="rule"></div>
 
     <div class="project-row">
@@ -241,7 +252,7 @@ h1{
 <script>
 const languageButtons = document.querySelectorAll('[data-language-button]');
 const languageContent = document.querySelectorAll('[data-language]');
-const headingKuumo = document.querySelector('.heading-kuumo');
+const languageImages = document.querySelectorAll('[data-alt-ja]');
 
 function setLanguage(language) {
   document.documentElement.lang = language;
@@ -251,7 +262,9 @@ function setLanguage(language) {
   languageButtons.forEach(button => {
     button.setAttribute('aria-pressed', String(button.dataset.languageButton === language));
   });
-  headingKuumo.alt = language === 'en' ? headingKuumo.dataset.altEn : headingKuumo.dataset.altJa;
+  languageImages.forEach(image => {
+    image.alt = language === 'en' ? image.dataset.altEn : image.dataset.altJa;
+  });
   try {
     localStorage.setItem('some-clouds-language', language);
   } catch {}

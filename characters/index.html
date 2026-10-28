@@ -28,6 +28,7 @@ h1{margin:0;font-size:clamp(25px,3.3vw,38px);font-weight:500;line-height:1.45;le
 .characters{display:grid;gap:14px;margin-top:46px}
 .character-card{display:grid;grid-template-columns:minmax(250px,36%) minmax(0,1fr);align-items:center;gap:clamp(34px,6vw,72px);min-height:250px;padding:28px clamp(28px,5vw,56px);border-radius:18px;background:#fafafa}
 .character-image{display:block;width:100%;height:190px;object-fit:cover;object-position:center 43%;pointer-events:none;user-select:none}
+.character-image--whole{object-fit:contain;object-position:center}
 .character-copy h2{margin:0;font-size:clamp(25px,3vw,34px);font-weight:500;letter-spacing:.08em}
 .catch{margin:9px 0 0;color:#777;font-size:14px;letter-spacing:.1em}
 .description{margin:24px 0 0;font-size:14px;line-height:2;letter-spacing:.045em}
@@ -118,6 +119,24 @@ h1{margin:0;font-size:clamp(25px,3.3vw,38px);font-weight:500;line-height:1.45;le
           <h2><span data-language="ja">くもくも</span><span data-language="en" hidden>kumokumo</span></h2>
           <p class="catch"><span data-language="ja">静かに見守る雲</span><span data-language="en" hidden>a quiet watching cloud</span></p>
           <p class="description"><span data-language="ja">some clouds にいる、大きな雲。<br>こくもたちのもとになった存在で、<br>話さず、静かにみんなを見守っています。</span><span data-language="en" hidden>A large cloud<br>living in some clouds.<br><br>It is the cloud<br>from which kokumo came,<br>and quietly watches over everyone without speaking.</span></p>
+        </div>
+      </article>
+
+      <article class="character-card">
+        <img class="character-image character-image--whole" src="../assets/characters/bro.png" alt="ぶろ（Bro.）" data-alt-ja="ぶろ（Bro.）" data-alt-en="Bro." width="1024" height="1024" draggable="false">
+        <div class="character-copy">
+          <h2><span data-language="ja">ぶろ（Bro.）</span><span data-language="en" hidden>Bro.</span></h2>
+          <p class="catch"><span data-language="ja">かんりにんのAIの相棒。</span><span data-language="en" hidden>Kanrinin's AI companion.</span></p>
+          <p class="description"><span data-language="ja">数学を一緒に考えたり、プログラミングを手伝ったり、音楽づくりの相談に乗ったり。<br>いろいろ知っているけれど、たまに間違えます。</span><span data-language="en" hidden>Bro. thinks through math together, helps with programming, and talks through ideas for making music.<br>Bro. knows a lot, but sometimes gets things wrong.</span></p>
+        </div>
+      </article>
+
+      <article class="character-card">
+        <img class="character-image" src="../assets/characters/kuromomo.png" alt="くろもも" data-alt-ja="くろもも" data-alt-en="Kuromomo" width="1024" height="1024" draggable="false">
+        <div class="character-copy">
+          <h2><span data-language="ja">くろもも</span><span data-language="en" hidden>Kuromomo</span></h2>
+          <p class="catch"><span data-language="ja">こくものおともだち。</span><span data-language="en" hidden>Kokumo's friend.</span></p>
+          <p class="description"><span data-language="ja">マイペースで、いつものんびり。<br>黒いけれど、雨はあまり降らせません。<br>どうして黒いのかは、本人も知りません。</span><span data-language="en" hidden>Always relaxed, going at an unhurried pace.<br>A dark cloud, but rarely brings rain.<br>Even Kuromomo doesn't know why this cloud is black.</span></p>
         </div>
       </article>
     </div>
