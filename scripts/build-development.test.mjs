@@ -27,23 +27,32 @@ test("Timeline headings escape HTML and preserve ordinary hash text", () => {
 });
 
 test("October Timeline headings render while lists, emphasis and paragraphs remain", async () => {
-  for (const [day, heading] of [
-    ["15", "<h4>今日の成果</h4>"],
-    ["16", "<h4>今日の成果</h4>"],
-    ["22", "<h4>音楽制作、いよいよ本格始動</h4>"],
-    ["23", "<h2>音楽制作の外堀工事が完成</h2>"],
+  for (const [day, expectedFragments] of [
+    ["15", [
+      "<h4>今日の成果</h4>",
+      "<ul><li>くもくもが増えていく空の配置を決定した。</li></ul>",
+    ]],
+    ["16", [
+      "<h4>今日の成果</h4>",
+      "<ul><li>ブラウザを再起動しても記録が保持されることを確認できた。</li></ul>",
+    ]],
+    ["20", [
+      "<p><strong>2026.10.20｜高校数学『積分大全』を発売</strong></p>",
+      "<p>AIと一緒に制作した高校数学『積分大全』を、BOOTHで販売開始。</p>",
+    ]],
+    ["26", [
+      "<h4>こくもログの仕上げと、これからの5年間</h4>",
+      "<p>今日は、こくもログの公開前修正を進めた。</p>",
+    ]],
   ]) {
     const filename = `t202610${day}.md`;
     const source = await readFile(new URL(`../development/timeline/2026/10/${filename}`, import.meta.url), "utf8");
     const entry = parseTimeline(source, filename, "2026", "10");
     const page = renderTimelinePage([entry]);
-    assert.ok(page.includes(heading), filename);
-    assert.doesNotMatch(page, /<p>#{1,6} /);
-    if (day === "23") {
-      assert.match(page, /<li><strong>Danceable<\/strong>：赤<\/li>/);
-      assert.match(page, /<strong>ProRes 4444で透過MOVとして書き出し<\/strong>/);
-      assert.match(page, /<p>some clouds music のYouTube動画制作に向けて/);
+    for (const fragment of expectedFragments) {
+      assert.ok(page.includes(fragment), `${filename}: missing ${fragment}`);
     }
+    assert.doesNotMatch(page, /<p>#{1,6} /);
   }
 });
 
