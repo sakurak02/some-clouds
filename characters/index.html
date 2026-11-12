@@ -33,15 +33,6 @@ h1{margin:0;font-size:clamp(25px,3.3vw,38px);font-weight:500;line-height:1.45;le
 .home-link{display:block;width:max-content;max-width:100%;margin:40px auto 0;color:#666;font-family:Georgia,"Times New Roman",serif;font-size:12px;letter-spacing:.06em;text-decoration:none}
 .home-link:hover,.home-link:focus-visible{text-decoration:underline;text-underline-offset:4px}
 .footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
-.footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
-.footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
-.footer-meet,.footer-social{width:max-content;max-width:100%;margin-right:auto;margin-left:auto;color:#666;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
-.footer-meet{margin-bottom:7px}
-.footer-social{margin-bottom:5px}
-.footer-social-disabled{color:#999}
-.footer-name{margin-top:8px;font-size:12px;letter-spacing:.08em}
-.footer-project{margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
-.footer-meet:hover,.footer-meet:focus-visible,.footer-social[href]:hover,.footer-social[href]:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}
 @media(max-width:700px){
   .page{padding:28px 22px 22px}
   .brand{font-size:16px}
@@ -54,6 +45,7 @@ h1{margin:0;font-size:clamp(25px,3.3vw,38px);font-weight:500;line-height:1.45;le
   .home-link{min-height:44px;padding:14px 8px 0}
 }
 </style>
+<link rel="stylesheet" href="../assets/site-footer.css">
 </head>
 <body>
 <div class="page">
@@ -157,7 +149,7 @@ h1{margin:0;font-size:clamp(25px,3.3vw,38px);font-weight:500;line-height:1.45;le
     <a class="home-link" href="../"><span data-language="ja">← some clouds に戻る</span><span data-language="en" hidden>← Back to some clouds</span></a>
   </main>
 
-  <footer class="footer"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="./">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></footer>
+  <footer class="footer"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><div class="footer-credit"><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></div></footer>
 </div>
 <script>
 const languageButtons = document.querySelectorAll('[data-language-button]');

@@ -17,18 +17,8 @@ const yamlFrontMatterPattern = /^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/;
 const dateHeadingPattern = /^##\s+date:\s*(\d{4}-\d{2}-\d{2})\s*$/im;
 const developmentCategories = ["APP", "WORK"];
 const categoryStyles = `.development-categories{color:#999;font-family:"Noto Sans JP",sans-serif;font-size:9px;font-weight:400;letter-spacing:.1em}`;
-const footerLinkStyles = `.footer-tagline,.footer-meet,.footer-social,.footer-name,.footer-project{display:block;white-space:nowrap}
-.footer-tagline{margin-bottom:5px;color:#666;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:10px;letter-spacing:.04em}
-.footer-meet,.footer-social{width:max-content;max-width:100%;margin-right:auto;margin-left:auto;color:#666;text-decoration:none;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
-.footer-meet{margin-bottom:7px}
-.footer-social{margin-bottom:5px}
-.footer-social-disabled{color:#999}
-.footer-name{margin-top:8px;font-size:12px;letter-spacing:.08em}
-.footer-project{margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
-.footer-meet:hover,.footer-meet:focus-visible,.footer-social[href]:hover,.footer-social[href]:focus-visible{color:#202020;text-decoration:underline;text-underline-offset:4px}`;
-
-function renderFooter(charactersPath) {
-  return `<div class="footer-links"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="${charactersPath}">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a><span class="footer-social footer-social-disabled">kokumo Instagram (English) ↗</span></div><div class="footer-credit"><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></div>`;
+function renderFooter() {
+  return `<span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><div class="footer-credit"><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></div>`;
 }
 const googleTag = `<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSXKPMSF5X"></script>
@@ -594,7 +584,6 @@ details>summary::-webkit-details-marker{display:none}
 .content-image img{display:block;max-width:100%;height:auto}
 .empty{margin:0;color:#888;font-size:12px}
 .footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
-${footerLinkStyles}
 @media(max-width:700px){
   .page{padding:28px 22px 22px}
   .brand{font-size:16px}
@@ -696,7 +685,7 @@ ${mobileCategoryFilterStyles}
     </div>
     <p class="filter-empty" hidden>該当する記録はありません。</p>
   </main>
-  <footer class="footer">${renderFooter("../characters/")}</footer>
+  <footer class="footer">${renderFooter()}</footer>
 </div>
 <script>
 const categoryTabs = document.querySelectorAll('[data-category-filter]');
@@ -829,7 +818,7 @@ ${mobileCategoryFilterStyles}
     </div>
     <p class="filter-empty" hidden>該当する記事はありません。</p>
   </main>
-  <footer class="footer">${renderFooter("../../characters/")}</footer>
+  <footer class="footer">${renderFooter()}</footer>
 </div>
 <script>
 const categoryTabs = document.querySelectorAll('[data-category-filter]');
@@ -902,7 +891,6 @@ ${categoryStyles}
 .article-image{margin:30px 0}
 .article-image img{display:block;max-width:100%;height:auto;margin:auto}
 .footer{margin-top:auto;text-align:center;font-size:10px;letter-spacing:.06em;color:#666}
-${footerLinkStyles}
 @media(max-width:700px){
   .page{padding:28px 22px 22px}
   .brand{font-size:16px}
@@ -928,7 +916,7 @@ ${footerLinkStyles}
       </div>
     </article>
   </main>
-  <footer class="footer">${renderFooter("../../../characters/")}</footer>
+  <footer class="footer">${renderFooter()}</footer>
 </div>
 </body>
 </html>

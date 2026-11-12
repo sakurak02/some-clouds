@@ -149,7 +149,7 @@ ${readingStyles}
   <main class="content">
     ${content}
   </main>
-  <footer class="footer">${renderFooter(`${root}characters/`)}</footer>
+  <footer class="footer">${renderFooter()}</footer>
 </div>
 </body>
 </html>

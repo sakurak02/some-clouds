@@ -90,7 +90,7 @@ categories: [APP, BOOK]
   assert.match(page, /<span class="development-categories">APP · WORK<\/span>/);
   assert.match(page, /function filterTimeline\(category\)/);
   assert.match(page, /href="\.\.\/assets\/site-footer\.css"/);
-  assert.match(page, /<div class="footer-links">/);
+  assert.doesNotMatch(page, /<footer[^>]*>[\s\S]*?<a [\s\S]*?<\/footer>/);
   assert.match(page, /<div class="footer-credit">/);
 });
 
@@ -252,7 +252,7 @@ test("Development journal uses the former Fragments atmosphere and newest-first 
   assert.match(page, /<details class="year">\s*<summary>2026<\/summary>/);
   assert.match(page, /href="\.\/2026\/d20261015\.html"/);
   assert.match(page, /href="\.\.\/\.\.\/assets\/site-footer\.css"/);
-  assert.match(page, /<div class="footer-links">/);
+  assert.doesNotMatch(page, /<footer[^>]*>[\s\S]*?<a [\s\S]*?<\/footer>/);
   assert.match(page, /<div class="footer-credit">/);
 
   const sitemap = renderSitemap([newer]);
