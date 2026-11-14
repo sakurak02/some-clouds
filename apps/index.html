@@ -23,13 +23,20 @@ a{color:inherit}
 h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,3vw,40px);font-weight:400;letter-spacing:.03em}
 .section-name{margin:34px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:15px;letter-spacing:.08em;color:#777}
 .apps-kuumo{position:absolute;top:-32px;right:clamp(4px,3vw,28px);display:block;width:144px;max-width:28vw;height:auto;pointer-events:none;user-select:none}
-.apps-list{margin-top:66px;border-top:1px solid #dadada;border-bottom:1px solid #dadada}
-.app-entry{padding:22px 2px 23px}
-.app-entry h2{margin:0;font-size:14px;font-weight:500;line-height:1.7;letter-spacing:.04em}
-.app-entry + .app-entry{border-top:1px solid #dadada}
-.app-description{margin:8px 0 0;font-size:13px;line-height:1.9}
-.app-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin:12px 0 0;font-size:12px;line-height:1.8}
-.app-link{text-underline-offset:3px}
+.apps-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:48px}
+.app-entry{display:flex;flex-direction:column;min-width:0;padding:22px 24px 24px;border:1px solid #dadada;border-radius:3px}
+.app-number{margin:0;color:#666;font:13px Georgia,"Times New Roman",serif;letter-spacing:.12em}
+.app-entry h2{margin:0;font-size:19px;font-weight:500;line-height:1.55;letter-spacing:.04em}
+.app-art{display:block;width:min(206px,100%);height:auto;margin:4px auto 14px}
+.app-name-en{display:block;margin:4px 0 0;color:#666;font:13px Georgia,"Times New Roman",serif;letter-spacing:.05em}
+.app-description{margin:12px 0 0;font-size:13px;line-height:1.9}
+.app-card-link{display:block;flex:1;text-decoration:none}
+.app-card-link:hover h2,.app-card-link:focus-visible h2{text-decoration:underline;text-underline-offset:4px}
+.app-card-cta,.app-link{font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.app-card-cta{display:block;margin-top:16px}
+.app-links{margin:10px 0 0;font-size:12px;line-height:1.8}
+.app-entry--empty{min-height:148px;border-color:#e5e5e5}
+.app-entry--empty h2{margin:auto 0;text-align:center;color:#666;font-size:14px;font-weight:400}
 .footer{margin-top:auto;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.06em}
 @media(max-width:700px){
   .page{padding:28px 22px 22px}
@@ -37,9 +44,8 @@ h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,3vw
   .content{margin:58px auto 72px}
   .section-name{margin-top:26px}
   .apps-kuumo{position:static;width:92px;max-width:30vw;margin:-4px auto -6px}
-  .apps-list{margin-top:48px}
-  .app-entry{padding:19px 2px 20px}
-  .app-entry h2{font-size:13px}
+  .apps-list{grid-template-columns:minmax(0,1fr);gap:18px;margin-top:32px}
+  .app-entry{padding:20px}
 }
 </style>
 <link rel="stylesheet" href="../assets/site-footer.css">
@@ -63,11 +69,21 @@ h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,3vw
     <img class="apps-kuumo" src="../assets/kuumo/kumomo-apps.png" alt="スマートフォンを見ているくもも" data-alt-ja="スマートフォンを見ているくもも" data-alt-en="kumomo looking at a smartphone" draggable="false">
     <section class="apps-list" aria-labelledby="apps-heading">
       <article class="app-entry">
-        <h2 id="kokumo-log"><a class="app-link" href="./kokumo-log/"><span data-language="ja">こくもログ</span><span data-language="en" hidden>kokumo log</span></a></h2>
-        <p class="app-description"><span data-language="ja">こくもと一緒に、日々の記録を残すWebアプリ。</span><span data-language="en" hidden>A web app for keeping a daily log with kokumo.</span></p>
+        <a class="app-card-link" href="./kokumo-log/" aria-labelledby="kokumo-log">
+          <p class="app-number">01</p>
+          <img class="app-art" src="../assets/apps/kokumo-log.png" alt="" width="1199" height="1312">
+          <h2 id="kokumo-log"><span data-language="ja">こくもログ</span><span data-language="en" hidden>kokumo log</span></h2>
+          <span class="app-name-en" lang="en" data-language="ja">kokumo log</span>
+          <p class="app-description"><span data-language="ja">毎日の積み重ねが、ひとつずつ残る。</span><span data-language="en" hidden>Keep a little piece of each day.</span></p>
+          <span class="app-card-cta"><span data-language="ja">作品紹介を見る</span><span data-language="en" hidden>View app guide</span> <span aria-hidden="true">→</span></span>
+        </a>
         <p class="app-links">
           <a class="app-link" href="https://kokumo-log.pages.dev/"><span data-language="ja">Webアプリを開く</span><span data-language="en" hidden>Open the web app</span></a>
         </p>
+      </article>
+      <article class="app-entry app-entry--empty">
+        <p class="app-number">02</p>
+        <h2><span data-language="ja">これからの作品</span><span data-language="en" hidden>Future projects</span></h2>
       </article>
     </section>
   </main>
