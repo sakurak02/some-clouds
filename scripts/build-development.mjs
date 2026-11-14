@@ -928,6 +928,7 @@ function renderSitemap(developmentEntries = [], readingEntries = []) {
     siteUrl,
     `${siteUrl}about/`,
     `${siteUrl}apps/`,
+    `${siteUrl}apps/kokumo-log/`,
     `${siteUrl}shop/`,
     `${siteUrl}characters/`,
     `${siteUrl}development/`,
