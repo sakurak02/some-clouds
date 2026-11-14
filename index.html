@@ -28,14 +28,16 @@
 <meta property="og:url" content="https://sakurak02.github.io/some-clouds/">
 <meta property="og:type" content="website">
 <link rel="icon" href="./assets/cloud.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./assets/site-language.css">
+<script src="./assets/site-language.js" defer></script>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:#fff;color:#202020;font-family:Georgia,"Times New Roman",serif}
 body{cursor:none}
 .sky{position:relative;display:flex;flex-direction:column;width:100%;min-height:max(700px,100dvh);background:#fff}
-.about{position:absolute;top:28px;right:38px;z-index:2;color:#202020;text-decoration:none;font-size:13px;letter-spacing:.06em}
-/* Two cloud destinations frame the small central scene. */
-.constellation{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,1.2fr) minmax(0,1fr);align-items:center;gap:32px;width:90%;max-width:1120px;flex:1;margin:0 auto;padding:80px 0 48px}
+.home-nav{position:absolute;top:28px;right:38px;z-index:2;display:flex;align-items:center;gap:16px}
+.about{color:#202020;text-decoration:none;font-size:13px;letter-spacing:.06em}
+.constellation{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,1.2fr) minmax(0,1fr);align-items:center;align-content:center;gap:24px 32px;width:90%;max-width:1120px;flex:1;margin:0 auto;padding:64px 0 56px}
 .center-mark{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:center;text-align:center}
 .title-kokumo{display:block;width:190px;height:auto;margin-bottom:18px;pointer-events:none;user-select:none}
 h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055em;white-space:nowrap}
@@ -49,6 +51,7 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
 .cloud-link:focus-visible{outline:1px dashed #888;outline-offset:10px;border-radius:12px}
 .math{grid-column:1;grid-row:1;animation-delay:-3.1s}
 .shop{grid-column:3;grid-row:1;animation-delay:-2s}
+.apps{grid-column:2;grid-row:2;animation-delay:-4.2s}
 @keyframes float{0%,100%{translate:0 0}50%{translate:0 calc(var(--f)*-1)}}
 .footer{position:relative;flex:none;padding:0 20px 18px;text-align:center;white-space:nowrap}
 .footer-links{width:max-content;max-width:100%;margin:0 auto}
@@ -68,8 +71,8 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
   body{cursor:auto}
   .cursor{display:none}
   .sky{min-height:100dvh;padding:0 20px}
-  .about{top:22px;right:20px}
-  .constellation{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 16px;width:100%;padding:66px 0 40px}
+  .home-nav{top:22px;right:20px}
+  .constellation{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 16px;width:100%;padding:54px 0 32px}
   .center-mark{grid-column:1/-1;grid-row:1}
   .title-kokumo{width:150px;margin-bottom:12px}
   h1{font-size:29px}
@@ -78,6 +81,7 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
   .cloud-link{grid-row:2;gap:6px;width:100%}
   .math{grid-column:1}
   .shop{grid-column:2}
+  .apps{grid-column:1/-1;grid-row:3;width:calc((100% - 16px)/2)}
   .cloud{width:180px}
   .label{font-size:22px}
   .jp{font-size:10px;letter-spacing:.06em}
@@ -96,10 +100,17 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
 </head>
 <body>
 <main class="sky">
-  <a class="about" href="./about/">About</a>
+  <nav class="home-nav" aria-label="About / Language">
+    <div class="language-switch" role="group" aria-label="言語 / Language">
+      <button type="button" data-language-button="ja" aria-pressed="true">日本語</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" data-language-button="en" aria-pressed="false">English</button>
+    </div>
+    <a class="about" href="./about/">About</a>
+  </nav>
   <div class="constellation">
     <div class="center-mark">
-      <img class="title-kokumo" src="./assets/characters/kokumo-balloon.svg" alt="こくもが小さなここくもを風船のようにひもで持っている" width="240" height="200" draggable="false">
+      <img class="title-kokumo" src="./assets/characters/kokumo-balloon.svg" alt="こくもが小さなここくもを風船のようにひもで持っている" data-alt-ja="こくもが小さなここくもを風船のようにひもで持っている" data-alt-en="kokumo holding a little kokokumo like a balloon" width="240" height="200" draggable="false">
       <h1>some clouds</h1>
       <div class="sub">tap a cloud</div>
       <img class="top-kuumo" src="./assets/kuumo/c5.png" alt="" aria-hidden="true" draggable="false">
@@ -107,11 +118,15 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
 
     <a class="cloud-link math" href="https://sakurak02.github.io/math-study-log/">
       <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
-      <span class="label">Math</span><span class="jp">数学学習記録</span>
+      <span class="label">Math</span><span class="jp" data-language="ja">数学学習記録</span><span class="jp" data-language="en" hidden>Math study log</span>
     </a>
     <a class="cloud-link shop" href="./shop/">
       <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
-      <span class="label">Shop</span><span class="jp">本と小さな作品</span>
+      <span class="label">Shop</span><span class="jp" data-language="ja">本と小さな作品</span><span class="jp" data-language="en" hidden>Books and little works</span>
+    </a>
+    <a class="cloud-link apps" href="./apps/">
+      <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
+      <span class="label">Apps</span><span class="jp" data-language="ja">小さなアプリ</span><span class="jp" data-language="en" hidden>Little web apps</span>
     </a>
   </div>
   <footer class="footer">

@@ -1,0 +1,22 @@
+.language-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 11px Georgia, "Times New Roman", serif;
+  white-space: nowrap;
+}
+
+.language-switch button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #666;
+  font: inherit;
+  cursor: pointer;
+}
+
+.language-switch button[aria-pressed="true"] {
+  color: #202020;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
