@@ -38,12 +38,11 @@ body{cursor:none}
 .home-nav{position:absolute;top:28px;right:38px;z-index:2;display:flex;align-items:center;gap:16px}
 .about{color:#202020;text-decoration:none;font-size:13px;letter-spacing:.06em}
 .home-copy{position:absolute;top:27px;left:16px;right:16px;margin:0;color:#666;text-align:center;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Arial,sans-serif;font-size:13px;line-height:1.6;letter-spacing:.08em}
-.constellation{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,1.2fr) minmax(0,1fr);align-items:center;align-content:center;gap:24px 32px;width:90%;max-width:1120px;flex:1;margin:0 auto;padding:64px 0 56px}
-.center-mark{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:center;text-align:center}
+.constellation{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,1.2fr) minmax(0,1fr);align-items:center;align-content:center;gap:32px 24px;width:90%;max-width:1000px;flex:1;margin:0 auto;padding:64px 0 56px}
+.center-mark{grid-column:2;grid-row:1/3;display:flex;flex-direction:column;align-items:center;text-align:center}
 .title-kokumo{display:block;width:190px;height:auto;margin-bottom:18px;pointer-events:none;user-select:none}
 h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055em;white-space:nowrap}
 .sub{margin-top:12px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.24em;color:#888;text-transform:uppercase;white-space:nowrap}
-.top-kuumo{--f:5px;display:block;width:90px;height:auto;margin-top:26px;pointer-events:none;user-select:none;animation:float 5.4s ease-in-out infinite;animation-delay:-1.4s}
 .cloud-link{--f:8px;display:flex;flex-direction:column;align-items:center;gap:8px;justify-self:center;max-width:100%;padding:8px 0;border:0;background:transparent;color:#202020;text-decoration:none;animation:float 6s ease-in-out infinite}
 .cloud{display:block;width:clamp(170px,20vw,250px);max-width:100%;aspect-ratio:5/3;object-fit:cover;object-position:center 43%;mix-blend-mode:multiply;transition:transform .28s}
 .label{font-size:clamp(22px,2.3vw,30px);letter-spacing:.04em;white-space:nowrap}
@@ -52,7 +51,8 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
 .cloud-link:focus-visible{outline:1px dashed #888;outline-offset:10px;border-radius:12px}
 .math{grid-column:1;grid-row:1;animation-delay:-3.1s}
 .shop{grid-column:3;grid-row:1;animation-delay:-2s}
-.apps{grid-column:2;grid-row:2;animation-delay:-4.2s}
+.comics{grid-column:1;grid-row:2;animation-delay:-3.7s}
+.apps{grid-column:3;grid-row:2;animation-delay:-4.2s}
 @keyframes float{0%,100%{translate:0 0}50%{translate:0 calc(var(--f)*-1)}}
 .footer{position:relative;flex:none;padding:0 20px 18px;text-align:center;white-space:nowrap}
 .footer-links{width:max-content;max-width:100%;margin:0 auto}
@@ -64,11 +64,11 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
 .footer-name{margin-top:8px;font-size:12px;letter-spacing:.08em}
 .footer-project{margin-top:3px;font-size:9px;font-style:italic;letter-spacing:.06em;color:#666}
 .footer-credit .footer-name{margin-top:0}
-.cloud-groove{position:absolute;right:38px;bottom:68px;display:flex;align-items:center;gap:8px;text-align:left;white-space:normal;font-family:Arial,sans-serif}
+.cloud-groove{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:26px;text-align:left;white-space:normal;font-family:Arial,sans-serif}
 .cloud-groove-image{display:block;width:69.6px;height:auto;flex:none}
 .cloud-groove h2{margin:0;font-size:12px;line-height:1.25;letter-spacing:.04em}
 .cloud-groove p{margin:4px 0 7px;color:#555;font-size:11px;line-height:1.35}
-.cloud-groove-link{display:inline-flex;align-items:center;gap:5px;padding:5px 7px;min-height:28px;border:1px solid #aaa;border-radius:999px;color:#333;text-decoration:none;font-size:11px;line-height:1.2;white-space:nowrap}
+.cloud-groove-link{display:inline-flex;align-items:center;gap:5px;padding:5px 7px;min-height:44px;border:1px solid #aaa;border-radius:999px;color:#333;text-decoration:none;font-size:11px;line-height:1.2;white-space:nowrap}
 .cloud-groove-link:hover{background:#f6f6f6}
 .cloud-groove-link:focus-visible{outline:1px solid #555;outline-offset:3px}
 .cloud-groove-link svg{width:15px;height:auto;flex:none}
@@ -76,36 +76,31 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
 .cursor{position:fixed;width:20px;height:20px;left:0;top:0;pointer-events:none;z-index:99;transform:translate(-3px,-3px)}
 .cursor svg{width:100%;height:100%}
 .cursor path{fill:#fff;stroke:#242424;stroke-width:1.4;stroke-linejoin:round}
-@media(max-width:850px){
-  .sky{--groove-space:132px;min-height:calc(max(700px,100dvh) + var(--groove-space))}
-  .cloud-groove{position:relative;inset:-8px auto auto;justify-content:flex-end;min-height:var(--groove-space);padding:0 18px 22px 0}
-  .cloud-groove-link{min-height:44px}
-}
 @media(max-width:700px){
   body{cursor:auto}
   .cursor{display:none}
-  .sky{min-height:calc(100dvh + var(--groove-space));padding:0 20px}
+  .sky{min-height:100dvh;padding:0 20px}
   .home-nav{top:22px;right:20px}
   .home-copy{top:49px;font-size:12px}
   .constellation{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 16px;width:100%;padding:82px 0 32px}
-  .center-mark{grid-column:1/-1;grid-row:1}
+  .center-mark{grid-column:1/-1;grid-row:2}
   .title-kokumo{width:150px;margin-bottom:12px}
   h1{font-size:29px}
   .sub{margin-top:9px;font-size:10px}
-  .top-kuumo{width:68px;margin-top:18px}
-  .cloud-link{grid-row:2;gap:6px;width:100%}
+  .cloud-groove{margin-top:18px}
+  .cloud-link{grid-row:1;gap:6px;width:100%}
   .math{grid-column:1}
   .shop{grid-column:2}
-  .apps{grid-column:1/-1;grid-row:3;width:calc((100% - 16px)/2)}
+  .comics{grid-column:1;grid-row:3}
+  .apps{grid-column:2;grid-row:3}
   .cloud{width:180px}
   .label{font-size:22px}
   .jp{font-size:10px;letter-spacing:.06em}
   .footer{padding:0 0 18px}
-  .cloud-groove{padding-right:0}
   .footer-credit{position:static;margin-top:16px;text-align:center}
 }
 @media(prefers-reduced-motion:reduce){
-  .cloud-link,.top-kuumo{animation:none}
+  .cloud-link{animation:none}
   .cloud{transition:none}
 }
 @media(hover:none),(pointer:coarse){
@@ -130,7 +125,17 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
       <img class="title-kokumo" src="./assets/characters/kokumo-balloon.svg" alt="こくもが小さなここくもを風船のようにひもで持っている" data-alt-ja="こくもが小さなここくもを風船のようにひもで持っている" data-alt-en="kokumo holding a little kokokumo like a balloon" width="240" height="200" draggable="false">
       <h1>some clouds</h1>
       <div class="sub">tap a cloud</div>
-      <img class="top-kuumo" src="./assets/kuumo/c5.png" alt="" aria-hidden="true" draggable="false">
+      <section class="cloud-groove" lang="en" aria-labelledby="cloud-groove-title">
+        <img class="cloud-groove-image" src="./assets/characters/cappy-groove.png" alt="" width="1278" height="1230">
+        <div>
+          <h2 id="cloud-groove-title">CLOUD GROOVE</h2>
+          <p>laid-back instrumental grooves<br>on YouTube</p>
+          <a class="cloud-groove-link" href="https://www.youtube.com/@cloud_groove" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 18 13" aria-hidden="true" focusable="false"><rect width="18" height="13" rx="3" fill="#f03"/><path d="M7 3.5l5 3-5 3z" fill="#fff"/></svg>
+            Listen on YouTube
+          </a>
+        </div>
+      </section>
     </div>
 
     <a class="cloud-link math" href="https://sakurak02.github.io/math-study-log/">
@@ -141,23 +146,16 @@ h1{margin:0;font-size:clamp(28px,3.2vw,42px);font-weight:400;letter-spacing:.055
       <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
       <span class="label">Shop</span><span class="jp" data-language="ja">本と小さな作品</span><span class="jp" data-language="en" hidden>Books and little works</span>
     </a>
+    <a class="cloud-link comics" href="https://sakurak02.github.io/kokumo-comics/">
+      <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
+      <span class="label">Comics</span><span class="jp" data-language="ja">おかしくて、ほろり。</span><span class="jp" data-language="en" hidden>Funny, yet touching.</span>
+    </a>
     <a class="cloud-link apps" href="./apps/">
       <img class="cloud" src="./assets/characters/kumokumo.png" alt="" aria-hidden="true" draggable="false">
       <span class="label">Apps</span><span class="jp" data-language="ja">小さなアプリ・ゲーム</span><span class="jp" data-language="en" hidden>Little apps and games</span>
     </a>
   </div>
   <footer class="footer">
-    <section class="cloud-groove" lang="en" aria-labelledby="cloud-groove-title">
-      <img class="cloud-groove-image" src="./assets/characters/cappy-groove.png" alt="" width="1278" height="1230">
-      <div>
-        <h2 id="cloud-groove-title">CLOUD GROOVE</h2>
-        <p>laid-back instrumental grooves<br>on YouTube</p>
-        <a class="cloud-groove-link" href="https://www.youtube.com/@cloud_groove" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 18 13" aria-hidden="true" focusable="false"><rect width="18" height="13" rx="3" fill="#f03"/><path d="M7 3.5l5 3-5 3z" fill="#fff"/></svg>
-          Listen on YouTube
-        </a>
-      </div>
-    </section>
     <div class="footer-links"><span class="footer-tagline">クーモとこくもと、ときどきくもくもここくも</span><a class="footer-meet" href="./characters/">meet the clouds ↗</a><a class="footer-social" href="https://x.com/kokumo_cloud">kokumo X (Japanese) ↗</a></div>
     <div class="footer-credit"><span class="footer-name">sakurak02</span><span class="footer-project">a project by K企画</span></div>
   </footer>
